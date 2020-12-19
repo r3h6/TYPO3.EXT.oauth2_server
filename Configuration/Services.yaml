@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  R3H6\Oauth2Server\:
+    resource: '../Classes/*'
+
+  R3H6\Oauth2Server\Hook\CreateClientSecretHook:
+    public: true
+
+  R3H6\Oauth2Server\Controller\AuthorizationController:
+    public: true
+
+  League\OAuth2\Server\AuthorizationServer:
+    factory: '@R3H6\Oauth2Server\Domain\AuthorizationServerFactory'

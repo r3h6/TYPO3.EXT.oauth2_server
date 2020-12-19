@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>foo</title>
+    </head>
+    <body>
+        <p>Client {client.name} requested access to:</p>
+
+        <f:for each="{scopes}" as="scope" iteration="i">
+            <div>{scope.identifier}</div>
+        </f:for>
+
+        <form action="/oauth/approve" method="post">
+            <button type="submit">Approve</button>
+        </form>
+        <form action="/oauth/deny" method="post">
+            <button type="submit">Deny</button>
+        </form>
+    </body>
+</html>

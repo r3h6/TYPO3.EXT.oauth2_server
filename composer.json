@@ -1,0 +1,24 @@
+{
+	"name": "r3h6/oauth2-server",
+	"type": "typo3-cms-extension",
+	"description": "",
+	"authors": [],
+	"require": {
+		"typo3/cms-core": "^10.4",
+		"league/oauth2-server": "^8.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"R3H6\\Oauth2Server\\": "Classes"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"R3H6\\Oauth2Server\\Tests\\": "Tests"
+		}
+	},
+	"replace": {
+		"r3h6/oauth2-server": "self.version",
+		"typo3-ter/oauth2-server": "self.version"
+	}
+}

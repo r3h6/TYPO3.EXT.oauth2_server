@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:oauth2_server/Resources/Private/Language/locallang" date="2020-12-08T20:29:45Z" product-name="oauth2_server">
+		<header/>
+		<body>
+			<trans-unit id="tx_oauth2server_domain_model_user" resname="tx_oauth2server_domain_model_user">
+				<source>User</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_user.identifier" resname="tx_oauth2server_domain_model_user.identifier">
+				<source>Identifier</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_authcode" resname="tx_oauth2server_domain_model_authcode">
+				<source>Auth Code</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_authcode.redirect_uri" resname="tx_oauth2server_domain_model_authcode.redirect_uri">
+				<source>Redirect Uri</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_client" resname="tx_oauth2server_domain_model_client">
+				<source>Client</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken" resname="tx_oauth2server_domain_model_accesstoken">
+				<source>Access Token</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken.private_key" resname="tx_oauth2server_domain_model_accesstoken.private_key">
+				<source>Private Key</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken" resname="tx_oauth2server_domain_model_refreshtoken">
+				<source>Refresh Token</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.identifier" resname="tx_oauth2server_domain_model_refreshtoken.identifier">
+				<source>Identifier</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.expiry_date_time" resname="tx_oauth2server_domain_model_refreshtoken.expiry_date_time">
+				<source>Expiry Date Time</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.access_token" resname="tx_oauth2server_domain_model_refreshtoken.access_token">
+				<source>Access Token</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_scope" resname="tx_oauth2server_domain_model_scope">
+				<source>Scope</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_scope.identifier" resname="tx_oauth2server_domain_model_scope.identifier">
+				<source>Identifier</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token" resname="tx_oauth2server_domain_model_token">
+				<source>Token</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token.identifier" resname="tx_oauth2server_domain_model_token.identifier">
+				<source>Identifier</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token.expiry_date_time" resname="tx_oauth2server_domain_model_token.expiry_date_time">
+				<source>Expiry Date Time</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token.user_identifier" resname="tx_oauth2server_domain_model_token.user_identifier">
+				<source>User Identifier</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token.client" resname="tx_oauth2server_domain_model_token.client">
+				<source>Client</source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token.scope" resname="tx_oauth2server_domain_model_token.scope">
+				<source>Scope</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
