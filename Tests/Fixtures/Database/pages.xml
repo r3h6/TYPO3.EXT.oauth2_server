@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+        <title>Test Oauth2 Server</title>
+    </pages>
+    <tx_oauth2server_domain_model_client>
+        <uid>1</uid>
+        <pid>1</pid>
+        <identifier>660e56d72c12f9a1e2ec</identifier>
+        <!-- CCJL1/s3TQLMHj9le2bBUlD7tmkPZKlOTZGgBQRb3BE= -->
+        <secret>$argon2i$v=19$m=65536,t=16,p=1$NEtuaGV3YlRZd3FYUExKOQ$XT54GLVXwSkiA7K/Wxgk7PjwusW7Ggt8vayEQoJfVYs</secret>
+        <name>Test</name>
+        <grant_type>authorization_code</grant_type>
+        <redirect_uri>http://localhost/</redirect_uri>
+        <is_confidential>1</is_confidential>
+    </tx_oauth2server_domain_model_client>
+    <fe_groups>
+        <uid>1</uid>
+        <pid>1</pid>
+        <title>Oauth2</title>
+    </fe_groups>
+    <fe_users>
+        <uid>1</uid>
+        <pid>0</pid>
+        <username>user</username>
+        <password>$argon2i$v=19$m=65536,t=16,p=1$d2sudnlVLnFLR2FiZ1R2bQ$6dzuZ230KJGsWGPLrxQEHIOQQViuh1EZW+rHnL8LtT4</password>
+        <usergroup>1</usergroup>
+    </fe_users>
+</dataset>

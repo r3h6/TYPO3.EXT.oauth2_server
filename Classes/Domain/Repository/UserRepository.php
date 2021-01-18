@@ -6,6 +6,8 @@ use TYPO3\CMS\Backend\Configuration\TsConfigParser;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 
 /***
@@ -21,8 +23,10 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 /**
  * The repository for Users
  */
-class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements UserRepositoryInterface
+class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements UserRepositoryInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function initializeObject()
     {
         /** \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
@@ -34,6 +38,7 @@ class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implement
 
     public function getUserEntityByUserCredentials($username, $password, $grantType, ClientEntityInterface $clientEntity)
     {
+        $this->logger->debug('Get user', ['username' => $username]);
         $this->initializeObject();
         $user = $this->findOneByUsername($username);
         if ($user === null) {

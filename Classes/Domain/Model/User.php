@@ -20,10 +20,8 @@ use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
  */
 final class User extends FrontendUser implements UserEntityInterface
 {
-
     public function getIdentifier()
     {
         return $this->uid;
     }
-
 }

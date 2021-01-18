@@ -12,19 +12,20 @@ class Configuration implements SingletonInterface
     private $configuration = [
         'server' => [
             'routes' => [
-                'GET:oauth/authorize' => 'R3H6\Oauth2Server\Controller\AuthorizationController::authenticateAction',
-                'POST:oauth/authorize' => 'R3H6\Oauth2Server\Controller\AuthorizationController::authorizeAction',
-                'POST:oauth/approve' => 'R3H6\Oauth2Server\Controller\AuthorizationController::approveAction',
-                'POST:oauth/deny' => 'R3H6\Oauth2Server\Controller\AuthorizationController::denyAction',
-                'POST:oauth/token' => 'R3H6\Oauth2Server\Controller\AuthorizationController::accessTokenAction',
+                'GET:oauth/authorize' => 'R3H6\Oauth2Server\Controller\AuthorizationController::startAuthorization',
+                'POST:oauth/authorize' => 'R3H6\Oauth2Server\Controller\AuthorizationController::approveAuthorization',
+                'DELETE:oauth/authorize' => 'R3H6\Oauth2Server\Controller\AuthorizationController::denyAuthorization',
+                'POST:oauth/token' => 'R3H6\Oauth2Server\Controller\TokenController::accessTokenAction',
             ],
             'privateKey' => 'EXT:oauth2_server/Resources/Private/Keys/private.key',
+            'publicKey' => 'EXT:oauth2_server/Resources/Private/Keys/public.key',
             'tokensExpireIn' => 'P1M',
             'grantTypes' => [
                 'implicit' => [
                     'enabled' => false,
                 ],
             ],
+
         ],
     ];
 

@@ -9,6 +9,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use R3H6\Oauth2Server\Domain\Repository\UserRepository;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class AuthorizationController
 {
@@ -28,88 +31,58 @@ class AuthorizationController
         $this->server = $server;
     }
 
-    public function authenticateAction(ServerRequestInterface $request): ResponseInterface
+    public function startAuthorization(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication */
+        $frontendUser = $request->getAttribute('frontend.user');
+
         // Validate the HTTP request and return an AuthorizationRequest object.
         $authRequest = $this->server->validateAuthorizationRequest($request);
-        // $authRequest->setRedirectUri($request->getQueryParams()['redirect_uri']);
-
-        // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($authRequest); exit;
-
-        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication */
-        $frontendUser = $request->getAttribute('frontend.user');
         $frontendUser->setAndSaveSessionData('oauth2/authRequest', $authRequest);
 
-        // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($authRequest); exit;
-        // The auth request object can be serialized and saved into a user's session.
-        // You will probably want to redirect the user at this point to a login endpoint.
+        $isAuthenticated = ($frontendUser->user['uid'] ?? 0) > 0; // Groups not loaded in context api
+        if (!$isAuthenticated) {
+            return new RedirectResponse('/?redirect_url='.urlencode('/consent'));
+        }
 
-
-        $view = new \TYPO3Fluid\Fluid\View\TemplateView();
-        $view->getTemplatePaths()->setTemplatePathAndFilename(
-            GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Resources/Private/Templates/Oauth/Authenticate.html')
-        );
-
-        return new HtmlResponse($view->render());
+        return new RedirectResponse('/consent');
     }
 
-    public function authorizeAction(ServerRequestInterface $request): ResponseInterface
+    public function approveAuthorization(ServerRequestInterface $request): ResponseInterface
+    {
+       /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication */
+       $frontendUser = $request->getAttribute('frontend.user');
+
+       /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|null */
+       $authRequest = $frontendUser->getSessionData('oauth2/authRequest');
+
+       // Once the user has logged in set the user on the AuthorizationRequest
+       $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);
+       $authRequest->setUser($user);
+
+       // Consent
+       $authRequest->setAuthorizationApproved(true);
+
+       $response = new Response();
+       return $this->server->completeAuthorizationRequest($authRequest, $response);
+    }
+
+    public function denyAuthorization(ServerRequestInterface $request): ResponseInterface
     {
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication */
         $frontendUser = $request->getAttribute('frontend.user');
 
-        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest */
+        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|null */
         $authRequest = $frontendUser->getSessionData('oauth2/authRequest');
-
-        $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);
 
         // Once the user has logged in set the user on the AuthorizationRequest
-        $authRequest->setUser($user); // an instance of UserEntityInterface
+        $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);
+        $authRequest->setUser($user);
 
-
-
-        $frontendUser->setAndSaveSessionData('oauth2/authRequest', $authRequest);
-
-
-        // At this point you should redirect the user to an authorization page.
-        // This form will ask the user to approve the client and the scopes requested.
-
-
-
-        $view = new \TYPO3Fluid\Fluid\View\TemplateView();
-        $view->getTemplatePaths()->setTemplatePathAndFilename(
-            GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Resources/Private/Templates/Oauth/Authorize.html')
-        );
-        $view->assign('client', $authRequest->getClient());
-        $view->assign('scopes', $authRequest->getScopes());
-
-        return new HtmlResponse($view->render());
-    }
-
-    public function approveAction(ServerRequestInterface $request): ResponseInterface
-    {
-        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication */
-        $frontendUser = $request->getAttribute('frontend.user');
-        $authRequest = $frontendUser->getSessionData('oauth2/authRequest');
-
+        // Consent
+        $authRequest->setAuthorizationApproved(false);
 
         $response = new Response();
-        // Once the user has approved or denied the client update the status
-        // (true = approved, false = denied)
-        $authRequest->setAuthorizationApproved(true);
-
-        // Return the HTTP redirect response
         return $this->server->completeAuthorizationRequest($authRequest, $response);
-    }
-
-    public function denyAction(ServerRequestInterface $request): ResponseInterface
-    {
-        return new Response();
-    }
-
-    public function accessTokenAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $response = $this->server->respondToAccessTokenRequest($request, new Response());
-        return $response;
     }
 }

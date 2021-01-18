@@ -7,11 +7,16 @@ services:
   R3H6\Oauth2Server\:
     resource: '../Classes/*'
 
-  R3H6\Oauth2Server\Hook\CreateClientSecretHook:
+  R3H6\Oauth2Server\Hook\:
+    resource: '../Classes/Hook/*'
     public: true
 
-  R3H6\Oauth2Server\Controller\AuthorizationController:
+  R3H6\Oauth2Server\Controller\:
+    resource: '../Classes/Controller/*'
     public: true
 
   League\OAuth2\Server\AuthorizationServer:
     factory: '@R3H6\Oauth2Server\Domain\AuthorizationServerFactory'
+
+  League\OAuth2\Server\ResourceServer:
+    factory: '@R3H6\Oauth2Server\Domain\ResourceServerFactory'

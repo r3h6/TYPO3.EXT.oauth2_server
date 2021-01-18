@@ -1,0 +1,18 @@
+<f:layout name="Default"/>
+
+<f:section name="Main">
+    <p>Client {client.name} requested access to:</p>
+
+    <f:for each="{scopes}" as="scope" iteration="i">
+        <div>{scope.identifier}</div>
+    </f:for>
+
+    <form action="/oauth/authorize" method="post">
+        <input type="hidden" name="consent" value="approve">
+        <button type="submit">Approve</button>
+    </form>
+    <form action="/oauth/authorize" method="post">
+        <input type="hidden" name="consent" value="deny">
+        <button type="submit">Deny</button>
+    </form>
+</f:section>

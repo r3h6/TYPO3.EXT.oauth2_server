@@ -6,6 +6,8 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /***
  *
@@ -20,8 +22,9 @@ use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 /**
  * The repository for Clients
  */
-class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ClientRepositoryInterface
+class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ClientRepositoryInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
 
     public function initializeObject()
     {
@@ -33,6 +36,7 @@ class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository impleme
 
     public function getClientEntity($clientIdentifier)
     {
+        $this->logger->debug('Get client', ['identifier' => $clientIdentifier]);
         $this->initializeObject();
         return $this->findOneByIdentifier($clientIdentifier);
     }

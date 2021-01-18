@@ -3,6 +3,8 @@ namespace R3H6\Oauth2Server\Domain\Repository;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use R3H6\Oauth2Server\Domain\Model\Scope;
 
 /***
@@ -18,11 +20,13 @@ use R3H6\Oauth2Server\Domain\Model\Scope;
 /**
  * The repository for Scopes
  */
-class ScopeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ScopeRepositoryInterface
+class ScopeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ScopeRepositoryInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
 
     public function getScopeEntityByIdentifier($identifier)
     {
+        $this->logger->debug('Get scope', ['identifier' => $identifier]);
         return new Scope($identifier);
     }
 
