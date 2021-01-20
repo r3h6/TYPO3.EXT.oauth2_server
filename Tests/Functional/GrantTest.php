@@ -19,6 +19,8 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 
 class GrantTest extends FunctionalTestCase
 {
+    use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
+
     protected $testExtensionsToLoad = [
         'typo3conf/ext/oauth2_server',
     ];
@@ -92,10 +94,6 @@ class GrantTest extends FunctionalTestCase
             $this->getLastCookie()
         );
 
-        $redirect = new Uri($response->getHeader('location')[0]);
-        $params = [];
-        parse_str($redirect->getQuery(), $params);
-
         $response = $this->doFrontendRequest(
             'POST',
             '/oauth/token',
@@ -104,7 +102,7 @@ class GrantTest extends FunctionalTestCase
                 'client_id' => '660e56d72c12f9a1e2ec',
                 'client_secret' => 'CCJL1/s3TQLMHj9le2bBUlD7tmkPZKlOTZGgBQRb3BE=',
                 'redirect_uri' => 'http://localhost/',
-                'code' => $params['code'],
+                'code' => $this->getCodeFromResponse($response),
             ]
         );
 
@@ -114,38 +112,4 @@ class GrantTest extends FunctionalTestCase
         $this->assertArrayHasKey('access_token', $token);
     }
 
-    protected function doFrontendRequest(string $method, string $uri, array $params = [], string $cookie = null): InternalResponse
-    {
-        $request = new InternalRequest($uri);
-        $context = null;
-        $globalSettings = [];
-
-        if ($method === 'POST') {
-            $globalSettings = array_merge($globalSettings, [
-                '_SERVER' => ['REQUEST_METHOD' => 'POST'],
-                '_POST' => $params,
-            ]);
-        } else {
-            foreach ($params as $key => $value) {
-                $request = $request->withQueryParameter($key, $value);
-            }
-        }
-
-        if ($cookie !== null) {
-            $globalSettings['_COOKIE'] = ['fe_typo_user' => $cookie];
-        }
-
-        if (!empty($globalSettings)) {
-            $context = new InternalRequestContext();
-            $context = $context->withGlobalSettings($globalSettings);
-        }
-
-        return $this->executeFrontendRequest($request, $context);
-    }
-
-    protected function getLastCookie(): string
-    {
-        preg_match_all('/Set Cookie: (?<cookie>[a-z0-9]+)/', file_get_contents('typo3temp/var/log/auth.log'), $matches);
-        return end($matches['cookie']);
-    }
 }

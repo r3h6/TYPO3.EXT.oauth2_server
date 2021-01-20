@@ -1,3 +1,5 @@
 /vendor/
 /.Build/
+/composer.lock
+/report.*
 .env
