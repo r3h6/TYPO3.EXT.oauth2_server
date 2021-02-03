@@ -1,6 +1,6 @@
 <?php
 
-namespace R3H6\Oauth2Server\Domain;
+namespace R3H6\Oauth2Server\Domain\Factory;
 
 use League\OAuth2\Server\ResourceServer;
 use TYPO3\CMS\Core\SingletonInterface;

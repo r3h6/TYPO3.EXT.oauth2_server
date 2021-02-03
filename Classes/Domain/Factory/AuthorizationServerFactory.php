@@ -1,21 +1,26 @@
 <?php
 
-namespace R3H6\Oauth2Server\Domain;
+namespace R3H6\Oauth2Server\Domain\Factory;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use R3H6\Oauth2Server\Domain\Configuration;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
-use League\OAuth2\Server\Grant\PasswordGrant;
-use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
+use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
+use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use R3H6\Oauth2Server\Domain\Repository\UserRepository;
 use R3H6\Oauth2Server\Domain\Repository\ScopeRepository;
 use R3H6\Oauth2Server\Domain\Repository\ClientRepository;
 use R3H6\Oauth2Server\Domain\Repository\AuthCodeRepository;
+use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
+use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use R3H6\Oauth2Server\Domain\Repository\RefreshTokenRepository;
+use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 class AuthorizationServerFactory implements SingletonInterface
 {
@@ -26,15 +31,14 @@ class AuthorizationServerFactory implements SingletonInterface
             $configuration->get('server.tokensExpireIn')
         );
 
-        $responseType = $configuration->get('server.responseType');
-
-        $server = new AuthorizationServer(
-            GeneralUtility::makeInstance(ClientRepository::class),
-            GeneralUtility::makeInstance(AccessTokenRepository::class),
-            GeneralUtility::makeInstance(ScopeRepository::class),
+        $server = GeneralUtility::makeInstance(
+            AuthorizationServer::class,
+            $this->getClientRepository(),
+            $this->getAccessTokenRepository(),
+            $this->getScopeRepository(),
             GeneralUtility::getFileAbsFileName($configuration->get('server.privateKey')),
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'],
-            $responseType ? GeneralUtility::makeInstance($responseType) : null
+            $this->getResponseType()
         );
 
         $server->enableGrantType($this->getClientCredentialsGrant(), $accessTokenTTL);
@@ -47,6 +51,26 @@ class AuthorizationServerFactory implements SingletonInterface
         }
 
         return $server;
+    }
+
+    protected function getClientRepository(): ClientRepositoryInterface
+    {
+        return GeneralUtility::makeInstance(ClientRepository::class);
+    }
+
+    protected function getAccessTokenRepository(): AccessTokenRepositoryInterface
+    {
+        return GeneralUtility::makeInstance(AccessTokenRepository::class);
+    }
+
+    protected function getScopeRepository(): ScopeRepositoryInterface
+    {
+        return GeneralUtility::makeInstance(ScopeRepository::class);
+    }
+
+    protected function getResponseType(): ?ResponseTypeInterface
+    {
+        return null;
     }
 
     protected function getClientCredentialsGrant(): ClientCredentialsGrant

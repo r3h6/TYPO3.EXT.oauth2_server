@@ -15,8 +15,11 @@ services:
     resource: '../Classes/Controller/*'
     public: true
 
+  R3H6\Oauth2Server\Domain\Configuration:
+    public: true
+
   League\OAuth2\Server\AuthorizationServer:
-    factory: '@R3H6\Oauth2Server\Domain\AuthorizationServerFactory'
+    factory: '@R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory'
 
   League\OAuth2\Server\ResourceServer:
-    factory: '@R3H6\Oauth2Server\Domain\ResourceServerFactory'
+    factory: '@R3H6\Oauth2Server\Domain\Factory\ResourceServerFactory'
