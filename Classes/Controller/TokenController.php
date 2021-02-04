@@ -22,7 +22,7 @@ class TokenController
         $this->server = $server;
     }
 
-    public function accessTokenAction(ServerRequestInterface $request): ResponseInterface
+    public function issueAccessToken(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->server->respondToAccessTokenRequest($request, new Response());
         return $response;

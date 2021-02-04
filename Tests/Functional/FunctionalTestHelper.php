@@ -3,6 +3,12 @@
 namespace R3H6\Oauth2Server\Tests\Functional;
 
 use TYPO3\CMS\Core\Http\Uri;
+use League\OAuth2\Server\CryptKey;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -17,13 +23,19 @@ trait FunctionalTestHelper
         $globalSettings = [];
 
         if ($method === 'POST') {
-            $globalSettings = array_merge($globalSettings, [
+            $globalSettings = array_merge_recursive($globalSettings, [
                 '_SERVER' => ['REQUEST_METHOD' => 'POST'],
                 '_POST' => $params,
             ]);
         } else {
             foreach ($params as $key => $value) {
-                $request = $request->withQueryParameter($key, $value);
+                if (\strpos($key, 'HTTP_') === 0) {
+                    $globalSettings = array_merge_recursive($globalSettings, [
+                        '_SERVER' => [strtoupper($key) => $value],
+                    ]);
+                } else {
+                    $request = $request->withQueryParameter($key, $value);
+                }
             }
         }
 
@@ -51,5 +63,33 @@ trait FunctionalTestHelper
         $params = [];
         parse_str($redirect->getQuery(), $params);
         return $params['code'];
+    }
+
+    protected function createAccessToken(array $scopes = [], $userIdentifier = 1, ClientEntityInterface $client = null): AccessTokenEntityInterface
+    {
+        $client = $client ?? $this->createClientStub();
+        $privateKey = new CryptKey(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Resources/Private/Keys/private.key'));
+        $accessTokenRepository = GeneralUtility::makeInstance(AccessTokenRepository::class);
+        $accessToken = $accessTokenRepository->getNewToken($client, $scopes, $userIdentifier);
+        $accessToken->setPrivateKey($privateKey);
+        return $accessToken;
+    }
+
+    protected function createClientStub()
+    {
+        $client = $this->prophesize(ClientEntityInterface::class);
+        $client->getIdentifier()->willReturn('660e56d72c12f9a1e2ec');
+        $client->getName()->willReturn('Test');
+        $client->getRedirectUri()->willReturn('http://localhost/');
+        $client->isConfidential()->willReturn(true);
+        return $client->reveal();
+    }
+
+    protected function createScopeMock(string $identifier)
+    {
+        $scope = $this->prophesize(ScopeEntityInterface::class);
+        $scope->getIdentifier()->willReturn($identifier);
+        $scope->jsonSerialize()->willReturn($identifier);
+        return $scope->reveal();
     }
 }

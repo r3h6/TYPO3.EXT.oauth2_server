@@ -55,7 +55,7 @@ class AuthorizationHandler implements MiddlewareInterface, LoggerAwareInterface
         $endpoint = strtoupper($method) . ':' . trim($request->getUri()->getPath(), '/');
         $target = $this->configuration->get('server.routes.'.$endpoint);
 
-        $this->logger->debug('Target', [$target, $endpoint]);
+        $this->logger->debug('handle request', ['target' => $target, 'headers' => $request->getHeaders(), 'body' => (string) $request->getBody()]);
 
         if ($target === null) {
             return $handler->handle($request);
@@ -63,6 +63,8 @@ class AuthorizationHandler implements MiddlewareInterface, LoggerAwareInterface
 
         $request = $request->withAttribute('target', $target);
         $response = $this->dispatcher->dispatch($request);
+
+        $this->logger->debug('oauth2 response', ['headers' => $response->getHeaders(), 'body' =>  (string) $response->getBody()]);
 
         return $response;
     }

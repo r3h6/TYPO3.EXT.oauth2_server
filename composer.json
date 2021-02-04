@@ -40,6 +40,7 @@
 		}
 	},
 	"require-dev": {
-		"typo3/testing-framework": "^6.6"
+		"typo3/testing-framework": "^6.6",
+		"phpspec/prophecy-phpunit": "^2.0"
 	}
 }

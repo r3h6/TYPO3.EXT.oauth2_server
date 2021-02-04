@@ -22,6 +22,14 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements AccessTokenRepositoryInterface
 {
 
+    /**
+     * Undocumented function
+     *
+     * @param \League\OAuth2\Server\Entities\ClientEntityInterface $clientEntity
+     * @param \League\OAuth2\Server\Entities\ScopeEntityInterface[] $scopes
+     * @param string|int|null $userIdentifier
+     * @return AccessToken
+     */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
         $accessToken = new AccessToken();
