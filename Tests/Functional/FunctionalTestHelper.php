@@ -67,11 +67,14 @@ trait FunctionalTestHelper
 
     protected function createAccessToken(array $scopes = [], $userIdentifier = 1, ClientEntityInterface $client = null): AccessTokenEntityInterface
     {
+        $length = 40;
         $client = $client ?? $this->createClientStub();
         $privateKey = new CryptKey(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Resources/Private/Keys/private.key'));
         $accessTokenRepository = GeneralUtility::makeInstance(AccessTokenRepository::class);
         $accessToken = $accessTokenRepository->getNewToken($client, $scopes, $userIdentifier);
+        $accessToken->setIdentifier(\bin2hex(\random_bytes($length)));
         $accessToken->setPrivateKey($privateKey);
+        $accessTokenRepository->persistNewAccessToken($accessToken);
         return $accessToken;
     }
 

@@ -2,68 +2,10 @@
 
 namespace R3H6\Oauth2Server\Tests\Functional;
 
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Http\Request;
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Frontend\Http\RequestHandler;
-use Psr\Http\Server\RequestHandlerInterface;
-use R3H6\Oauth2Server\Middleware\AuthorizationHandler;
-use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
 class GrantTest extends FunctionalTestCase
 {
     use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
-
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/oauth2_server',
-    ];
-
-    protected $pathsToLinkInTestInstance = [
-        'typo3conf/ext/oauth2_server/Tests/Fixtures/config/sites' => 'typo3conf/sites',
-    ];
-
-    protected $configurationToUseInTestInstance = [
-        'LOG' => [
-            'R3H6' => [
-                'Oauth2Server' => [
-                    'writerConfiguration' => [
-                        \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
-                            \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [],
-                        ]
-                    ]
-                ]
-            ],
-            'TYPO3' => [
-                'CMS' => [
-                    'Frontend' => [
-                        'Authentication' => [
-                            'writerConfiguration' => [
-                                \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
-                                    \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
-                                        'logFile' =>  'typo3temp/var/log/auth.log'
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/pages.xml');
-        $this->setUpFrontendRootPage(1);
-    }
 
     /**
      * @test

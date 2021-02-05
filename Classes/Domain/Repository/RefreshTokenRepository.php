@@ -1,6 +1,9 @@
 <?php
 namespace R3H6\Oauth2Server\Domain\Repository;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerAwareInterface;
+use R3H6\Oauth2Server\Domain\Model\RefreshToken;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 
@@ -17,14 +20,55 @@ use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 /**
  * The repository for RefreshTokens
  */
-class RefreshTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements RefreshTokenRepositoryInterface
+class RefreshTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements RefreshTokenRepositoryInterface, LoggerAwareInterface
 {
+    use QueryBuilderAwareRepositoryTrait;
+    use LoggerAwareTrait;
 
-    public function getNewRefreshToken() { }
+    private const TABLE = 'tx_oauth2server_domain_model_refreshtoken';
 
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity) { }
+    public function getNewRefreshToken()
+    {
+        $this->logger->debug('Get new refresh token');
 
-    public function revokeRefreshToken($tokenId) { }
+        return new RefreshToken();
+    }
 
-    public function isRefreshTokenRevoked($tokenId) { }
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
+    {
+        $queryBuilder = $this->createQueryBuilder();
+        $queryBuilder
+            ->insert(self::TABLE)
+            ->values([
+                'identifier' => $refreshTokenEntity->getIdentifier(),
+                'expires_at' => $refreshTokenEntity->getExpiryDateTime()->getTimestamp(),
+                'access_token' => $refreshTokenEntity->getAccessToken()->getIdentifier(),
+                'revoked' => 0,
+            ])
+            ->execute();
+    }
+
+    public function revokeRefreshToken($tokenId)
+    {
+        $this->logger->debug('Revoke refresh token', ['identifier' => $tokenId]);
+
+        $queryBuilder = $this->createQueryBuilder();
+        $queryBuilder
+            ->update(self::TABLE)
+            ->where(
+                $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($tokenId))
+            )
+            ->set('revoked', 1)
+            ->execute();
+    }
+
+    public function isRefreshTokenRevoked($tokenId)
+    {
+        $row = $this->selectOneByIdentifier($tokenId);
+        if ($row) {
+            return (bool) $row['revoked'];
+        }
+
+        return true;
+    }
 }

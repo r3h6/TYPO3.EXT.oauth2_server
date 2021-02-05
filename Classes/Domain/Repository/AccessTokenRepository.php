@@ -1,7 +1,14 @@
 <?php
 namespace R3H6\Oauth2Server\Domain\Repository;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerAwareInterface;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use R3H6\Oauth2Server\Utility\ScopeUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use R3H6\Oauth2Server\Domain\Model\AccessToken;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
@@ -19,8 +26,12 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 /**
  * The repository for AccessTokens
  */
-class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements AccessTokenRepositoryInterface
+class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements AccessTokenRepositoryInterface, LoggerAwareInterface
 {
+    use QueryBuilderAwareRepositoryTrait;
+    use LoggerAwareTrait;
+
+    private const TABLE = 'tx_oauth2server_domain_model_accesstoken';
 
     /**
      * Undocumented function
@@ -32,6 +43,8 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
      */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
+        $this->logger->debug('Get new token', ['client' => $clientEntity->getIdentifier(), 'scopes' => $scopes, 'userIdentifier' => $userIdentifier]);
+
         $accessToken = new AccessToken();
         $accessToken->setClient($clientEntity);
         $accessToken->setUserIdentifier($userIdentifier);
@@ -45,10 +58,45 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
     }
 
 
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity) { }
+    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
+    {
+        $queryBuilder = $this->createQueryBuilder();
+        $queryBuilder
+            ->insert(self::TABLE)
+            ->values([
+                'identifier' => $accessTokenEntity->getIdentifier(),
+                'expires_at' => $accessTokenEntity->getExpiryDateTime()->getTimestamp(),
+                'user' => $accessTokenEntity->getUserIdentifier(),
+                'scopes' => ScopeUtility::toString(...$accessTokenEntity->getScopes()),
+                'client' => $accessTokenEntity->getClient()->getIdentifier(),
+                'revoked' => 0,
+            ])
+            ->execute();
+    }
 
-    public function revokeAccessToken($tokenId) { }
+    public function revokeAccessToken($tokenId)
+    {
+        $this->logger->debug('Revoke access token', ['identifier' => $tokenId]);
 
-    public function isAccessTokenRevoked($tokenId) { }
+        $queryBuilder = $this->createQueryBuilder();
+        $queryBuilder
+            ->update(self::TABLE)
+            ->where(
+                $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($tokenId))
+            )
+            ->set('revoked', 1)
+            ->execute();
+    }
+
+    public function isAccessTokenRevoked($tokenId)
+    {
+        $row = $this->selectOneByIdentifier($tokenId);
+        if ($row) {
+            return (bool) $row['revoked'];
+        }
+
+        return true;
+    }
+
 
 }

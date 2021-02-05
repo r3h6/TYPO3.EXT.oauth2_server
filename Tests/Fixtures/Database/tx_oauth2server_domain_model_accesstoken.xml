@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <tx_oauth2server_domain_model_accesstoken>
+        <uid>1</uid>
+        <pid>0</pid>
+        <identifier>aaaabbbbccccddddeeeeffffgggg</identifier>
+        <revoked>0</revoked>
+    </tx_oauth2server_domain_model_accesstoken>
+    <tx_oauth2server_domain_model_accesstoken>
+        <uid>2</uid>
+        <pid>0</pid>
+        <identifier>hhhhiiiijjjjkkkkllllmmmmnnnn</identifier>
+        <revoked>1</revoked>
+    </tx_oauth2server_domain_model_accesstoken>
+</dataset>

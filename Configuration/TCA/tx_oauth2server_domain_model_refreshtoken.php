@@ -7,8 +7,11 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'enablecolumns' => [
+            'endtime' => 'expires_at',
         ],
-        'searchFields' => 'identifier,access_token',
+        'rootLevel' => 1,
+        'hideTable' => true,
+        'searchFields' => 'identifier',
         'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_refreshtoken.gif'
     ],
     'interface' => [
@@ -61,6 +64,6 @@ return [
                 'default' => 0,
             ]
         ],
-    
+
     ],
 ];
