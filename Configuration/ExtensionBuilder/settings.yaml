@@ -43,8 +43,8 @@ overwriteSettings:
   Classes:
     Controller: merge
     Domain:
-      Model: merge
-      Repository: merge
+      Model: keep
+      Repository: keep
 
   Configuration:
     #TCA merge not possible - use overrides directory
@@ -52,8 +52,8 @@ overwriteSettings:
 
   Resources:
     Private:
-      #Language: merge
-      #Templates: keep
+      Language: merge
+      Templates: keep
 
   user_extension.svg: keep
 

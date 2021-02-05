@@ -2,7 +2,7 @@
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client',
-        'label' => 'uid',
+        'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -26,31 +26,36 @@ return [
         '],
     ],
     'columns' => [
+
         'identifier' => [
-            'label' => 'identifier',
+            'exclude' => false,
+            'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.identifier',
             'config' => [
                 'readOnly' => true,
                 'type' => 'input',
-                'size' => '30',
-                'eval' => 'trim,alphanum_x,unique',
+                'size' => 30,
+                'eval' => 'trim,alphanum_x,unique'
             ],
         ],
         'name' => [
-            'label' => 'name',
+            'exclude' => false,
+            'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.name',
             'config' => [
                 'type' => 'input',
-                'size' => '30',
-                'eval' => 'trim',
+                'size' => 30,
+                'eval' => 'trim'
             ],
         ],
         'secret' => [
-            'label' => 'secret',
+            'exclude' => false,
+            'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.secret',
             'config' => [
-                'type' => 'passthrough',
+                'type' => 'passthrough'
             ],
         ],
         'grant_type' => [
-            'label' => 'grant_type',
+            'exclude' => false,
+            'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -64,18 +69,28 @@ return [
             ],
         ],
         'redirect_uri' => [
-            'label' => 'redirect_uri',
+            'exclude' => false,
+            'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.redirect_uri',
             'config' => [
-                'type' => 'input',
-                'size' => '30',
-                'eval' => 'trim',
-            ],
+                'type' => 'text',
+                'cols' => 40,
+                'rows' => 3,
+                'eval' => 'trim'
+            ]
         ],
         'is_confidential' => [
-            'label' => 'is_confidential',
+            'exclude' => false,
+            'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.is_confidential',
             'config' => [
                 'type' => 'check',
-            ],
+                'items' => [
+                    '1' => [
+                        '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
+                    ]
+                ],
+                'default' => 0,
+            ]
         ],
+
     ],
 ];

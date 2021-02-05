@@ -19,32 +19,20 @@
                 },
                 "name": "User",
                 "objectsettings": {
-                    "addDeletedField": true,
+                    "addDeletedField": false,
                     "addHiddenField": false,
                     "addStarttimeEndtimeFields": false,
                     "aggregateRoot": true,
                     "categorizable": false,
                     "description": "",
                     "mapToTable": "",
-                    "parentClass": "",
+                    "parentClass": "\\TYPO3\\CMS\\Extbase\\Domain\\Model\\FrontendUser",
                     "sorting": false,
                     "type": "Entity",
                     "uid": "364298444594"
                 },
                 "propertyGroup": {
-                    "properties": [
-                        {
-                            "allowedFileTypes": "",
-                            "maxItems": "1",
-                            "propertyDescription": "",
-                            "propertyIsExcludeField": true,
-                            "propertyIsL10nModeExclude": false,
-                            "propertyIsRequired": false,
-                            "propertyName": "identifier",
-                            "propertyType": "String",
-                            "uid": "919691546192"
-                        }
-                    ]
+                    "properties": []
                 },
                 "relationGroup": {
                     "relations": []
@@ -70,7 +58,7 @@
                 },
                 "name": "AuthCode",
                 "objectsettings": {
-                    "addDeletedField": true,
+                    "addDeletedField": false,
                     "addHiddenField": false,
                     "addStarttimeEndtimeFields": false,
                     "aggregateRoot": true,
@@ -91,9 +79,64 @@
                             "propertyIsExcludeField": false,
                             "propertyIsL10nModeExclude": false,
                             "propertyIsRequired": false,
-                            "propertyName": "redirectUri",
+                            "propertyName": "identifier",
                             "propertyType": "String",
                             "uid": "825300812197"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "expiresAt",
+                            "propertyType": "DateTime",
+                            "uid": "181280081951"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "user",
+                            "propertyType": "String",
+                            "uid": "1083029328403"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "scopes",
+                            "propertyType": "Text",
+                            "uid": "1355300833307"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "client",
+                            "propertyType": "String",
+                            "uid": "907740693929"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "revoked",
+                            "propertyType": "Boolean",
+                            "uid": "909641655353"
                         }
                     ]
                 },
@@ -105,8 +148,8 @@
         {
             "config": {
                 "position": [
-                    4,
-                    331
+                    927,
+                    63
                 ]
             },
             "name": "New Model Object",
@@ -134,45 +177,6 @@
                     "uid": "246798139296"
                 },
                 "propertyGroup": {
-                    "properties": []
-                },
-                "relationGroup": {
-                    "relations": []
-                }
-            }
-        },
-        {
-            "config": {
-                "position": [
-                    685,
-                    70
-                ]
-            },
-            "name": "New Model Object",
-            "value": {
-                "actionGroup": {
-                    "_default0_list": false,
-                    "_default1_show": false,
-                    "_default2_new_create": false,
-                    "_default3_edit_update": false,
-                    "_default4_delete": false,
-                    "customActions": []
-                },
-                "name": "AccessToken",
-                "objectsettings": {
-                    "addDeletedField": true,
-                    "addHiddenField": false,
-                    "addStarttimeEndtimeFields": false,
-                    "aggregateRoot": true,
-                    "categorizable": false,
-                    "description": "",
-                    "mapToTable": "",
-                    "parentClass": "",
-                    "sorting": false,
-                    "type": "Entity",
-                    "uid": "483323687986"
-                },
-                "propertyGroup": {
                     "properties": [
                         {
                             "allowedFileTypes": "",
@@ -181,9 +185,64 @@
                             "propertyIsExcludeField": false,
                             "propertyIsL10nModeExclude": false,
                             "propertyIsRequired": false,
-                            "propertyName": "privateKey",
+                            "propertyName": "identifier",
                             "propertyType": "String",
-                            "uid": "1144472698299"
+                            "uid": "88384066533"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "name",
+                            "propertyType": "String",
+                            "uid": "203905692860"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "secret",
+                            "propertyType": "String",
+                            "uid": "1470849951335"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "grantType",
+                            "propertyType": "String",
+                            "uid": "1313799354921"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "redirectUri",
+                            "propertyType": "Text",
+                            "uid": "729782426597"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "isConfidential",
+                            "propertyType": "Boolean",
+                            "uid": "1606811942391"
                         }
                     ]
                 },
@@ -211,7 +270,7 @@
                 },
                 "name": "RefreshToken",
                 "objectsettings": {
-                    "addDeletedField": true,
+                    "addDeletedField": false,
                     "addHiddenField": false,
                     "addStarttimeEndtimeFields": false,
                     "aggregateRoot": true,
@@ -243,34 +302,44 @@
                             "propertyIsExcludeField": false,
                             "propertyIsL10nModeExclude": false,
                             "propertyIsRequired": false,
-                            "propertyName": "expiryDateTime",
+                            "propertyName": "expiresAt",
                             "propertyType": "DateTime",
                             "uid": "178315638052"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "accessToken",
+                            "propertyType": "String",
+                            "uid": "890510455912"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "revoked",
+                            "propertyType": "Boolean",
+                            "uid": "1302246389409"
                         }
                     ]
                 },
                 "relationGroup": {
-                    "relations": [
-                        {
-                            "foreignRelationClass": "",
-                            "lazyLoading": false,
-                            "propertyIsExcludeField": false,
-                            "relationDescription": "",
-                            "relationName": "accessToken",
-                            "relationType": "zeroToMany",
-                            "relationWire": "[wired]",
-                            "renderType": "selectMultipleSideBySide",
-                            "uid": "102201931123"
-                        }
-                    ]
+                    "relations": []
                 }
             }
         },
         {
             "config": {
                 "position": [
-                    237,
-                    326
+                    1162,
+                    62
                 ]
             },
             "name": "New Model Object",
@@ -285,7 +354,7 @@
                 },
                 "name": "Scope",
                 "objectsettings": {
-                    "addDeletedField": true,
+                    "addDeletedField": false,
                     "addHiddenField": false,
                     "addStarttimeEndtimeFields": false,
                     "aggregateRoot": true,
@@ -298,19 +367,7 @@
                     "uid": "619222715601"
                 },
                 "propertyGroup": {
-                    "properties": [
-                        {
-                            "allowedFileTypes": "",
-                            "maxItems": "1",
-                            "propertyDescription": "",
-                            "propertyIsExcludeField": false,
-                            "propertyIsL10nModeExclude": false,
-                            "propertyIsRequired": false,
-                            "propertyName": "identifier",
-                            "propertyType": "String",
-                            "uid": "1563022304394"
-                        }
-                    ]
+                    "properties": []
                 },
                 "relationGroup": {
                     "relations": []
@@ -320,8 +377,8 @@
         {
             "config": {
                 "position": [
-                    692,
-                    316
+                    690,
+                    69
                 ]
             },
             "name": "New Model Object",
@@ -334,12 +391,12 @@
                     "_default4_delete": false,
                     "customActions": []
                 },
-                "name": "Token",
+                "name": "AccessToken",
                 "objectsettings": {
-                    "addDeletedField": true,
-                    "addHiddenField": true,
-                    "addStarttimeEndtimeFields": true,
-                    "aggregateRoot": false,
+                    "addDeletedField": false,
+                    "addHiddenField": false,
+                    "addStarttimeEndtimeFields": false,
+                    "aggregateRoot": true,
                     "categorizable": false,
                     "description": "",
                     "mapToTable": "",
@@ -368,7 +425,7 @@
                             "propertyIsExcludeField": false,
                             "propertyIsL10nModeExclude": false,
                             "propertyIsRequired": false,
-                            "propertyName": "expiryDateTime",
+                            "propertyName": "expiresAt",
                             "propertyType": "DateTime",
                             "uid": "1487017075180"
                         },
@@ -379,37 +436,47 @@
                             "propertyIsExcludeField": false,
                             "propertyIsL10nModeExclude": false,
                             "propertyIsRequired": false,
-                            "propertyName": "userIdentifier",
+                            "propertyName": "user",
                             "propertyType": "String",
                             "uid": "62396192033"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "scopes",
+                            "propertyType": "Text",
+                            "uid": "611691918412"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "client",
+                            "propertyType": "String",
+                            "uid": "215868618900"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "revoked",
+                            "propertyType": "Boolean",
+                            "uid": "1255371981456"
                         }
                     ]
                 },
                 "relationGroup": {
-                    "relations": [
-                        {
-                            "foreignRelationClass": "",
-                            "lazyLoading": false,
-                            "propertyIsExcludeField": false,
-                            "relationDescription": "",
-                            "relationName": "client",
-                            "relationType": "zeroToMany",
-                            "relationWire": "[wired]",
-                            "renderType": "selectMultipleSideBySide",
-                            "uid": "1340550034507"
-                        },
-                        {
-                            "foreignRelationClass": "",
-                            "lazyLoading": false,
-                            "propertyIsExcludeField": true,
-                            "relationDescription": "",
-                            "relationName": "scope",
-                            "relationType": "zeroToMany",
-                            "relationWire": "[wired]",
-                            "renderType": "selectMultipleSideBySide",
-                            "uid": "722305629021"
-                        }
-                    ]
+                    "relations": []
                 }
             }
         }
@@ -431,53 +498,16 @@
         },
         "extensionKey": "oauth2_server",
         "name": "OAuth2 Server",
-        "originalExtensionKey": "",
-        "originalVendorName": "",
+        "originalExtensionKey": "oauth2_server",
+        "originalVendorName": "R3H6",
         "persons": [],
         "plugins": [],
         "vendorName": "R3H6"
     },
-    "wires": [
-        {
-            "src": {
-                "moduleId": 4,
-                "terminal": "relationWire_0",
-                "uid": "102201931123"
-            },
-            "tgt": {
-                "moduleId": 3,
-                "terminal": "SOURCES",
-                "uid": "483323687986"
-            }
-        },
-        {
-            "src": {
-                "moduleId": 6,
-                "terminal": "relationWire_0",
-                "uid": "1340550034507"
-            },
-            "tgt": {
-                "moduleId": 2,
-                "terminal": "SOURCES",
-                "uid": "246798139296"
-            }
-        },
-        {
-            "src": {
-                "moduleId": 6,
-                "terminal": "relationWire_1",
-                "uid": "722305629021"
-            },
-            "tgt": {
-                "moduleId": 5,
-                "terminal": "SOURCES",
-                "uid": "619222715601"
-            }
-        }
-    ],
+    "wires": [],
     "storagePath": "\/var\/www\/html\/packages\/",
     "log": {
-        "last_modified": "2020-12-08 08:29",
+        "last_modified": "2021-02-05 06:26",
         "extension_builder_version": "9.11.0",
         "be_user": " (1)"
     }
