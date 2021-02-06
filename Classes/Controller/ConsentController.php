@@ -18,27 +18,11 @@ class ConsentController extends ActionController
         $this->frontendUser = $GLOBALS['TSFE']->fe_user;
     }
 
-    public function indexAction()
+    public function showAction()
     {
         $authRequest = $this->getAuthRequestOrFail();
         $this->view->assign('client', $authRequest->getClient());
         $this->view->assign('scopes', $authRequest->getScopes());
-    }
-
-    public function denyAction()
-    {
-        $authRequest = $this->getAuthRequestOrFail();
-        $authRequest->setAuthorizationApproved(false);
-        $this->frontendUser->setAndSaveSessionData('oauth2/authRequest', $authRequest);
-        $this->redirectToUri('/oauth/authorization');
-    }
-
-    public function acceptAction()
-    {
-        $authRequest = $this->getAuthRequestOrFail();
-        $authRequest->setAuthorizationApproved(true);
-        $this->frontendUser->setAndSaveSessionData('oauth2/authRequest', $authRequest);
-        $this->redirectToUri('/oauth/authorization');
     }
 
     protected function getAuthRequestOrFail(): AuthorizationRequest

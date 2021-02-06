@@ -13,10 +13,10 @@ call_user_func(
             'Oauth2Server',
             'Consent',
             [
-                \R3H6\Oauth2Server\Controller\ConsentController::class => 'index,accept,deny',
+                \R3H6\Oauth2Server\Controller\ConsentController::class => 'show',
             ],
             [
-                \R3H6\Oauth2Server\Controller\ConsentController::class => 'index,accept,deny',
+                \R3H6\Oauth2Server\Controller\ConsentController::class => 'show',
             ]
         );
     }

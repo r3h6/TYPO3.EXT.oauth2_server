@@ -10,6 +10,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use R3H6\Oauth2Server\Domain\Model\AccessToken;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
@@ -34,12 +35,7 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
     private const TABLE = 'tx_oauth2server_domain_model_accesstoken';
 
     /**
-     * Undocumented function
-     *
-     * @param \League\OAuth2\Server\Entities\ClientEntityInterface $clientEntity
-     * @param \League\OAuth2\Server\Entities\ScopeEntityInterface[] $scopes
-     * @param string|int|null $userIdentifier
-     * @return AccessToken
+     * @override
      */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
@@ -58,6 +54,9 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
     }
 
 
+    /**
+     * @override
+     */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
         $queryBuilder = $this->createQueryBuilder();
@@ -74,6 +73,9 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
             ->execute();
     }
 
+    /**
+     * @override
+     */
     public function revokeAccessToken($tokenId)
     {
         $this->logger->debug('Revoke access token', ['identifier' => $tokenId]);
@@ -88,6 +90,9 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
             ->execute();
     }
 
+    /**
+     * @override
+     */
     public function isAccessTokenRevoked($tokenId)
     {
         $row = $this->selectOneByIdentifier($tokenId);
@@ -98,5 +103,26 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
         return true;
     }
 
+    /**
+     * @param string|int $userId
+     * @param string|int $clientId
+     * @param string[] $scopes
+     */
+    public function hasValidAccessToken($userId, $clientId, array $scopes)
+    {
+        $queryBuilder = $this->createQueryBuilder();
+        $row = $queryBuilder
+            ->select('*')
+            ->from(self::TABLE)
+            ->where(
+                $queryBuilder->expr()->eq('user', $queryBuilder->createNamedParameter($userId)),
+                $queryBuilder->expr()->eq('client', $queryBuilder->createNamedParameter($clientId)),
+                $queryBuilder->expr()->eq('revoked', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+            )
+            ->orderBy('expires_at', 'DESC')
+            ->execute()
+            ->fetch();
 
+        return ($row && array_diff(GeneralUtility::trimExplode(',', $row['scopes']), $scopes) === []);
+    }
 }

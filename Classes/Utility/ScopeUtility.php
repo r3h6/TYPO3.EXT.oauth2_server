@@ -8,8 +8,13 @@ final class ScopeUtility
 {
     public static function toString(ScopeEntityInterface ...$scopes): string
     {
-        return implode(', ', array_map(function(ScopeEntityInterface $scope) {
+        return implode(', ', static::toStrings(...$scopes));
+    }
+
+    public static function toStrings(ScopeEntityInterface ...$scopes): array
+    {
+        return array_map(function(ScopeEntityInterface $scope) {
             return $scope->getIdentifier();
-        }, $scopes));
+        }, $scopes);
     }
 }

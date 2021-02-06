@@ -8,11 +8,10 @@
     </f:for>
 
     <form action="/oauth/authorize" method="post">
-        <input type="hidden" name="consent" value="approve">
         <button type="submit">Approve</button>
     </form>
     <form action="/oauth/authorize" method="post">
-        <input type="hidden" name="consent" value="deny">
+        <input type="hidden" name="_method" value="DELETE">
         <button type="submit">Deny</button>
     </form>
 </f:section>

@@ -2,15 +2,16 @@
 
 namespace R3H6\Oauth2Server\Middleware;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerAwareInterface;
 use TYPO3\CMS\Core\Http\NullResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use R3H6\Oauth2Server\Domain\Configuration;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use R3H6\Oauth2Server\Domain\Configuration;
 use TYPO3\CMS\Core\Http\DispatcherInterface;
+use League\OAuth2\Server\Exception\OAuthServerException;
 
 class AuthorizationHandler implements MiddlewareInterface, LoggerAwareInterface
 {
@@ -50,18 +51,19 @@ class AuthorizationHandler implements MiddlewareInterface, LoggerAwareInterface
         $this->configuration->merge($configuration);
 
 
-        $method = $request->getHeader('X-REQUEST_METHOD')[0] ?? $request->getParsedBody()['REQUEST_METHOD'] ?? $request->getQueryParams()['REQUEST_METHOD'] ?? $request->getMethod();
+        $method = $request->getParsedBody()['_method'] ?? $request->getMethod();
 
         $endpoint = strtoupper($method) . ':' . trim($request->getUri()->getPath(), '/');
         $target = $this->configuration->get('server.routes.'.$endpoint);
-
-        $this->logger->debug('handle request', ['target' => $target, 'headers' => $request->getHeaders(), 'body' => (string) $request->getBody()]);
 
         if ($target === null) {
             return $handler->handle($request);
         }
 
+        $this->logger->debug('handle request', ['target' => $target, 'headers' => $request->getHeaders(), 'body' => (string) $request->getBody()]);
+
         $request = $request->withAttribute('target', $target);
+
         $response = $this->dispatcher->dispatch($request);
 
         $this->logger->debug('oauth2 response', ['headers' => $response->getHeaders(), 'body' =>  (string) $response->getBody()]);
