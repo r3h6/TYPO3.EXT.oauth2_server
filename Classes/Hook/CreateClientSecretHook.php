@@ -8,6 +8,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class CreateClientSecretHook
 {
@@ -40,7 +41,10 @@ class CreateClientSecretHook
 
             $fieldArray['identifier'] = $identifier;
             $fieldArray['secret'] = $hashedSecret;
-            $this->addFlashMessage($identifier . ' ' . $secret);
+
+            $this->addFlashMessage(
+                LocalizationUtility::translate('LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:flash_message.client_secret', null, [$secret])
+            );
         }
     }
 

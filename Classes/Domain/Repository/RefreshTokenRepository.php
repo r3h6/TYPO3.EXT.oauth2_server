@@ -36,6 +36,7 @@ class RefreshTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository i
 
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
+        $now = time();
         $queryBuilder = $this->createQueryBuilder();
         $queryBuilder
             ->insert(self::TABLE)
@@ -44,6 +45,8 @@ class RefreshTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository i
                 'expires_at' => $refreshTokenEntity->getExpiryDateTime()->getTimestamp(),
                 'access_token' => $refreshTokenEntity->getAccessToken()->getIdentifier(),
                 'revoked' => 0,
+                'crdate' => $now,
+                'tstamp' => $now,
             ])
             ->execute();
     }
@@ -59,6 +62,7 @@ class RefreshTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository i
                 $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($tokenId))
             )
             ->set('revoked', 1)
+            ->set('tstamp', time())
             ->execute();
     }
 

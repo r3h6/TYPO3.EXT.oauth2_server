@@ -5,7 +5,6 @@ return [
         'label' => 'identifier',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'enablecolumns' => [
             'endtime' => 'expires_at',
         ],

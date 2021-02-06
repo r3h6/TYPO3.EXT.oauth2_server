@@ -39,6 +39,11 @@ final class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implem
     protected $secret;
 
     /**
+     * @var bool
+     */
+    protected $skipConsent = false;
+
+    /**
      * Get the value of grantType
      *
      * @return  string
@@ -76,5 +81,25 @@ final class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implem
     public function setSecret(string $secret)
     {
         $this->secret = $secret;
+    }
+
+    /**
+     * Get the value of skipConsent
+     *
+     * @return  bool
+     */
+    public function doSkipConsent(): bool
+    {
+        return $this->skipConsent;
+    }
+
+    /**
+     * Set the value of skipConsent
+     *
+     * @param  bool  $skipConsent
+     */
+    public function setSkipConsent(bool $skipConsent)
+    {
+        $this->skipConsent = $skipConsent;
     }
 }

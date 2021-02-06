@@ -1,127 +1,147 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="EXT:oauth2_server/Resources/Private/Language/locallang_db" date="2021-02-05T18:26:02Z" product-name="oauth2_server">
-		<header/>
+	<file source-language="en" datatype="plaintext" original="messages" date="2021-02-06T21:08:30Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
 		<body>
-			<trans-unit id="tx_oauth2server_domain_model_user" resname="tx_oauth2server_domain_model_user">
-				<source>User</source>
+			<trans-unit id="fe_users.tx_extbase_type.Tx_Oauth2Server_User">
+				<source><![CDATA[OAuth2 Server User]]></source>
 			</trans-unit>
-			<trans-unit id="fe_users.tx_extbase_type.Tx_Oauth2Server_User" resname="fe_users.tx_extbase_type.Tx_Oauth2Server_User">
-				<source>OAuth2 Server User</source>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken">
+				<source><![CDATA[Access Token]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_authcode" resname="tx_oauth2server_domain_model_authcode">
-				<source>Auth Code</source>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken.client">
+				<source><![CDATA[Client]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_authcode.identifier" resname="tx_oauth2server_domain_model_authcode.identifier">
-				<source>Identifier</source>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken.expires_at">
+				<source><![CDATA[Expires At]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_authcode.expires_at" resname="tx_oauth2server_domain_model_authcode.expires_at">
-				<source>Expires At</source>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken.identifier">
+				<source><![CDATA[Identifier]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_authcode.user" resname="tx_oauth2server_domain_model_authcode.user">
-				<source>User</source>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken.private_key">
+				<source><![CDATA[Private Key]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_authcode.scopes" resname="tx_oauth2server_domain_model_authcode.scopes">
-				<source>Scopes</source>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken.revoked">
+				<source><![CDATA[Revoked]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_authcode.client" resname="tx_oauth2server_domain_model_authcode.client">
-				<source>Client</source>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken.scopes">
+				<source><![CDATA[Scopes]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_authcode.revoked" resname="tx_oauth2server_domain_model_authcode.revoked">
-				<source>Revoked</source>
+			<trans-unit id="tx_oauth2server_domain_model_accesstoken.user">
+				<source><![CDATA[User]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_client" resname="tx_oauth2server_domain_model_client">
-				<source>Client</source>
+			<trans-unit id="tx_oauth2server_domain_model_authcode">
+				<source><![CDATA[Auth Code]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_client.identifier" resname="tx_oauth2server_domain_model_client.identifier">
-				<source>Identifier</source>
+			<trans-unit id="tx_oauth2server_domain_model_authcode.client">
+				<source><![CDATA[Client]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_client.name" resname="tx_oauth2server_domain_model_client.name">
-				<source>Name</source>
+			<trans-unit id="tx_oauth2server_domain_model_authcode.expires_at">
+				<source><![CDATA[Expires At]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_client.secret" resname="tx_oauth2server_domain_model_client.secret">
-				<source>Secret</source>
+			<trans-unit id="tx_oauth2server_domain_model_authcode.identifier">
+				<source><![CDATA[Identifier]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_client.grant_type" resname="tx_oauth2server_domain_model_client.grant_type">
-				<source>Grant Type</source>
+			<trans-unit id="tx_oauth2server_domain_model_authcode.redirect_uri">
+				<source><![CDATA[Redirect Uri]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_client.redirect_uri" resname="tx_oauth2server_domain_model_client.redirect_uri">
-				<source>Redirect Uri</source>
+			<trans-unit id="tx_oauth2server_domain_model_authcode.revoked">
+				<source><![CDATA[Revoked]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_client.is_confidential" resname="tx_oauth2server_domain_model_client.is_confidential">
-				<source>Is Confidential</source>
+			<trans-unit id="tx_oauth2server_domain_model_authcode.scopes">
+				<source><![CDATA[Scopes]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_refreshtoken" resname="tx_oauth2server_domain_model_refreshtoken">
-				<source>Refresh Token</source>
+			<trans-unit id="tx_oauth2server_domain_model_authcode.user">
+				<source><![CDATA[User]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.identifier" resname="tx_oauth2server_domain_model_refreshtoken.identifier">
-				<source>Identifier</source>
+			<trans-unit id="tx_oauth2server_domain_model_client">
+				<source><![CDATA[Client]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.expires_at" resname="tx_oauth2server_domain_model_refreshtoken.expires_at">
-				<source>Expires At</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type">
+				<source><![CDATA[Grant Type]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.access_token" resname="tx_oauth2server_domain_model_refreshtoken.access_token">
-				<source>Access Token</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.authorization_code">
+				<source><![CDATA[Authorization code grant]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.revoked" resname="tx_oauth2server_domain_model_refreshtoken.revoked">
-				<source>Revoked</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.client_credentials">
+				<source><![CDATA[Client credentials grant]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_scope" resname="tx_oauth2server_domain_model_scope">
-				<source>Scope</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.implicit">
+				<source><![CDATA[Implicit grant]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_accesstoken" resname="tx_oauth2server_domain_model_accesstoken">
-				<source>Access Token</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.password">
+				<source><![CDATA[Resource owner password credentials grant]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_accesstoken.identifier" resname="tx_oauth2server_domain_model_accesstoken.identifier">
-				<source>Identifier</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.refresh_token">
+				<source><![CDATA[Refresh token grant]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_accesstoken.expires_at" resname="tx_oauth2server_domain_model_accesstoken.expires_at">
-				<source>Expires At</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.identifier">
+				<source><![CDATA[Identifier]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_accesstoken.user" resname="tx_oauth2server_domain_model_accesstoken.user">
-				<source>User</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.is_confidential">
+				<source><![CDATA[Is Confidential]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_accesstoken.scopes" resname="tx_oauth2server_domain_model_accesstoken.scopes">
-				<source>Scopes</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.name">
+				<source><![CDATA[Name]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_accesstoken.client" resname="tx_oauth2server_domain_model_accesstoken.client">
-				<source>Client</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.redirect_uri">
+				<source><![CDATA[Redirect Uri]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_accesstoken.revoked" resname="tx_oauth2server_domain_model_accesstoken.revoked">
-				<source>Revoked</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.secret">
+				<source><![CDATA[Secret]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_user.identifier" resname="tx_oauth2server_domain_model_user.identifier">
-				<source>Identifier</source>
+			<trans-unit id="tx_oauth2server_domain_model_client.skip_consent">
+				<source><![CDATA[Skip Consent]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_authcode.redirect_uri" resname="tx_oauth2server_domain_model_authcode.redirect_uri">
-				<source>Redirect Uri</source>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken">
+				<source><![CDATA[Refresh Token]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_accesstoken.private_key" resname="tx_oauth2server_domain_model_accesstoken.private_key">
-				<source>Private Key</source>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.access_token">
+				<source><![CDATA[Access Token]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.expiry_date_time" resname="tx_oauth2server_domain_model_refreshtoken.expiry_date_time">
-				<source>Expiry Date Time</source>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.expires_at">
+				<source><![CDATA[Expires At]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_scope.identifier" resname="tx_oauth2server_domain_model_scope.identifier">
-				<source>Identifier</source>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.expiry_date_time">
+				<source><![CDATA[Expiry Date Time]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_token" resname="tx_oauth2server_domain_model_token">
-				<source>Token</source>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.identifier">
+				<source><![CDATA[Identifier]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_token.identifier" resname="tx_oauth2server_domain_model_token.identifier">
-				<source>Identifier</source>
+			<trans-unit id="tx_oauth2server_domain_model_refreshtoken.revoked">
+				<source><![CDATA[Revoked]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_token.expiry_date_time" resname="tx_oauth2server_domain_model_token.expiry_date_time">
-				<source>Expiry Date Time</source>
+			<trans-unit id="tx_oauth2server_domain_model_scope">
+				<source><![CDATA[Scope]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_token.user_identifier" resname="tx_oauth2server_domain_model_token.user_identifier">
-				<source>User Identifier</source>
+			<trans-unit id="tx_oauth2server_domain_model_scope.identifier">
+				<source><![CDATA[Identifier]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_token.client" resname="tx_oauth2server_domain_model_token.client">
-				<source>Client</source>
+			<trans-unit id="tx_oauth2server_domain_model_token">
+				<source><![CDATA[Token]]></source>
 			</trans-unit>
-			<trans-unit id="tx_oauth2server_domain_model_token.scope" resname="tx_oauth2server_domain_model_token.scope">
-				<source>Scope</source>
+			<trans-unit id="tx_oauth2server_domain_model_token.client">
+				<source><![CDATA[Client]]></source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token.expiry_date_time">
+				<source><![CDATA[Expiry Date Time]]></source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token.identifier">
+				<source><![CDATA[Identifier]]></source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token.scope">
+				<source><![CDATA[Scope]]></source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_token.user_identifier">
+				<source><![CDATA[User Identifier]]></source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_user">
+				<source><![CDATA[User]]></source>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_user.identifier">
+				<source><![CDATA[Identifier]]></source>
 			</trans-unit>
 		</body>
 	</file>

@@ -35,11 +35,9 @@ class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implement
         $this->setDefaultQuerySettings($querySettings);
     }
 
-
     public function getUserEntityByUserCredentials($username, $password, $grantType, ClientEntityInterface $clientEntity)
     {
         $this->logger->debug('Get user', ['username' => $username]);
-        $this->initializeObject();
         $user = $this->findOneByUsername($username);
         if ($user === null) {
             throw new \RuntimeException('Username or password invalid', 1607636289929);

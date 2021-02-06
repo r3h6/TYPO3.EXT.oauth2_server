@@ -20,6 +20,8 @@ use R3H6\Oauth2Server\Utility\ScopeUtility;
 
 class AuthorizationController implements LoggerAwareInterface
 {
+    public const AUTH_REQUEST_SESSION_KEY = 'oauth2/authRequest';
+
     use LoggerAwareTrait;
     use ExceptionHandlingTrait;
 
@@ -52,7 +54,7 @@ class AuthorizationController implements LoggerAwareInterface
 
         // Validate the HTTP request and return an AuthorizationRequest object.
         $authRequest = $this->server->validateAuthorizationRequest($request);
-        $frontendUser->setAndSaveSessionData('oauth2/authRequest', $authRequest);
+        $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, $authRequest);
 
         $isAuthenticated = ($frontendUser->user['uid'] ?? 0) > 0; // Groups are not yet loaded in context api
 
@@ -60,9 +62,15 @@ class AuthorizationController implements LoggerAwareInterface
             return new RedirectResponse('/?redirect_url='.urlencode('/consent'));
         }
 
+        $client = $authRequest->getClient();
+        $clientId = $client->getIdentifier();
+        if ($client->doSkipConsent()) {
+            $this->logger->debug('client skips consent', ['clientId' => $clientId]);
+            return $this->approveAuthorization($request);
+        }
+
         $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);
         $userId = $user->getIdentifier();
-        $clientId = $authRequest->getClient()->getIdentifier();
         $scopes = ScopeUtility::toStrings(...$authRequest->getScopes());
         if ($this->accessTokenRepository->hasValidAccessToken($userId, $clientId, $scopes)) {
             $this->logger->debug('has valid access token', ['userId' => $userId, 'clientId' => $clientId, 'scopes' => $scopes]);
@@ -78,8 +86,8 @@ class AuthorizationController implements LoggerAwareInterface
         $frontendUser = $request->getAttribute('frontend.user');
 
         /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|null */
-        $authRequest = $frontendUser->getSessionData('oauth2/authRequest');
-        $frontendUser->setAndSaveSessionData('oauth2/authRequest', null);
+        $authRequest = $frontendUser->getSessionData(self::AUTH_REQUEST_SESSION_KEY);
+        $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, null);
 
         // Once the user has logged in set the user on the AuthorizationRequest
         $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);
@@ -99,8 +107,8 @@ class AuthorizationController implements LoggerAwareInterface
         $frontendUser = $request->getAttribute('frontend.user');
 
         /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|null */
-        $authRequest = $frontendUser->getSessionData('oauth2/authRequest');
-        $frontendUser->setAndSaveSessionData('oauth2/authRequest', null);
+        $authRequest = $frontendUser->getSessionData(self::AUTH_REQUEST_SESSION_KEY);
+        $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, null);
 
         // Once the user has logged in set the user on the AuthorizationRequest
         $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);

@@ -20,7 +20,7 @@ return [
         'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_client.gif'
     ],
     'interface' => [
-        'showRecordFieldList' => 'identifier,name,secret,grant_type,redirect_uri,is_confidential',
+        'showRecordFieldList' => 'identifier,name,secret,grant_type,redirect_uri,is_confidential,skip_consent',
     ],
     'types' => [
         '1' => ['showitem' => '
@@ -31,6 +31,7 @@ return [
                 grant_type,
                 redirect_uri,
                 is_confidential,
+                skip_consent,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 --palette--;;hidden,
                 --palette--;;access,
@@ -111,6 +112,15 @@ return [
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly'
         ],
+        'rowDescription' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
+            'config' => [
+                'type' => 'text',
+                'rows' => 5,
+                'cols' => 30
+            ]
+        ],
         'identifier' => [
             'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.identifier',
@@ -142,13 +152,13 @@ return [
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type',
             'config' => [
                 'type' => 'select',
-                'renderType' => 'selectSingle',
+                'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['authorization_code', 'authorization_code'],
-                    ['client_credentials', 'client_credentials'],
-                    ['implicit', 'implicit'],
-                    ['password', 'password'],
-                    ['refresh_token', 'refresh_token'],
+                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.authorization_code', 'authorization_code'],
+                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.client_credentials', 'client_credentials'],
+                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.implicit', 'implicit'],
+                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.password', 'password'],
+                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.refresh_token', 'refresh_token'],
                 ],
             ],
         ],
@@ -156,9 +166,8 @@ return [
             'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.redirect_uri',
             'config' => [
-                'type' => 'text',
-                'cols' => 40,
-                'rows' => 3,
+                'type' => 'input',
+                'size' => 30,
                 'eval' => 'trim'
             ]
         ],
@@ -175,15 +184,18 @@ return [
                 'default' => 0,
             ]
         ],
-        'rowDescription' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
+        'skip_consent' => [
+            'exclude' => false,
+            'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.skip_consent',
             'config' => [
-                'type' => 'text',
-                'rows' => 5,
-                'cols' => 30
+                'type' => 'check',
+                'items' => [
+                    '1' => [
+                        '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
+                    ]
+                ],
+                'default' => 0,
             ]
         ],
-
     ],
 ];

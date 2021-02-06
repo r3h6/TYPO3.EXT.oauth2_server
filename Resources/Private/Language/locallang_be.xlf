@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2021-02-06T20:51:20Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+			<trans-unit id="flash_message.client_secret" xml:space="preserve">
+				<source><![CDATA[Make sure to copy your client secret now. You won’t be able to see it again:
+%s]]></source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

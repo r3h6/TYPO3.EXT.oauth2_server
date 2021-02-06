@@ -59,6 +59,7 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
+        $now = time();
         $queryBuilder = $this->createQueryBuilder();
         $queryBuilder
             ->insert(self::TABLE)
@@ -69,6 +70,8 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
                 'scopes' => ScopeUtility::toString(...$accessTokenEntity->getScopes()),
                 'client' => $accessTokenEntity->getClient()->getIdentifier(),
                 'revoked' => 0,
+                'crdate' => $now,
+                'tstamp' => $now,
             ])
             ->execute();
     }
@@ -87,6 +90,7 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
                 $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($tokenId))
             )
             ->set('revoked', 1)
+            ->set('tstamp', time())
             ->execute();
     }
 

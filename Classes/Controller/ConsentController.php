@@ -28,7 +28,7 @@ class ConsentController extends ActionController
     protected function getAuthRequestOrFail(): AuthorizationRequest
     {
         /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest */
-        $authRequest = $this->frontendUser->getSessionData('oauth2/authRequest');
+        $authRequest = $this->frontendUser->getSessionData(AuthorizationController::AUTH_REQUEST_SESSION_KEY);
         if (!$authRequest instanceof AuthorizationRequest) {
             throw new PageNotFoundException();
         }

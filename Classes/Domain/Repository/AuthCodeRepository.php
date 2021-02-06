@@ -38,6 +38,7 @@ class AuthCodeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository imple
 
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
+        $now = time();
         $queryBuilder = $this->createQueryBuilder();
         $queryBuilder
             ->insert(self::TABLE)
@@ -48,6 +49,8 @@ class AuthCodeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository imple
                 'scopes' => ScopeUtility::toString(...$authCodeEntity->getScopes()),
                 'client' => $authCodeEntity->getClient()->getIdentifier(),
                 'revoked' => 0,
+                'crdate' => $now,
+                'tstamp' => $now,
             ])
             ->execute();
     }
@@ -63,6 +66,7 @@ class AuthCodeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository imple
                 $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($codeId))
             )
             ->set('revoked', 1)
+            ->set('tstamp', time())
             ->execute();
     }
 

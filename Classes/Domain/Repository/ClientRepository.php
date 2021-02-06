@@ -37,27 +37,18 @@ class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository impleme
     public function getClientEntity($clientIdentifier)
     {
         $this->logger->debug('Get client', ['identifier' => $clientIdentifier]);
-        $this->initializeObject();
         return $this->findOneByIdentifier($clientIdentifier);
     }
 
 
     public function validateClient($clientIdentifier, $clientSecret, $grantType)
     {
-        $this->initializeObject();
         $client = $this->findOneByIdentifier($clientIdentifier);
-        // $client = $this->__call('findByIdentifier', $clientIdentifier);
 
-        // $query = $client->getQuery();
-        // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-        // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
-        // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters());
-
-        // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($client);exit;
         if ($client === null) {
             return false;
         }
-        if ($client->getGrantType() !== $grantType) {
+        if (GeneralUtility::inList($client->getGrantType(), $grantType) === false) {
             return false;
         }
 
