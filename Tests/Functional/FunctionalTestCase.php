@@ -18,6 +18,13 @@ abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functiona
         // 'SYS' => [
         //     'encryptionKey' => self::ENCRYPTION_KEY,
         // ],
+        'EXTENSIONS' => [
+            'oauth2_server' => [
+                'server' => [
+                    'consentPageUid' => '1',
+                ]
+            ]
+        ],
         'LOG' => [
             'R3H6' => [
                 'Oauth2Server' => [

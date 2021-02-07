@@ -2,20 +2,22 @@
 
 namespace R3H6\Oauth2Server\Controller;
 
-use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Error\Http\ForbiddenException;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 
 class ConsentController extends ActionController
 {
     /**
-     * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
+     * @var Context
      */
-    protected $frontendUser;
+    protected $context;
 
-    protected function initializeAction()
+    public function injectContext(Context $context)
     {
-        $this->frontendUser = $GLOBALS['TSFE']->fe_user;
+        $this->context = $context;
     }
 
     public function showAction()
@@ -27,8 +29,13 @@ class ConsentController extends ActionController
 
     protected function getAuthRequestOrFail(): AuthorizationRequest
     {
+        if (!$this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn')) {
+            throw new ForbiddenException();
+        }
+
         /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest */
-        $authRequest = $this->frontendUser->getSessionData(AuthorizationController::AUTH_REQUEST_SESSION_KEY);
+        $authRequest = $GLOBALS['TSFE']->fe_user->getSessionData(AuthorizationController::AUTH_REQUEST_SESSION_KEY);
+
         if (!$authRequest instanceof AuthorizationRequest) {
             throw new PageNotFoundException();
         }

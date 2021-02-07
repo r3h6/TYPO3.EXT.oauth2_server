@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2021-02-06T20:51:20Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2021-02-07T15:25:40Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="ext_conf_template.privateKey">
+				<source><![CDATA[Private key: Path to crt file (make sure the file is not public accessible)]]></source>
+			</trans-unit>
+			<trans-unit id="ext_conf_template.publicKey">
+				<source><![CDATA[Public key: Path to crt file.]]></source>
+			</trans-unit>
+			<trans-unit id="ext_conf_template.server.consentPageUid">
+				<source><![CDATA[Consent Page: Page UID with "Oauth2: Consent" plugin.]]></source>
+			</trans-unit>
 			<trans-unit id="flash_message.client_secret" xml:space="preserve">
 				<source><![CDATA[Make sure to copy your client secret now. You won’t be able to see it again:
 %s]]></source>

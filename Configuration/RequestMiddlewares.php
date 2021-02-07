@@ -3,7 +3,7 @@
 return [
     'frontend' => [
         'r3h6/oauth2-server/oauth2-handler' => [
-            'target' => \R3H6\Oauth2Server\Middleware\AuthorizationHandler::class,
+            'target' => \R3H6\Oauth2Server\Middleware\Oauth2Handler::class,
             'before' => [
                 'typo3/cms-frontend/page-resolver',
             ],

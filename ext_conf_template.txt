@@ -1,0 +1,6 @@
+# cat=basic/file/a; type=string; label=LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:ext_conf_template.privateKey
+privateKey =
+# cat=basic/file/b; type=string; label=LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:ext_conf_template.publicKey
+publicKey =
+# cat=basic/links/a; type=int+; label=LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:ext_conf_template.server.consentPageUid
+server.consentPageUid =

@@ -4,7 +4,6 @@ namespace R3H6\Oauth2Server\Domain\Factory;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use R3H6\Oauth2Server\Domain\Configuration;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
@@ -13,6 +12,7 @@ use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use R3H6\Oauth2Server\Domain\Repository\UserRepository;
 use R3H6\Oauth2Server\Domain\Repository\ScopeRepository;
+use R3H6\Oauth2Server\Configuration\RuntimeConfiguration;
 use R3H6\Oauth2Server\Domain\Repository\ClientRepository;
 use R3H6\Oauth2Server\Domain\Repository\AuthCodeRepository;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
@@ -25,7 +25,7 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 class AuthorizationServerFactory implements SingletonInterface
 {
 
-    public function __invoke(Configuration $configuration)
+    public function __invoke(RuntimeConfiguration $configuration)
     {
         $accessTokenTTL = new \DateInterval(
             $configuration->get('server.tokensExpireIn')
@@ -36,7 +36,7 @@ class AuthorizationServerFactory implements SingletonInterface
             $this->getClientRepository(),
             $this->getAccessTokenRepository(),
             $this->getScopeRepository(),
-            GeneralUtility::getFileAbsFileName($configuration->get('server.privateKey')),
+            GeneralUtility::getFileAbsFileName($configuration->get('privateKey')),
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'],
             $this->getResponseType()
         );

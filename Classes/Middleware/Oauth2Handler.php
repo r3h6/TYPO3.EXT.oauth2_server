@@ -4,16 +4,16 @@ namespace R3H6\Oauth2Server\Middleware;
 
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerAwareInterface;
-use TYPO3\CMS\Core\Http\NullResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
-use R3H6\Oauth2Server\Domain\Configuration;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\DispatcherInterface;
-use League\OAuth2\Server\Exception\OAuthServerException;
+use R3H6\Oauth2Server\Configuration\RuntimeConfiguration;
+use R3H6\Oauth2Server\Utility\HashUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class AuthorizationHandler implements MiddlewareInterface, LoggerAwareInterface
+class Oauth2Handler implements MiddlewareInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -23,14 +23,14 @@ class AuthorizationHandler implements MiddlewareInterface, LoggerAwareInterface
     protected $dispatcher;
 
     /**
-     * @var Configuration
+     * @var RuntimeConfiguration
      */
     protected $configuration;
 
     /**
      * @param DispatcherInterface $dispatcher
      */
-    public function __construct(DispatcherInterface $dispatcher, Configuration $configuration)
+    public function __construct(DispatcherInterface $dispatcher, RuntimeConfiguration $configuration)
     {
         $this->dispatcher = $dispatcher;
         $this->configuration = $configuration;
@@ -42,30 +42,34 @@ class AuthorizationHandler implements MiddlewareInterface, LoggerAwareInterface
 
         /** @var \TYPO3\CMS\Core\Site\Entity\Site $site */
         $site = $request->getAttribute('site');
-        $configuration = $site->getConfiguration()['oauth2'] ?? null;
+        $localConfiguration = $site->getConfiguration()['oauth2'] ?? null;
 
-        if ($configuration === null) {
+        if ($localConfiguration === null) {
             return $handler->handle($request);
         }
 
-        $this->configuration->merge($configuration);
-
+        $this->configuration->merge($localConfiguration);
 
         $method = $request->getParsedBody()['_method'] ?? $request->getMethod();
-
         $endpoint = strtoupper($method) . ':' . trim($request->getUri()->getPath(), '/');
         $target = $this->configuration->get('server.routes.'.$endpoint);
+
+        $query = $request->getQueryParams();
+        if (isset($query['_consent'])) {
+            $query['redirect_url'] = HashUtility::decode($query['_consent']);
+            unset($query['_consent']);
+            $request = $request->withQueryParams($query);
+        }
 
         if ($target === null) {
             return $handler->handle($request);
         }
 
-        $this->logger->debug('handle request', ['target' => $target, 'headers' => $request->getHeaders(), 'body' => (string) $request->getBody()]);
-
         $request = $request->withAttribute('target', $target);
+        $request = $request->withAttribute('oauth2', $this->configuration);
 
+        $this->logger->debug('oauth2 request', ['target' => $target, 'headers' => $request->getHeaders(), 'body' => (string) $request->getBody()]);
         $response = $this->dispatcher->dispatch($request);
-
         $this->logger->debug('oauth2 response', ['headers' => $response->getHeaders(), 'body' =>  (string) $response->getBody()]);
 
         return $response;
