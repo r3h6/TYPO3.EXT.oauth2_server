@@ -3,3 +3,4 @@
 /composer.lock
 /report.*
 .env
+node_modules

@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="EXT:oauth2_server/Resources/Private/Language/locallang" date="2021-02-05T18:26:02Z" product-name="oauth2_server">
-		<header/>
+	<file source-language="en" datatype="plaintext" original="messages" date="2021-02-07T00:31:29Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
 		<body>
+			<trans-unit id="label.button_approve">
+				<source><![CDATA[Approve]]></source>
+			</trans-unit>
+			<trans-unit id="label.button_deny">
+				<source><![CDATA[Deny]]></source>
+			</trans-unit>
+			<trans-unit id="label.client_consent_request">
+				<source><![CDATA[Client <em>%s</em> requested access to:]]></source>
+			</trans-unit>
+			<trans-unit id="label.consent">
+				<source><![CDATA[Consent]]></source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

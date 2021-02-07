@@ -2,33 +2,20 @@ page >
 page = PAGE
 page {
 
-  includeCSSLibs {
-    bootstrap = https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css
-    bootstrap {
-      external = 1
+  includeCSS {
+    main = EXT:oauth2_server/Resources/Public/Css/main.css
+  }
+
+  99 = FLUIDTEMPLATE
+  99 {
+    file = EXT:oauth2_server/Resources/Private/Templates/Page/Default.html
+    variables {
+      content = < styles.content.get
+      footer = TEXT
+      footer.value = EXT:oauth2_server
     }
-
-    layout = EXT:oauth2_server/Resources/Public/Css/Layout.css
+    settings {
+      logoFile = EXT:backend/Resources/Public/Images/typo3_orange.svg
+    }
   }
-
-  10 = SVG
-  10 {
-    stdWrap.wrap = <div class="brand">|</div>
-    renderMode = inline
-    src = EXT:backend/Resources/Public/Images/typo3_orange.svg
-  }
-
-
-
-  20 = < styles.content.get
-
-  stdWrap.wrap (
-    <div class="container">
-      <div class="card">
-        <div class="card-body">
-          |
-        </div>
-      </div>
-    </div>
-  )
 }
