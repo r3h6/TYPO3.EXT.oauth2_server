@@ -77,7 +77,7 @@ class AuthorizationController implements LoggerAwareInterface
         $redirectUrl = $client->doSkipConsent() ? (string) $request->getUri(): $consentUrl;
 
         if (!$isAuthenticated) {
-            return new RedirectResponse('/?_consent='.urlencode(HashUtility::encode($redirectUrl)));
+            return new RedirectResponse('/?_='.urlencode(HashUtility::encode($redirectUrl)));
         }
 
         $clientId = $client->getIdentifier();

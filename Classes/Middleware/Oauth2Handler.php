@@ -55,9 +55,9 @@ class Oauth2Handler implements MiddlewareInterface, LoggerAwareInterface
         $target = $this->configuration->get('server.routes.'.$endpoint);
 
         $query = $request->getQueryParams();
-        if (isset($query['_consent'])) {
-            $query['redirect_url'] = HashUtility::decode($query['_consent']);
-            unset($query['_consent']);
+        if (isset($query['_'])) {
+            $query['redirect_url'] = HashUtility::decode($query['_']);
+            unset($query['_']);
             $request = $request->withQueryParams($query);
         }
 
