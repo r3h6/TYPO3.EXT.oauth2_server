@@ -1,8 +1,5 @@
 
-// .card {
-//     width: 400px;
-//     max-width: 100%;
-// }
+
 .container {
     padding-top: 3rem;
 }
@@ -16,19 +13,34 @@
     }
 }
 
-.card-footer {
-    border-top: 3px solid $primary;
+.card {
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.125);
+    .card-footer {
+        border-top: 3px solid $primary;
+    }
 }
 
-.frame-type-felogin_login {
+.frame-type-felogin_login,
+.tx-felogin-pi1 {
+    div + form {
+        margin-top: 0.5rem;
+    }
     input[type="submit"] {
         @extend .btn;
         @extend .btn-primary;
         // @extend .btn-lg;
         @extend .btn-block;
+        .frame-type-login & {
+            margin-top: 0.5rem;
+        }
     }
     label {
         width: 100%;
+        &[for="permalogin"] {
+            .frame-type-login & {
+                width: auto;
+            }
+        }
     }
     legend {
         @include sr-only;
@@ -37,11 +49,7 @@
     input[type="password"] {
         @extend .form-control;
     }
-    // form + p,
-    // form + a {
-    //     float: right;
-    //     margin-top: -25px;
-    // }
+
     .typo3-messages {
         list-style-type: none;
         padding-left: 0;

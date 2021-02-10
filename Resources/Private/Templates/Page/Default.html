@@ -1,13 +1,15 @@
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <div class="oauth2-server-logo"><f:image src="{settings.logoFile}" /></div>
+            <f:render partial="Dropin/Logo" arguments="{_all}" optional="true">
+                <div class="oauth2-server-logo"><f:image src="{settings.logoFile}" /></div>
+            </f:render>
             <f:format.raw>{content}</f:format.raw>
         </div>
-        <f:render partial="Dropin/Footer" arguments="{_all}" optional="true">
-            <div class="card-footer text-muted">
+        <div class="card-footer text-muted">
+            <f:render partial="Dropin/Footer" arguments="{_all}" optional="true">
                 <f:format.raw>{footer}</f:format.raw>
-            </div>
-        </f:render>
+            </f:render>
+        </div>
     </div>
 </div>
