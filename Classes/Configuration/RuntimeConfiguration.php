@@ -15,7 +15,7 @@ class RuntimeConfiguration implements SingletonInterface
     /**
      * @var array
      */
-    private $configuration = [
+    private static $configuration = [
         'privateKey' => 'EXT:oauth2_server/Resources/Private/Keys/private.key',
         'publicKey' => 'EXT:oauth2_server/Resources/Private/Keys/public.key',
         'server' => [
@@ -44,7 +44,7 @@ class RuntimeConfiguration implements SingletonInterface
     public function get($path, $defaultValue = null)
     {
         try {
-            return ArrayUtility::getValueByPath($this->configuration, $path, '.');
+            return ArrayUtility::getValueByPath(self::$configuration, $path, '.');
         } catch (MissingArrayPathException $exception) {
             // Ignore
         }
@@ -53,7 +53,7 @@ class RuntimeConfiguration implements SingletonInterface
 
     public function merge(array $overrideConfiguration): void
     {
-        ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $overrideConfiguration, true, true, false);
+        ArrayUtility::mergeRecursiveWithOverrule(self::$configuration, $overrideConfiguration, true, true, false);
     }
 
     private function loadExtensionConfiguration(): void
