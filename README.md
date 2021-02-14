@@ -2,7 +2,8 @@
 
 Todo:
 - Protect resources with https
-
+- Improve guards api
+- Login user with access token
 
 ## Installation
 
@@ -71,6 +72,8 @@ oauth2:
       query: tx_example_pi1
       # Request method must be in list (optional)
       methods: GET|POST
+      # Only accept https
+      https: true
       # Access token must have at least one of the listed scopes (optional)
       scope: read|write
       # Access token must have all listed scopes (optional)
@@ -89,6 +92,11 @@ class EndpointController implements ResourceGuardAwareInterface
         $request = $this->resourceGuard->validateAuthenticatedRequest($request);
         $this->resourceGuard->anyScope(['read'], $request);
         $this->resourceGuard->allScopes(['write', 'endpoint'], $request);
+
+        // $this->guard
+        //     ->for($request)
+        //     ->https()
+        //     ->scope(['foo']);
     }
 }
 ```
