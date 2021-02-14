@@ -1,6 +1,6 @@
 <?php
-namespace R3H6\Oauth2Server\Domain\Model;
 
+namespace R3H6\Oauth2Server\Domain\Model;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;

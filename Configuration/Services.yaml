@@ -17,6 +17,9 @@ services:
     resource: '../Classes/Controller/*'
     public: true
 
+  R3H6\Oauth2Server\Http\Oauth2Server:
+    public: true
+
   R3H6\Oauth2Server\Domain\Repository\ClientRepository:
     calls:
       - initializeObject: []
@@ -25,8 +28,8 @@ services:
     calls:
       - initializeObject: []
 
-  League\OAuth2\Server\AuthorizationServer:
-    factory: '@R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory'
+  # League\OAuth2\Server\AuthorizationServer:
+  #   factory: '@R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory'
 
-  League\OAuth2\Server\ResourceServer:
-    factory: '@R3H6\Oauth2Server\Domain\Factory\ResourceServerFactory'
+  # League\OAuth2\Server\ResourceServer:
+  #   factory: '@R3H6\Oauth2Server\Domain\Factory\ResourceServerFactory'

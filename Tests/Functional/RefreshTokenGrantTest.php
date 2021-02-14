@@ -11,14 +11,16 @@ class RefreshTokenGrantTest extends FunctionalTestCase
 {
     use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
 
-
-    public function clientCredentialsGrant()
+    /**
+     * @todo
+     */
+    public function accessTokenIsIssued()
     {
         $refreshToken = $this->createRefreshToken();
         $this->assertSame('', $refreshToken);
         $response = $this->doFrontendRequest(
             'POST',
-            '/oauth/token',
+            '/oauth2/token',
             [
                 'grant_type' => 'refresh_token',
                 'refresh_token' => $this->createRefreshToken(),

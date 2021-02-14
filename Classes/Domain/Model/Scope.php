@@ -1,9 +1,9 @@
 <?php
+
 namespace R3H6\Oauth2Server\Domain\Model;
 
-use League\OAuth2\Server\Entities\Traits\ScopeTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
 /***
  *
@@ -31,6 +31,4 @@ final class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject im
     {
         return $this->getIdentifier();
     }
-
-
 }

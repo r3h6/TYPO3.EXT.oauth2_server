@@ -13,7 +13,7 @@ final class ScopeUtility
 
     public static function toStrings(ScopeEntityInterface ...$scopes): array
     {
-        return array_map(function(ScopeEntityInterface $scope) {
+        return array_map(function (ScopeEntityInterface $scope) {
             return $scope->getIdentifier();
         }, $scopes);
     }

@@ -3,18 +3,18 @@
 namespace R3H6\Oauth2Server\Tests\Functional;
 
 
-class GrantTest extends FunctionalTestCase
+class AuthorizationCodeGrantTest extends FunctionalTestCase
 {
     use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
 
     /**
      * @test
      */
-    public function clientCredentialsGrant()
+    public function accessTokenIsIssued()
     {
         $response = $this->doFrontendRequest(
             'GET',
-            '/oauth/authorize',
+            '/oauth2/authorize',
             [
                 'response_type' => 'code',
                 'client_id' => '660e56d72c12f9a1e2ec',
@@ -31,14 +31,14 @@ class GrantTest extends FunctionalTestCase
 
         $response = $this->doFrontendRequest(
             'POST',
-            '/oauth/authorize',
+            '/oauth2/authorize',
             [],
             $this->getLastCookie()
         );
 
         $response = $this->doFrontendRequest(
             'POST',
-            '/oauth/token',
+            '/oauth2/token',
             [
                 'grant_type' => 'authorization_code',
                 'client_id' => '660e56d72c12f9a1e2ec',
@@ -49,9 +49,9 @@ class GrantTest extends FunctionalTestCase
         );
 
         $token = json_decode((string) $response->getBody(), true);
-        $this->assertSame('Bearer', $token['token_type']);
-        $this->assertArrayHasKey('expires_in', $token);
-        $this->assertArrayHasKey('access_token', $token);
+        self::assertSame('Bearer', $token['token_type']);
+        self::assertArrayHasKey('expires_in', $token);
+        self::assertArrayHasKey('access_token', $token);
     }
 
 }

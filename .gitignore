@@ -4,3 +4,4 @@
 /report.*
 .env
 node_modules
+.php_cs.cache

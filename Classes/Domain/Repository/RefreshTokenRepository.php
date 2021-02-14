@@ -1,11 +1,12 @@
 <?php
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerAwareInterface;
-use R3H6\Oauth2Server\Domain\Model\RefreshToken;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use R3H6\Oauth2Server\Domain\Model\RefreshToken;
 
 /***
  *
@@ -70,7 +71,7 @@ class RefreshTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository i
     {
         $row = $this->selectOneByIdentifier($tokenId);
         if ($row) {
-            return (bool) $row['revoked'];
+            return (bool)$row['revoked'];
         }
 
         return true;

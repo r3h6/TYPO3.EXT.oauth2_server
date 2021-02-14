@@ -6,32 +6,22 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerAwareInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use R3H6\Oauth2Server\Utility\HashUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use R3H6\Oauth2Server\Utility\ScopeUtility;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
-use League\OAuth2\Server\AuthorizationServer;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use R3H6\Oauth2Server\Domain\Repository\UserRepository;
-use League\OAuth2\Server\Exception\OAuthServerException;
+use R3H6\Oauth2Server\Configuration\Oauth2Configuration;
 use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
 
-class AuthorizationController implements LoggerAwareInterface
+class AuthorizationController implements AuthorizationServerAwareInterface, LoggerAwareInterface
 {
     public const AUTH_REQUEST_SESSION_KEY = 'oauth2/authRequest';
 
     use LoggerAwareTrait;
-    use ExceptionHandlingTrait;
-
-    /**
-     * @var \League\OAuth2\Server\AuthorizationServer
-     */
-    protected $server;
+    use AuthorizationServerAwareTrait;
 
     /**
      * @var \R3H6\Oauth2Server\Domain\Repository\UserRepository
@@ -43,17 +33,16 @@ class AuthorizationController implements LoggerAwareInterface
      */
     protected $accessTokenRepository;
 
-    public function __construct(AuthorizationServer $server, UserRepository $userRepository, AccessTokenRepository $accessTokenRepository)
+    public function __construct(UserRepository $userRepository, AccessTokenRepository $accessTokenRepository)
     {
-        $this->server = $server;
         $this->userRepository = $userRepository;
         $this->accessTokenRepository = $accessTokenRepository;
     }
-
+    // @todo prompt=none https://auth0.com/docs/authorization/configure-silent-authentication
     public function startAuthorization(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var \R3H6\Oauth2Server\Configuration\RuntimeConfiguration configuration */
-        $configuration = $request->getAttribute('oauth2');
+        /** @var \R3H6\Oauth2Server\Configuration\Oauth2Configuration configuration */
+        $configuration = $request->getAttribute(Oauth2Configuration::REQUEST_ATTRIBUTE_NAME);
 
         /** @var \TYPO3\CMS\Core\Site\Entity\Site $site */
         $site = $request->getAttribute('site');
@@ -62,22 +51,22 @@ class AuthorizationController implements LoggerAwareInterface
         $frontendUser = $request->getAttribute('frontend.user');
 
         // Validate the HTTP request and return an AuthorizationRequest object.
-        $authRequest = $this->server->validateAuthorizationRequest($request);
+        $authRequest = $this->authorizationServer->validateAuthorizationRequest($request);
         $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, $authRequest);
 
         $client = $authRequest->getClient();
         $isAuthenticated = ($frontendUser->user['uid'] ?? 0) > 0; // Groups are not yet loaded in context api
-        $consentPageUid = (int) $configuration->get('server.consentPageUid');
+        $consentPageUid = (int)$configuration->getConsentPageUid();
 
         if (!$consentPageUid) {
             throw new \RuntimeException('Missing configuration consent page uid', 1612712296482);
         }
 
-        $consentUrl = (string) $site->getRouter()->generateUri($consentPageUid, [], '', RouterInterface::ABSOLUTE_URL);
-        $redirectUrl = $client->doSkipConsent() ? (string) $request->getUri(): $consentUrl;
+        $consentUrl = (string)$site->getRouter()->generateUri($consentPageUid, [], '', RouterInterface::ABSOLUTE_URL);
+        $redirectUrl = $client->doSkipConsent() ? (string)$request->getUri(): $consentUrl;
 
         if (!$isAuthenticated) {
-            return new RedirectResponse('/?_='.urlencode(HashUtility::encode($redirectUrl)));
+            return new RedirectResponse('/?_=' . urlencode(HashUtility::encode($redirectUrl)));
         }
 
         $clientId = $client->getIdentifier();
@@ -109,17 +98,12 @@ class AuthorizationController implements LoggerAwareInterface
         // Once the user has logged in set the user on the AuthorizationRequest
         $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);
 
-
-
-
         $authRequest->setUser($user);
 
         // Consent
         $authRequest->setAuthorizationApproved(true);
 
-        return $this->withErrorHandling(function() use ($authRequest) {
-            return $this->server->completeAuthorizationRequest($authRequest, new Response());
-        });
+        return $this->authorizationServer->completeAuthorizationRequest($authRequest, new Response());
     }
 
     public function denyAuthorization(ServerRequestInterface $request): ResponseInterface
@@ -138,8 +122,6 @@ class AuthorizationController implements LoggerAwareInterface
         // Consent
         $authRequest->setAuthorizationApproved(false);
 
-        return $this->withErrorHandling(function() use ($authRequest) {
-            return $this->server->completeAuthorizationRequest($authRequest, new Response());
-        });
+        return $this->authorizationServer->completeAuthorizationRequest($authRequest, new Response());
     }
 }

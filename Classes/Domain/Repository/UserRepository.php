@@ -1,14 +1,14 @@
 <?php
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Configuration\TsConfigParser;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 
 /***
  *
@@ -40,12 +40,14 @@ class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implement
         $this->logger->debug('Get user', ['username' => $username]);
         $user = $this->findOneByUsername($username);
         if ($user === null) {
+            $this->logger->debug('No user found', ['username' => $username]);
             throw new \RuntimeException('Username or password invalid', 1607636289929);
         }
 
         $passwordHashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
         $hashInstance = $passwordHashFactory->getDefaultHashInstance(TYPO3_MODE);
         if (!$hashInstance->checkPassword($password, $user->getPassword())) {
+            $this->logger->debug('Password check failed', ['username' => $username]);
             throw new \RuntimeException('Username or password invalid', 1607636289929);
         }
 

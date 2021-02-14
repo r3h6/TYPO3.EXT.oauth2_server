@@ -44,7 +44,8 @@ class AuthorizationControllerTest extends UnitTestCase
         $this->userRepository = $this->prophesize(UserRepository::class);
         $this->accessTokenRepository = $this->prophesize(AccessTokenRepository::class);
 
-        $this->subject = new AuthorizationController($this->server->reveal(), $this->userRepository->reveal(), $this->accessTokenRepository->reveal());
+        $this->subject = new AuthorizationController($this->userRepository->reveal(), $this->accessTokenRepository->reveal());
+        $this->subject->setAuthorizationServer($this->server->reveal());
     }
 
     /**

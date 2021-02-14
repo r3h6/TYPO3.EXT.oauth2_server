@@ -1,18 +1,16 @@
 <?php
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
-use Psr\Log\LoggerAwareTrait;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use R3H6\Oauth2Server\Domain\Model\AccessToken;
+use R3H6\Oauth2Server\Utility\ScopeUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use R3H6\Oauth2Server\Utility\ScopeUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use R3H6\Oauth2Server\Domain\Model\AccessToken;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 /***
  *
@@ -52,7 +50,6 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
 
         return $accessToken;
     }
-
 
     /**
      * @override
@@ -101,7 +98,7 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
     {
         $row = $this->selectOneByIdentifier($tokenId);
         if ($row) {
-            return (bool) $row['revoked'];
+            return (bool)$row['revoked'];
         }
 
         return true;
@@ -121,12 +118,12 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
             ->where(
                 $queryBuilder->expr()->eq('user', $queryBuilder->createNamedParameter($userId)),
                 $queryBuilder->expr()->eq('client', $queryBuilder->createNamedParameter($clientId)),
-                $queryBuilder->expr()->eq('revoked', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('revoked', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             )
             ->orderBy('expires_at', 'DESC')
             ->execute()
             ->fetch();
 
-        return ($row && array_diff(GeneralUtility::trimExplode(',', $row['scopes']), $scopes) === []);
+        return $row && array_diff(GeneralUtility::trimExplode(',', $row['scopes']), $scopes) === [];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;

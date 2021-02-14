@@ -1,13 +1,13 @@
 <?php
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerAwareInterface;
-use TYPO3\CMS\Core\Database\Connection;
-use R3H6\Oauth2Server\Utility\ScopeUtility;
-use R3H6\Oauth2Server\Domain\Model\AuthCode;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use R3H6\Oauth2Server\Domain\Model\AuthCode;
+use R3H6\Oauth2Server\Utility\ScopeUtility;
 
 /***
  *
@@ -74,7 +74,7 @@ class AuthCodeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository imple
     {
         $row = $this->selectOneByIdentifier($codeId);
         if ($row) {
-            return (bool) $row['revoked'];
+            return (bool)$row['revoked'];
         }
 
         return true;

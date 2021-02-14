@@ -17,7 +17,7 @@ final class HashUtility
         return base64_decode(static::getHashService()->validateAndStripHmac($hash));
     }
 
-    private static function getHashService():HashService
+    private static function getHashService(): HashService
     {
         return GeneralUtility::makeInstance(HashService::class);
     }

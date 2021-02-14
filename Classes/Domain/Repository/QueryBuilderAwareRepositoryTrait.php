@@ -1,9 +1,10 @@
 <?php
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 trait QueryBuilderAwareRepositoryTrait
 {

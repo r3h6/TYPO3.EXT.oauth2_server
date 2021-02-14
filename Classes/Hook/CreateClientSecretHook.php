@@ -2,12 +2,12 @@
 
 namespace R3H6\Oauth2Server\Hook;
 
-use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class CreateClientSecretHook
@@ -55,5 +55,4 @@ class CreateClientSecretHook
         $messageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         $messageQueue->addMessage($message);
     }
-
 }
