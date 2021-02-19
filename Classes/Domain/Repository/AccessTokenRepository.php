@@ -121,7 +121,7 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
             ->where(
                 $queryBuilder->expr()->eq('user', $queryBuilder->createNamedParameter($userId)),
                 $queryBuilder->expr()->eq('client', $queryBuilder->createNamedParameter($clientId)),
-                $queryBuilder->expr()->eq('revoked', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('revoked', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             )
             ->orderBy('expires_at', 'DESC')
             ->execute()
