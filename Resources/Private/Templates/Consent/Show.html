@@ -6,19 +6,21 @@
     <f:if condition="{scopes}">
         <dl clas="scopes">
             <f:for each="{scopes}" as="scope" iteration="i">
-                <dt>{scope.identifier}</dt>
-                <dd></dd>
+                <f:if condition="{scope.consent}">
+                    <dt>{scope.identifier}</dt>
+                    <dd><f:translate key="{f:if(condition: '{scope.description}', then: '{scope.description}', else: 'scope_{scope.identifier}')}">{scope.description}</f:translate></dd>
+                </f:if>
             </f:for>
         </dl>
     </f:if>
     <div class="row">
         <div class="col">
-            <form action="/oauth/authorize" method="post">
+            <form action="/{configuration.routePrefix}/authorize" method="post">
                 <button class="btn btn-success btn-block" type="submit"><f:translate key="label.button_approve"/></button>
             </form>
         </div>
         <div class="col">
-            <form action="/oauth/authorize" method="post">
+            <form action="/{configuration.routePrefix}/authorize" method="post">
                 <input type="hidden" name="_method" value="DELETE">
                 <button class="btn btn-danger btn-block" type="submit"><f:translate key="label.button_deny"/></button>
             </form>

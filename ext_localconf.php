@@ -19,5 +19,23 @@ call_user_func(
                 \R3H6\Oauth2Server\Controller\ConsentController::class => 'show',
             ]
         );
+
+        // Services
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
+            'oauth2_server',
+            'auth',
+            \R3H6\Oauth2Server\Service\Oauth2AuthService::class,
+            [
+                'title' => 'Oauth2 authentication',
+                'description' => 'Authenticate user by user uid and oauth access token.',
+                'subtype' => 'getUserFE,authUserFE',
+                'available' => true, // By default off
+                'priority' => 99,
+                'quality' => 50,
+                'os' => '',
+                'exec' => '',
+                'className' => \R3H6\Oauth2Server\Service\Oauth2AuthService::class,
+            ]
+        );
     }
 );

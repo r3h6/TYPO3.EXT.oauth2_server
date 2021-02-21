@@ -2,26 +2,27 @@
 
 namespace R3H6\Oauth2Server\Controller;
 
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerAwareInterface;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Context\Context;
+use League\OAuth2\Server\AuthorizationServer;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\RedirectResponse;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use R3H6\Oauth2Server\Configuration\Configuration;
+use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
+use R3H6\Oauth2Server\Domain\Repository\UserRepository;
+use R3H6\Oauth2Server\Http\RequestAttribute;
 use R3H6\Oauth2Server\Utility\HashUtility;
 use R3H6\Oauth2Server\Utility\ScopeUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Routing\RouterInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use R3H6\Oauth2Server\Domain\Repository\UserRepository;
-use R3H6\Oauth2Server\Configuration\Oauth2Configuration;
-use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
 
-class AuthorizationController implements AuthorizationServerAwareInterface, LoggerAwareInterface
+class AuthorizationController implements LoggerAwareInterface
 {
     public const AUTH_REQUEST_SESSION_KEY = 'oauth2/authRequest';
 
     use LoggerAwareTrait;
-    use AuthorizationServerAwareTrait;
 
     /**
      * @var \R3H6\Oauth2Server\Domain\Repository\UserRepository
@@ -33,16 +34,22 @@ class AuthorizationController implements AuthorizationServerAwareInterface, Logg
      */
     protected $accessTokenRepository;
 
-    public function __construct(UserRepository $userRepository, AccessTokenRepository $accessTokenRepository)
+    /**
+     * @var AuthorizationServer
+     */
+    protected $server;
+
+    public function __construct(UserRepository $userRepository, AccessTokenRepository $accessTokenRepository, AuthorizationServer $server)
     {
         $this->userRepository = $userRepository;
         $this->accessTokenRepository = $accessTokenRepository;
+        $this->server = $server;
     }
     // @todo prompt=none https://auth0.com/docs/authorization/configure-silent-authentication
     public function startAuthorization(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var \R3H6\Oauth2Server\Configuration\Oauth2Configuration configuration */
-        $configuration = $request->getAttribute(Oauth2Configuration::REQUEST_ATTRIBUTE_NAME);
+        /** @var \R3H6\Oauth2Server\Configuration\Configuration configuration */
+        $configuration = $request->getAttribute(RequestAttribute::CONFIGURATION);
 
         /** @var \TYPO3\CMS\Core\Site\Entity\Site $site */
         $site = $request->getAttribute('site');
@@ -51,27 +58,33 @@ class AuthorizationController implements AuthorizationServerAwareInterface, Logg
         $frontendUser = $request->getAttribute('frontend.user');
 
         // Validate the HTTP request and return an AuthorizationRequest object.
-        $authRequest = $this->authorizationServer->validateAuthorizationRequest($request);
+        $authRequest = $this->server->validateAuthorizationRequest($request);
         $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, $authRequest);
 
         $client = $authRequest->getClient();
         $isAuthenticated = ($frontendUser->user['uid'] ?? 0) > 0; // Groups are not yet loaded in context api
-        $consentPageUid = (int)$configuration->getConsentPageUid();
+        $consentPageUid = $configuration->getConsentPageUid();
 
-        if (!$consentPageUid) {
-            throw new \RuntimeException('Missing configuration consent page uid', 1612712296482);
+        $redirectUrl = (string)$request->getUri();
+        if ($consentPageUid && !$client->doSkipConsent()) {
+            $redirectUrl = (string)$site->getRouter()->generateUri($consentPageUid, [], '', RouterInterface::ABSOLUTE_URL);
         }
 
-        $consentUrl = (string)$site->getRouter()->generateUri($consentPageUid, [], '', RouterInterface::ABSOLUTE_URL);
-        $redirectUrl = $client->doSkipConsent() ? (string)$request->getUri(): $consentUrl;
-
         if (!$isAuthenticated) {
-            return new RedirectResponse('/?_=' . urlencode(HashUtility::encode($redirectUrl)));
+            $this->logger->debug('Forward to login', ['redirect_url' => $redirectUrl]);
+            $parameters = ['_' => HashUtility::encode($redirectUrl)];
+            $loginPageUid = $configuration->getLoginPageUid();
+            if ($loginPageUid){
+                $forwardUrl = (string)$site->getRouter()->generateUri($loginPageUid, $parameters, '', RouterInterface::ABSOLUTE_URL);
+                return new RedirectResponse($forwardUrl);
+            }
+
+            return new RedirectResponse('/?'.http_build_query($parameters));
         }
 
         $clientId = $client->getIdentifier();
         if ($client->doSkipConsent()) {
-            $this->logger->debug('client skips consent', ['clientId' => $clientId]);
+            $this->logger->debug('Skip consent', ['clientId' => $clientId]);
             return $this->approveAuthorization($request);
         }
 
@@ -83,7 +96,7 @@ class AuthorizationController implements AuthorizationServerAwareInterface, Logg
             return $this->approveAuthorization($request);
         }
 
-        return new RedirectResponse($consentUrl);
+        return new RedirectResponse($redirectUrl);
     }
 
     public function approveAuthorization(ServerRequestInterface $request): ResponseInterface
@@ -103,7 +116,7 @@ class AuthorizationController implements AuthorizationServerAwareInterface, Logg
         // Consent
         $authRequest->setAuthorizationApproved(true);
 
-        return $this->authorizationServer->completeAuthorizationRequest($authRequest, new Response());
+        return $this->server->completeAuthorizationRequest($authRequest, new Response());
     }
 
     public function denyAuthorization(ServerRequestInterface $request): ResponseInterface
@@ -122,6 +135,6 @@ class AuthorizationController implements AuthorizationServerAwareInterface, Logg
         // Consent
         $authRequest->setAuthorizationApproved(false);
 
-        return $this->authorizationServer->completeAuthorizationRequest($authRequest, new Response());
+        return $this->server->completeAuthorizationRequest($authRequest, new Response());
     }
 }

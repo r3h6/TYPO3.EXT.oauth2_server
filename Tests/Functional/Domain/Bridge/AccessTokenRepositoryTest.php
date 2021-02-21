@@ -1,12 +1,12 @@
 <?php
 
-namespace R3H6\Oauth2Server\Tests\Functional;
+namespace R3H6\Oauth2Server\Tests\Functional\Domain\Bridge;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use R3H6\Oauth2Server\Tests\Functional\FunctionalTestCase;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use R3H6\Oauth2Server\Domain\Bridge\AccessTokenRepository;
+use R3H6\Oauth2Server\Tests\Functional\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AccessTokenRepositoryTest extends FunctionalTestCase
 {

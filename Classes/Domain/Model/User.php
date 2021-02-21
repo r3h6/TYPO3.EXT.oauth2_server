@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 /**
  * User
  */
-final class User extends FrontendUser implements UserEntityInterface
+class User extends FrontendUser implements UserEntityInterface
 {
     public function getIdentifier()
     {

@@ -2,7 +2,6 @@
 
 namespace R3H6\Oauth2Server\Tests\Functional;
 
-
 class ResourceOwnerPasswordCredentialsGrantTest extends FunctionalTestCase
 {
     use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
@@ -24,10 +23,9 @@ class ResourceOwnerPasswordCredentialsGrantTest extends FunctionalTestCase
             ]
         );
 
-        $token = json_decode((string) $response->getBody(), true);
-        $this->assertSame('Bearer', $token['token_type']);
-        $this->assertArrayHasKey('expires_in', $token);
-        $this->assertArrayHasKey('access_token', $token);
+        $token = json_decode((string)$response->getBody(), true);
+        self::assertSame('Bearer', $token['token_type']);
+        self::assertArrayHasKey('expires_in', $token);
+        self::assertArrayHasKey('access_token', $token);
     }
-
 }

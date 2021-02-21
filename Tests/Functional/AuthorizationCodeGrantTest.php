@@ -2,7 +2,6 @@
 
 namespace R3H6\Oauth2Server\Tests\Functional;
 
-
 class AuthorizationCodeGrantTest extends FunctionalTestCase
 {
     use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
@@ -48,10 +47,9 @@ class AuthorizationCodeGrantTest extends FunctionalTestCase
             ]
         );
 
-        $token = json_decode((string) $response->getBody(), true);
+        $token = json_decode((string)$response->getBody(), true);
         self::assertSame('Bearer', $token['token_type']);
         self::assertArrayHasKey('expires_in', $token);
         self::assertArrayHasKey('access_token', $token);
     }
-
 }

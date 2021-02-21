@@ -1,120 +1,114 @@
 # OAuth2 Server
 
-Todo:
-- Protect resources with https
-- Improve guards api
-- Login user with access token
+Oauth2 server for TYPO3.
 
 ## Installation
+
+**Only composer supported!**
 
 ```bash
 $ composer require r3h6/oauth2-server
 ```
 
+## Integration
+
+
+
 ## Configuration
 
 ```yaml
 oauth2:
-    # Path to private key
-    privateKey: 'EXT:oauth2_server/Resources/Private/Keys/private.key'
+  # Path to private key
+  # Type: string
+  privateKey: 'EXT:oauth2_server/Resources/Private/Keys/private.key'
 
-    # Path to public key
-    publicKey: 'EXT:oauth2_server/Resources/Private/Keys/public.key'
+  # Path to public key
+  # Type: string
+  publicKey: 'EXT:oauth2_server/Resources/Private/Keys/public.key'
 
-    # Class name for oauth2 server which implements the /authorize and /token endpoint
-    server: R3H6\Oauth2Server\Http\Oauth2Server
+  # Access token lifetime
+  # Type: string
+  accessTokensExpireIn: 'P1M'
 
-    # Prefix for oauth2 server
-    routePrefix: 'oauth2'
+  # Refresh token lifetime
+  # Type: string
+  refreshTokensExpireIn: 'P1M'
 
-    # Access token lifetime
-    accessTokensExpireIn: 'P1M'
+  # Page uid with "Oauth2: Consent" plugin
+  # Type: int
+  consentPageUid: 0
 
-    # Refresh token lifetime
-    refreshTokensExpireIn: 'P1M'
+  # Page uid for frontend login (otherwise users are redirected to the root page)
+  # Type: int
+  loginPageUid: 0
 
-    # Implicit grant is disabled by default
-    enableImplicitGrantType: false
+  # Scopes
+  # Type: array
+  scopes:
+    - scope1
+    - { identifier: scope2, description: 'Description or LLL path'}
 
-    # Page uid with "Oauth2: Consent" plugin
-    consentPageUid: null
+  # Configuration for protected resources
+  resources:
 
-    # Scopes
-    scopes: []
+    # Resource name
+    my_resource:
 
-    # Firewall rules
-    firewall: []
+      # Resource route, string, a regex matching the request path
+      # Type: string
+      path: /rest/.*
 
-    # Resources
-    #
-    # resources:
-    #   rule_name: 'Vendor\Extension\Controller\EndpointController::actionMethod'
-    resources: []
+      # Resource methods (optional)
+      # Type: string|array
+      methods: POST|GET
 
-```
+      # Resource target (optional)
+      # Type: string
+      target: Controller::action
 
-## Protecting resources
+      # Firewall rule, checks if a user is authenticated (optional)
+      # Type: boolean
+      authenticated: false
 
-Resources can be protected either through firewall rules or prorgrammatically.
+      # Firewall rule, check if client ip matches given pattern (optional)
+      # Type: string
+      ip: '127.*'
 
-### Firewall rules
-
-Firewall rules are usefull to protect 3rd party extension endpoints like "rest" or
-own endpoints registered under the "resources" configuration.
-
-```yaml
-oauth2:
-  firewall:
-    rule_name:
-      # A regex matching the url path
-      path: /api/v1/.*
-      # A space seperated list of query parameters (optional)
-      query: tx_example_pi1
-      # Request method must be in list (optional)
-      methods: GET|POST
-      # Only accept https
+      # Firewall rule, check if request is using https (optional)
+      # Type: boolean
       https: true
-      # Access token must have at least one of the listed scopes (optional)
-      scope: read|write
-      # Access token must have all listed scopes (optional)
-      scopes: read write
+
+      # Firewall rule, check if access token has at least one of the scopes (optional)
+      # Type: string|array
+      scope: 'read|write'
+
+      # Firewall rule, check if access token has all scopes (optional)
+      # Type: string|array
+      scope: 'read,write'
 ```
 
-### Prorgrammatically
+## Protecting resources from Extbase plugins.
 
-```php
-class EndpointController implements ResourceGuardAwareInterface
-{
-    use ResourceGuardAwareTrait;
-
-    public function actionMethod(ServerRequestInterface $request): ResponseInterface
-    {
-        $request = $this->resourceGuard->validateAuthenticatedRequest($request);
-        $this->resourceGuard->anyScope(['read'], $request);
-        $this->resourceGuard->allScopes(['write', 'endpoint'], $request);
-
-        // $this->guard
-        //     ->for($request)
-        //     ->https()
-        //     ->scope(['foo']);
-    }
-}
-```
+Extbase plugins with routing can still be called through query parameters.<br>
+Such requests bypass the request validation of this extension.<br>
+You should therefore make some htaccess rules denying such request,<br>
+implement the request validation by yourself or<br>
+use the ExtbaseGuard to check if the request passed the validation.
 
 ```php
 class ExtbaseController extends ActionController
 {
     /**
-     * @var \R3H6\Oauth2Server\Security\ExtbaseResourceGuard
+     * @var \R3H6\Oauth2Server\Security\ExtbaseGuard
      * @TYPO3\CMS\Extbase\Annotation\Inject
      */
-    protected $resourceGuard;
+    protected $guard;
 
     public function initializeAction()
     {
-        $request = $this->resourceGuard->validateAuthenticatedRequest($GLOBALS['TYPO3_REQUEST'], $this->response);
-        $this->resourceGuard->anyScope(['read'], $request, $this->response);
-        $this->resourceGuard->allScopes(['write', 'endpoint'], $request, $this->response);
+        $this->guard->checkAccess($GLOBALS['TYPO3_REQUEST'], 'my_resource', $this->response);
     }
 }
+
 ```
+

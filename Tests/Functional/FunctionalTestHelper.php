@@ -2,20 +2,19 @@
 
 namespace R3H6\Oauth2Server\Tests\Functional;
 
-use TYPO3\CMS\Core\Http\Uri;
 use League\OAuth2\Server\CryptKey;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use R3H6\Oauth2Server\Domain\Bridge\AccessTokenRepository;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
 
 trait FunctionalTestHelper
 {
-
     protected function doFrontendRequest(string $method, string $uri, array $params = [], string $cookie = null): InternalResponse
     {
         $request = new InternalRequest($uri);

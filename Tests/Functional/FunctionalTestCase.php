@@ -59,5 +59,4 @@ abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functiona
         $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/pages.xml');
         $this->setUpFrontendRootPage(1);
     }
-
 }

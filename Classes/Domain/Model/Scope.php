@@ -18,9 +18,15 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
 /**
  * Scope
  */
-final class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implements ScopeEntityInterface
+class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implements ScopeEntityInterface
 {
     use EntityTrait;
+
+    /** @var string */
+    protected $description = '';
+
+    /** @var boolean */
+    protected $consent = true;
 
     public function __construct($name)
     {
@@ -30,5 +36,25 @@ final class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject im
     public function jsonSerialize()
     {
         return $this->getIdentifier();
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
+
+    public function getConsent()
+    {
+        return $this->consent;
+    }
+
+    public function setConsent(bool $consent)
+    {
+        $this->consent = $consent;
     }
 }

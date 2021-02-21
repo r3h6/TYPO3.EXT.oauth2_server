@@ -2,10 +2,6 @@
 
 namespace R3H6\Oauth2Server\Domain\Model;
 
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
-
 /***
  *
  * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
@@ -19,8 +15,57 @@ use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
 /**
  * RefreshToken
  */
-final class RefreshToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements RefreshTokenEntityInterface
+class RefreshToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-    use EntityTrait;
-    use RefreshTokenTrait;
+    /** @var string */
+    protected $identifier;
+
+    /** @var \DateTime */
+    protected $expiresAt;
+
+    /** @var bool */
+    protected $revoked;
+
+    /** @var string */
+    protected $accessToken;
+
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+    }
+
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    public function setExpiresAt($expiresAt)
+    {
+        $this->expiresAt = $expiresAt;
+    }
+
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    public function setRevoked($revoked)
+    {
+        $this->revoked = $revoked;
+    }
+
+    public function getRevoked()
+    {
+        return $this->revoked;
+    }
+
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = $accessToken;
+    }
+
+    public function getAccessToken()
+    {
+        return $accessToken;
+    }
 }

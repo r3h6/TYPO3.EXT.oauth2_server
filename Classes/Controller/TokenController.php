@@ -2,16 +2,25 @@
 
 namespace R3H6\Oauth2Server\Controller;
 
+use League\OAuth2\Server\AuthorizationServer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
 
-class TokenController implements AuthorizationServerAwareInterface
+class TokenController
 {
-    use AuthorizationServerAwareTrait;
+    /**
+     * @var AuthorizationServer
+     */
+    private $server;
+
+    public function __construct(AuthorizationServer $server)
+    {
+        $this->server = $server;
+    }
 
     public function issueAccessToken(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->authorizationServer->respondToAccessTokenRequest($request, new Response());
+        return $this->server->respondToAccessTokenRequest($request, new Response());
     }
 }

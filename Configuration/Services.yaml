@@ -4,7 +4,7 @@ services:
     autoconfigure: true
     public: false
     bind:
-      League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface: '@R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository'
+
 
   R3H6\Oauth2Server\:
     resource: '../Classes/*'
@@ -17,9 +17,6 @@ services:
     resource: '../Classes/Controller/*'
     public: true
 
-  R3H6\Oauth2Server\Http\Oauth2Server:
-    public: true
-
   R3H6\Oauth2Server\Domain\Repository\ClientRepository:
     calls:
       - initializeObject: []
@@ -28,8 +25,34 @@ services:
     calls:
       - initializeObject: []
 
-  # League\OAuth2\Server\AuthorizationServer:
-  #   factory: '@R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory'
+  League\OAuth2\Server\AuthorizationServer:
+    factory: '@R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactoryInterface'
+    public: true
 
-  # League\OAuth2\Server\ResourceServer:
-  #   factory: '@R3H6\Oauth2Server\Domain\Factory\ResourceServerFactory'
+  R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactoryInterface:
+    class: R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory
+
+  League\OAuth2\Server\ResourceServer:
+    factory: '@R3H6\Oauth2Server\Domain\Factory\ResourceServerFactoryInterface'
+    public: true
+
+  R3H6\Oauth2Server\Domain\Factory\ResourceServerFactoryInterface:
+    class: R3H6\Oauth2Server\Domain\Factory\ResourceServerFactory
+
+  League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface:
+    class: R3H6\Oauth2Server\Domain\Bridge\AccessTokenRepository
+
+  League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface:
+    class: R3H6\Oauth2Server\Domain\Bridge\RefreshTokenRepository
+
+  League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface:
+    class: R3H6\Oauth2Server\Domain\Bridge\AuthCodeRepository
+
+  League\OAuth2\Server\Repositories\UserRepositoryInterface:
+    class: R3H6\Oauth2Server\Domain\Repository\UserRepository
+
+  League\OAuth2\Server\Repositories\ScopeRepositoryInterface:
+    class: R3H6\Oauth2Server\Domain\Repository\ScopeRepository
+
+  League\OAuth2\Server\Repositories\ClientRepositoryInterface:
+    class: R3H6\Oauth2Server\Domain\Repository\ClientRepository
