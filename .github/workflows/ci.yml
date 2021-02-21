@@ -24,7 +24,7 @@ jobs:
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s lint
 
       - name: PHPStan
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s lint
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s phpstan
 
       - name: Unit tests
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s unit
