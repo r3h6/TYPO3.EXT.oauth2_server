@@ -10,7 +10,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AccessTokenRepositoryTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    // use \Prophecy\PhpUnit\ProphecyTrait;
     use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
 
     /**

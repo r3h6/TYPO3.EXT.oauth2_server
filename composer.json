@@ -44,10 +44,10 @@
 	},
 	"require-dev": {
 		"typo3/testing-framework": "^6.6",
-		"phpspec/prophecy-phpunit": "^2.0",
 		"saschaegerer/phpstan-typo3": "^0.13.1",
 		"friendsofphp/php-cs-fixer": "^2.18",
 		"typo3/coding-standards": "^0.2.0",
-		"phpmd/phpmd": "^2.9"
+		"phpmd/phpmd": "^2.9",
+		"phpunit/phpunit": "^8.0"
 	}
 }
