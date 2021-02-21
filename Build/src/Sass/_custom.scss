@@ -15,8 +15,17 @@
 
 .card {
     box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.125);
-    .card-footer {
-        border-top: 3px solid $primary;
+}
+.card-footer {
+    border-top: 3px solid $primary;
+}
+input[type="submit"] {
+    @extend .btn;
+    @extend .btn-primary;
+    // @extend .btn-lg;
+    @extend .btn-block;
+    .frame-type-login & {
+        margin-top: 0.5rem;
     }
 }
 
@@ -24,15 +33,6 @@
 .tx-felogin-pi1 {
     div + form {
         margin-top: 0.5rem;
-    }
-    input[type="submit"] {
-        @extend .btn;
-        @extend .btn-primary;
-        // @extend .btn-lg;
-        @extend .btn-block;
-        .frame-type-login & {
-            margin-top: 0.5rem;
-        }
     }
     label {
         width: 100%;
