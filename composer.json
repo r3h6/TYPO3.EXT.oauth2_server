@@ -1,6 +1,9 @@
 {
 	"name": "r3h6/oauth2-server",
 	"type": "typo3-cms-extension",
+	"license":  [
+		"GPL-2.0-or-later"
+	],
 	"description": "",
 	"authors": [],
 	"config": {
