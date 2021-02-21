@@ -25,7 +25,7 @@ class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implemen
     /** @var string */
     protected $description = '';
 
-    /** @var boolean */
+    /** @var bool */
     protected $consent = true;
 
     public function __construct($name)

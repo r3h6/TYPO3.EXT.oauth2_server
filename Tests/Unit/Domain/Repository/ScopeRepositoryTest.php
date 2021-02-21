@@ -2,16 +2,15 @@
 
 namespace R3H6\Oauth2Server\Tests\Unit;
 
-use R3H6\Oauth2Server\Domain\Model\Scope;
 use R3H6\Oauth2Server\Domain\Model\Client;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use R3H6\Oauth2Server\Domain\Model\Scope;
 use R3H6\Oauth2Server\Domain\Repository\ScopeRepository;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ScopeRepositoryTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
-
 
     /**
      * @test
@@ -52,5 +51,4 @@ class ScopeRepositoryTest extends UnitTestCase
         $finalizedScopes = $repository->finalizeScopes($scopes, '', $clientEntity->reveal());
         self::assertCount(2, $finalizedScopes);
     }
-
 }

@@ -66,6 +66,6 @@ class RefreshToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     public function getAccessToken()
     {
-        return $accessToken;
+        return $this->accessToken;
     }
 }

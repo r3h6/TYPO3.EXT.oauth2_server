@@ -40,7 +40,7 @@ class Oauth2AuthService extends AbstractAuthenticationService
             if ($user === false) {
                 $message = 'Login-attempt from ###IP### for oauth_user_id \'%s\'';
                 $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 2, $message, [$userId]);
-                $this->logger->warning(sprintf('Login-attempt from ###IP### for oauth_user_id \'%s\'', $this->authInfo['REMOTE_ADDR'], $userId));
+                $this->logger->warning(sprintf('Login-attempt from %s for oauth_user_id \'%s\'', $this->authInfo['REMOTE_ADDR'], $userId));
             } else {
                 $this->logger->debug('User found', ['oauth_user_id' => $userId]);
             }

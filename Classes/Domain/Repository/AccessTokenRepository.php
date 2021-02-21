@@ -2,16 +2,8 @@
 
 namespace R3H6\Oauth2Server\Domain\Repository;
 
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerAwareInterface;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use R3H6\Oauth2Server\Utility\ScopeUtility;
-use R3H6\Oauth2Server\Domain\Model\AccessToken;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 /***
  *

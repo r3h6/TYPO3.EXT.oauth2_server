@@ -3,9 +3,6 @@
 namespace R3H6\Oauth2Server\Domain\Model;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
 /***
  *
@@ -22,14 +19,10 @@ use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
  */
 class AccessToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity // implements AccessTokenEntityInterface
 {
-    // use AccessTokenTrait;
-    // use EntityTrait;
-    // use TokenEntityTrait;
-
     /** @var string */
     protected $identifier = '';
 
-    /** @var \DateTime */
+    /** @var \DateTimeImmutable */
     protected $expiresAt;
 
     /** @var string */
@@ -54,12 +47,12 @@ class AccessToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity // impl
         return $this->identifier;
     }
 
-    public function setExpiresAt(\DateTimeInterface $expiresAt)
+    public function setExpiresAt(\DateTimeImmutable $expiresAt)
     {
         $this->expiresAt = $expiresAt;
     }
 
-    public function getExpiresAt(): \DateTime
+    public function getExpiresAt(): \DateTimeImmutable
     {
         return $this->expiresAt;
     }

@@ -61,25 +61,26 @@ class AuthorizationController implements LoggerAwareInterface
         $authRequest = $this->server->validateAuthorizationRequest($request);
         $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, $authRequest);
 
+        /** @var \R3H6\Oauth2Server\Domain\Model\Client $client */
         $client = $authRequest->getClient();
         $isAuthenticated = ($frontendUser->user['uid'] ?? 0) > 0; // Groups are not yet loaded in context api
         $consentPageUid = $configuration->getConsentPageUid();
 
         $redirectUrl = (string)$request->getUri();
         if ($consentPageUid && !$client->doSkipConsent()) {
-            $redirectUrl = (string)$site->getRouter()->generateUri($consentPageUid, [], '', RouterInterface::ABSOLUTE_URL);
+            $redirectUrl = (string)$site->getRouter()->generateUri((string)$consentPageUid, [], '', RouterInterface::ABSOLUTE_URL);
         }
 
         if (!$isAuthenticated) {
             $this->logger->debug('Forward to login', ['redirect_url' => $redirectUrl]);
             $parameters = ['_' => HashUtility::encode($redirectUrl)];
             $loginPageUid = $configuration->getLoginPageUid();
-            if ($loginPageUid){
-                $forwardUrl = (string)$site->getRouter()->generateUri($loginPageUid, $parameters, '', RouterInterface::ABSOLUTE_URL);
+            if ($loginPageUid) {
+                $forwardUrl = (string)$site->getRouter()->generateUri((string)$loginPageUid, $parameters, '', RouterInterface::ABSOLUTE_URL);
                 return new RedirectResponse($forwardUrl);
             }
 
-            return new RedirectResponse('/?'.http_build_query($parameters));
+            return new RedirectResponse('/?' . http_build_query($parameters));
         }
 
         $clientId = $client->getIdentifier();

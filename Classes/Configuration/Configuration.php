@@ -5,7 +5,6 @@ namespace R3H6\Oauth2Server\Configuration;
 use R3H6\Oauth2Server\Controller\AuthorizationController;
 use R3H6\Oauth2Server\Controller\RevokeController;
 use R3H6\Oauth2Server\Controller\TokenController;
-use R3H6\Oauth2Server\Http\Oauth2Server;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
@@ -17,7 +16,6 @@ class Configuration implements \ArrayAccess, SingletonInterface
     private static $configuration = [
         'privateKey' => 'EXT:oauth2_server/Resources/Private/Keys/private.key',
         'publicKey' => 'EXT:oauth2_server/Resources/Private/Keys/public.key',
-        'server' => Oauth2Server::class,
         'routePrefix' => 'oauth2',
         'accessTokensExpireIn' => 'P1M',
         'refreshTokensExpireIn' => 'P1M',

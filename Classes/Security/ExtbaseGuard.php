@@ -2,12 +2,12 @@
 
 namespace R3H6\Oauth2Server\Security;
 
-use TYPO3\CMS\Extbase\Mvc\Response;
 use Psr\Http\Message\ServerRequestInterface;
-use R3H6\Oauth2Server\Http\RequestAttribute;
-use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\Exception\AccessDeniedException;
+use R3H6\Oauth2Server\ExceptionHandlingTrait;
+use R3H6\Oauth2Server\Http\RequestAttribute;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\Response;
 
 class ExtbaseGuard
 {

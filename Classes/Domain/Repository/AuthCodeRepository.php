@@ -2,13 +2,6 @@
 
 namespace R3H6\Oauth2Server\Domain\Repository;
 
-use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use R3H6\Oauth2Server\Domain\Model\AuthCode;
-use R3H6\Oauth2Server\Utility\ScopeUtility;
-
 /***
  *
  * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.

@@ -15,7 +15,7 @@ class RouteCollection implements LoggerAwareInterface
 
     public static function fromArray(array $array, string $prefix = ''): self
     {
-        $routes = GeneralUtility::makeInstance(self::class);
+        $routes = GeneralUtility::makeInstance(__CLASS__);
         foreach ($array as $routeName => $routeConfiguration) {
             $path = $routeConfiguration['path'];
             if ($prefix !== '') {

@@ -39,7 +39,6 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
         $server->enableGrantType($this->getRefreshTokenGrant($configuration), $accessTokenTTL);
         $server->enableGrantType($this->getImplicitGrant($configuration), $accessTokenTTL);
 
-
         return $server;
     }
 
