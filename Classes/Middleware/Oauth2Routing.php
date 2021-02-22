@@ -13,6 +13,20 @@ use R3H6\Oauth2Server\Http\RequestAttribute;
 use R3H6\Oauth2Server\Routing\RouteCollection;
 use R3H6\Oauth2Server\Utility\HashUtility;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+/**
+ * Oauth2Routing
+ */
 class Oauth2Routing implements MiddlewareInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

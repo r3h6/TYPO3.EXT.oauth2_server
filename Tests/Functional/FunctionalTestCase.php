@@ -1,11 +1,24 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Functional;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+/**
+ * FunctionalTestCase
+ */
 abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
-    // protected const ENCRYPTION_KEY = 'aa06c08658128b1247afeb704b26475edfa8b70afb5369ea66bb7a8098950cdb75b7ec73140a352b6fb51aa5b9f69042';
-
     protected $testExtensionsToLoad = [
         'typo3conf/ext/oauth2_server',
     ];

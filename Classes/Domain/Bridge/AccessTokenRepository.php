@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Bridge;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
@@ -11,9 +12,22 @@ use R3H6\Oauth2Server\Utility\ScopeUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+ /**
+  * Implementation of PHP League's access token repository
+  */
 class AccessTokenRepository implements SingletonInterface, AccessTokenRepositoryInterface, LoggerAwareInterface
 {
-    // use QueryBuilderAwareRepositoryTrait;
     use LoggerAwareTrait;
 
     /**
@@ -48,9 +62,9 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
         $newToken->setPid(0);
         $newToken->setIdentifier($accessTokenEntity->getIdentifier());
         $newToken->setExpiresAt($accessTokenEntity->getExpiryDateTime());
-        $newToken->setUser($accessTokenEntity->getUserIdentifier());
+        $newToken->setUser((string)$accessTokenEntity->getUserIdentifier());
         $newToken->setScopes(ScopeUtility::toString(...$accessTokenEntity->getScopes()));
-        $newToken->setClient($accessTokenEntity->getClient()->getIdentifier());
+        $newToken->setClient((string)$accessTokenEntity->getClient()->getIdentifier());
         $this->repository->add($newToken);
         $this->repository->persist();
     }

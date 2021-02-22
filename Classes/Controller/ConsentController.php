@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Controller;
 
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
@@ -9,6 +10,20 @@ use TYPO3\CMS\Core\Error\Http\ForbiddenException;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+ /**
+  * Consent plugin
+  */
 class ConsentController extends ActionController
 {
     /**

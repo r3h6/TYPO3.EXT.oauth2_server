@@ -8,14 +8,25 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use R3H6\Oauth2Server\Configuration\Configuration;
-use R3H6\Oauth2Server\Domain\Factory\ResourceServerFactory;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\Http\RequestAttribute;
-use R3H6\Oauth2Server\Service\Oauth2AuthService;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+/**
+ * Oauth2Authenticator
+ */
 class Oauth2Authenticator implements MiddlewareInterface
 {
     use ExceptionHandlingTrait;

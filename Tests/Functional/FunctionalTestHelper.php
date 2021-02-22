@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Functional;
 
 use League\OAuth2\Server\CryptKey;
@@ -13,6 +14,20 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+/**
+ * FunctionalTestHelper
+ */
 trait FunctionalTestHelper
 {
     protected function doFrontendRequest(string $method, string $uri, array $params = [], string $cookie = null): InternalResponse

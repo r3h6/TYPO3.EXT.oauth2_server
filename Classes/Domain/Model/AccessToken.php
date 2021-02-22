@@ -1,8 +1,7 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Model;
-
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 
 /***
  *
@@ -14,10 +13,11 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
  *  (c) 2020
  *
  ***/
+
 /**
  * AccessToken
  */
-class AccessToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity // implements AccessTokenEntityInterface
+class AccessToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /** @var string */
     protected $identifier = '';

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Model;
 
 use League\OAuth2\Server\Entities\UserEntityInterface;
@@ -15,6 +16,7 @@ use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
  *  (c) 2020
  *
  ***/
+
 /**
  * User
  */

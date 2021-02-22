@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Configuration;
 
 use R3H6\Oauth2Server\Controller\AuthorizationController;
@@ -8,6 +9,20 @@ use R3H6\Oauth2Server\Controller\TokenController;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+ /**
+  * Configuration
+  */
 class Configuration implements \ArrayAccess, SingletonInterface
 {
     /**

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -15,6 +16,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  *  (c) 2020
  *
  ***/
+
 /**
  * The repository for AccessTokens
  */

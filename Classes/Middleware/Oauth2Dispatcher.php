@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
@@ -8,12 +9,24 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use R3H6\Oauth2Server\Domain\Resource;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
-use R3H6\Oauth2Server\Http\Oauth2ServerInterface;
 use R3H6\Oauth2Server\Http\RequestAttribute;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+/**
+ * Oauth2Dispatcher
+ */
 class Oauth2Dispatcher implements MiddlewareInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

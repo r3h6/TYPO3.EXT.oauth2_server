@@ -1,25 +1,38 @@
 <?php
 
-namespace R3H6\Oauth2Server\Tests\Unit;
+declare(strict_types=1);
+namespace R3H6\Oauth2Server\Tests\Unit\Controller;
 
-use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Http\RedirectResponse;
-use Psr\Http\Message\ServerRequestInterface;
-use R3H6\Oauth2Server\Http\RequestAttribute;
 use League\OAuth2\Server\AuthorizationServer;
-use R3H6\Oauth2Server\Configuration\Configuration;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
-use R3H6\Oauth2Server\Domain\Repository\UserRepository;
-use R3H6\Oauth2Server\Controller\AuthorizationController;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use R3H6\Oauth2Server\Configuration\Configuration;
+use R3H6\Oauth2Server\Controller\AuthorizationController;
 use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
+use R3H6\Oauth2Server\Domain\Repository\UserRepository;
+use R3H6\Oauth2Server\Http\RequestAttribute;
+use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+/**
+ * AuthorizationControllerTest
+ */
 class AuthorizationControllerTest extends UnitTestCase
 {
-    // use \Prophecy\PhpUnit\ProphecyTrait;
-
     /**
      * @var AuthorizationController
      */

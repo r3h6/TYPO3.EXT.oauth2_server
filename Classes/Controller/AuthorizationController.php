@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Controller;
 
 use League\OAuth2\Server\AuthorizationServer;
@@ -7,17 +8,29 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
 use R3H6\Oauth2Server\Domain\Repository\UserRepository;
 use R3H6\Oauth2Server\Http\RequestAttribute;
 use R3H6\Oauth2Server\Utility\HashUtility;
 use R3H6\Oauth2Server\Utility\ScopeUtility;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+ /**
+  * Authorization endpoint
+  */
 class AuthorizationController implements LoggerAwareInterface
 {
     public const AUTH_REQUEST_SESSION_KEY = 'oauth2/authRequest';

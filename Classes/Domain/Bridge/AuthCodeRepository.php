@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Bridge;
 
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
@@ -20,9 +21,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  (c) 2020
  *
  ***/
-/**
- * The repository for AuthCodes
- */
+
+ /**
+  * Implementation of PHP League's auth code repository
+  */
 class AuthCodeRepository implements SingletonInterface, AuthCodeRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

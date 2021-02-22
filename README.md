@@ -1,6 +1,7 @@
 # OAuth2 Server
 
-Oauth2 server for TYPO3.
+OAuth2 server for TYPO3 based on [PHP League's OAuth2 Server](https://oauth2.thephpleague.com/).
+
 
 ## Installation
 
@@ -10,9 +11,27 @@ Oauth2 server for TYPO3.
 $ composer require r3h6/oauth2-server
 ```
 
+
 ## Integration
 
+Create your own [public and private keys](https://oauth2.thephpleague.com/installation/#generating-public-and-private-keys).<br>
+Use the provided key pair only for development.
 
+For the authorization code grant you must create a frontend login and a consent page.
+
+You must explicit enable the OAuth2 server in your site configuration yaml by adding at least following configuration:
+
+```yaml
+oauth2: []
+```
+
+## Endpoints
+
+/oauth2/authorize
+
+/oauth2/token
+
+/oauth2/revoke
 
 ## Configuration
 
@@ -46,7 +65,7 @@ oauth2:
   # Type: array
   scopes:
     - scope1
-    - { identifier: scope2, description: 'Description or LLL path'}
+    - { identifier: scope2, description: 'Description or LLL path', consent: true }
 
   # Configuration for protected resources
   resources:
@@ -87,6 +106,7 @@ oauth2:
       scope: 'read,write'
 ```
 
+
 ## Protecting resources from Extbase plugins.
 
 Extbase plugins with routing can still be called through query parameters.<br>
@@ -111,4 +131,3 @@ class ExtbaseController extends ActionController
 }
 
 ```
-

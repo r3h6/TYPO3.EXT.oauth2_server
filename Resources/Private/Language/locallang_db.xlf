@@ -6,7 +6,7 @@
 		</header>
 		<body>
 			<trans-unit id="tx_oauth2server_domain_model_client">
-				<source><![CDATA[Oauth2 Client]]></source>
+				<source><![CDATA[OAuth2 Client]]></source>
 			</trans-unit>
 			<trans-unit id="tx_oauth2server_domain_model_client.allowed_scopes">
 				<source><![CDATA[Allowed scopes]]></source>

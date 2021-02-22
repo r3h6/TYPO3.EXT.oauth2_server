@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Model;
 
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -15,6 +16,7 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
  *  (c) 2020
  *
  ***/
+
 /**
  * Scope
  */
