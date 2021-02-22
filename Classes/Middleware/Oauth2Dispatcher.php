@@ -21,9 +21,20 @@ class Oauth2Dispatcher implements MiddlewareInterface, LoggerAwareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $target = $request->getAttribute(RequestAttribute::TARGET);
-        if ($target === null || $target === true) {
+        $route = $request->getAttribute(RequestAttribute::ROUTE);
+        if ($route === null) {
             return $handler->handle($request);
+        }
+
+        $target = $request->getAttribute(RequestAttribute::TARGET);
+        if ($target === true) {
+            return $handler->handle($request);
+        }
+
+        if ($target === null) {
+            return $this->withErrorHandling(function () {
+                throw new \RuntimeException('Found route without verified target', 1614020502251);
+            });
         }
 
         [$className, $methodName] = explode('::', $target, 2);
@@ -35,33 +46,4 @@ class Oauth2Dispatcher implements MiddlewareInterface, LoggerAwareInterface
             return call_user_func_array($callback, $arguments);
         });
     }
-
-    // public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    // {
-    //     $configuration = $request->getAttribute(Oauth2Configuration::REQUEST_ATTRIBUTE_NAME);
-    //     if ($configuration === null) {
-    //         return $handler->handle($request);
-    //     }
-
-    //     $path = trim($request->getUri()->getPath(), '/');
-    //     $prefix = trim($configuration->getRoutePrefix(), '/');
-    //     if (strpos($path, $prefix . '/') === 0) {
-    //         $serverClass = $configuration->getServerClass();
-    //         $server = GeneralUtility::makeInstance($serverClass);
-    //         if (!($server instanceof Oauth2ServerInterface)) {
-    //             throw new \RuntimeException('Server must implement "'.Oauth2ServerInterface::class.'"', 1613338040226);
-    //         }
-    //         return $this->withErrorHandling(function () use ($server, $request) {
-    //             return $server->handleRequest($request);
-    //         });
-    //     }
-
-    //     $resource = $request->getAttribute(Resource::REQUEST_ATTRIBUTE_NAME);
-    //     if ($resource instanceof Resource && $resource->getTarget() !== null) {
-    //         $request = $request->withAttribute('target', $resource->getTarget());
-    //         return $this->dispatcher->dispatch($request);
-    //     }
-
-    //     return $handler->handle($request);
-    // }
 }
