@@ -1,0 +1,41 @@
+.tx-felogin-pi1,
+.frame-type-felogin_login {
+    legend {
+        @include screen-reader-text;
+    }
+    input[type="submit"] {
+        margin-top: 1rem;
+    }
+    form + p,
+    form + a {
+        margin-top: 1rem;
+        display: inline-block;
+    }
+    .typo3-messages {
+        list-style: none;
+        p {
+            margin-bottom: 0;
+        }
+    }
+    .alert {
+        position: relative;
+        padding: .75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+    }
+    .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
+}
+
+.tx-felogin-pi1 {
+    form {
+        margin-top: 1rem;
+    }
+    div + p {
+        margin-top: 1rem;
+    }
+}

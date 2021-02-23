@@ -4,7 +4,7 @@
     <h3><f:translate key="label.consent" /></h3>
     <p><f:format.raw><f:translate key="label.client_consent_request" arguments="{0: '{client.name}'}"/></f:format.raw></p>
     <f:if condition="{scopes}">
-        <dl clas="scopes">
+        <dl class="scopes">
             <f:for each="{scopes}" as="scope" iteration="i">
                 <f:if condition="{scope.consent}">
                     <dt>{scope.identifier}</dt>
@@ -13,16 +13,16 @@
             </f:for>
         </dl>
     </f:if>
-    <div class="row">
-        <div class="col">
+    <div class="actions">
+        <div class="action">
             <form action="/{configuration.routePrefix}/authorize" method="post">
-                <button class="btn btn-success btn-block" type="submit"><f:translate key="label.button_approve"/></button>
+                <button class="btn-approve" type="submit"><f:translate key="label.button_approve"/></button>
             </form>
         </div>
-        <div class="col">
+        <div class="action">
             <form action="/{configuration.routePrefix}/authorize" method="post">
                 <input type="hidden" name="_method" value="DELETE">
-                <button class="btn btn-danger btn-block" type="submit"><f:translate key="label.button_deny"/></button>
+                <button class="btn-deny" type="submit"><f:translate key="label.button_deny"/></button>
             </form>
         </div>
     </div>
