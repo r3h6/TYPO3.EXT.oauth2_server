@@ -47,19 +47,19 @@ class CreateClientSecretHook
     public function processDatamap_postProcessFieldArray($status, $table, $id, array &$fieldArray, DataHandler $dataHandler)
     {
         if ($table === 'tx_oauth2server_domain_model_client' && $status === 'new') {
-            $secret = base64_encode(random_bytes(32));
 
-            $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
-            $hashedSecret = $hashInstance->getHashedPassword($secret);
+            if (!isset($fieldArray['identifier'])) {
+                $fieldArray['identifier'] = $this->random->generateRandomHexString(20);
+            }
 
-            $identifier = $this->random->generateRandomHexString(20);
-
-            $fieldArray['identifier'] = $identifier;
-            $fieldArray['secret'] = $hashedSecret;
-
-            $this->addFlashMessage(
-                LocalizationUtility::translate('LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:flash_message.client_secret', null, [$secret])
-            );
+            if (!isset($fieldArray['secret'])) {
+                $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
+                $secret = base64_encode(random_bytes(32));
+                $fieldArray['secret'] = $hashInstance->getHashedPassword($secret);
+                $this->addFlashMessage(
+                    LocalizationUtility::translate('LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:flash_message.client_secret', null, [$secret])
+                );
+            }
         }
     }
 
