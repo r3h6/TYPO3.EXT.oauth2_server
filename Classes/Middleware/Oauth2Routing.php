@@ -43,13 +43,6 @@ class Oauth2Routing implements MiddlewareInterface, LoggerAwareInterface
             $request = $request->withMethod($method);
         }
 
-        $query = $request->getQueryParams();
-        if (isset($query['_'])) {
-            $query['redirect_url'] = HashUtility::decode($query['_']);
-            unset($query['_']);
-            $request = $request->withQueryParams($query);
-        }
-
         $path = trim($request->getUri()->getPath(), '/');
         $prefix = trim($configuration->getRoutePrefix(), '/');
 

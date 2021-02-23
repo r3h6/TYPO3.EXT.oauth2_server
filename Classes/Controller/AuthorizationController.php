@@ -37,6 +37,7 @@ class AuthorizationController implements LoggerAwareInterface
 
     use LoggerAwareTrait;
 
+        use LoggerAwareTrait;
     /**
      * @var \R3H6\Oauth2Server\Domain\Repository\UserRepository
      */
@@ -86,7 +87,7 @@ class AuthorizationController implements LoggerAwareInterface
 
         if (!$isAuthenticated) {
             $this->logger->debug('Forward to login', ['redirect_url' => $redirectUrl]);
-            $parameters = ['_' => HashUtility::encode($redirectUrl)];
+            $parameters = ['redirect_url' => $redirectUrl];
             $loginPageUid = $configuration->getLoginPageUid();
             if ($loginPageUid) {
                 $forwardUrl = (string)$site->getRouter()->generateUri((string)$loginPageUid, $parameters, '', RouterInterface::ABSOLUTE_URL);
