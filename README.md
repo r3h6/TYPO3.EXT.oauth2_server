@@ -2,6 +2,11 @@
 
 OAuth2 server for TYPO3 based on [PHP League's OAuth2 Server](https://oauth2.thephpleague.com/).
 
+Features:
+- Supports all grant types from PHP League's OAuth2 Server
+- Can be used to protect API's from other extensions
+- Clients can be limited to certain scopes
+
 
 ## Installation
 
@@ -17,9 +22,11 @@ $ composer require r3h6/oauth2-server
 Create your own [public and private keys](https://oauth2.thephpleague.com/installation/#generating-public-and-private-keys).<br>
 Use the provided key pair only for development.
 
-For the authorization code grant you must create a frontend login and a consent page.
-
 You must explicit enable the OAuth2 server in your site configuration yaml by adding at least following configuration:
+
+For the authorization code grant you must create a frontend login and a consent page.<br>
+This extensions provides a Typoscript setup with a basic design.
+
 
 ```yaml
 oauth2: []
@@ -27,11 +34,11 @@ oauth2: []
 
 ## Endpoints
 
-/oauth2/authorize
-
-/oauth2/token
-
-/oauth2/revoke
+Endpoint | Description
+--- | ---
+/oauth2/authorize | GET = Start authorization, POST = Accept, DELETE = Deny
+/oauth2/token | Issues token
+/oauth2/revoke | Revokes an access token
 
 ## Configuration
 
@@ -130,4 +137,26 @@ class ExtbaseController extends ActionController
     }
 }
 
+```
+
+## Middlewares
+
+This extensions adds several middlewares to the stack.
+In order to work correctly the must be executed in the expected order.
+
+```
+...
+typo3/cms-frontend/site
+...
+r3h6/oauth2-server/configuration
+r3h6/oauth2-server/routing
+r3h6/oauth2-server/authentication
+...
+typo3/cms-frontend/authentication
+...
+r3h6/oauth2-server/firewall
+r3h6/oauth2-server/dispatcher
+...
+typo3/cms-frontend/base-redirect-resolver
+...
 ```
