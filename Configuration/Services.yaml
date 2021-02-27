@@ -3,8 +3,6 @@ services:
     autowire: true
     autoconfigure: true
     public: false
-    bind:
-
 
   R3H6\Oauth2Server\:
     resource: '../Classes/*'
@@ -24,6 +22,9 @@ services:
   R3H6\Oauth2Server\Domain\Repository\UserRepository:
     calls:
       - initializeObject: []
+
+  R3H6\Oauth2Server\Domain\Bridge\RequestEvent:
+    public: true
 
   League\OAuth2\Server\AuthorizationServer:
     factory: '@R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactoryInterface'

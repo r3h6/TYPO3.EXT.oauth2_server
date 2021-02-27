@@ -15,8 +15,10 @@ use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use League\OAuth2\Server\RequestEvent as OAuth2RequestEvent;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use R3H6\Oauth2Server\Configuration\Configuration;
+use R3H6\Oauth2Server\Domain\Bridge\RequestEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***
@@ -53,6 +55,19 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
         $server->enableGrantType($this->getAuthCodeGrant($configuration), $accessTokenTTL);
         $server->enableGrantType($this->getRefreshTokenGrant($configuration), $accessTokenTTL);
         $server->enableGrantType($this->getImplicitGrant($configuration), $accessTokenTTL);
+
+        $listener = GeneralUtility::makeInstance(RequestEvent::class);
+        $events = [
+            OAuth2RequestEvent::USER_AUTHENTICATION_FAILED,
+            OAuth2RequestEvent::CLIENT_AUTHENTICATION_FAILED,
+            OAuth2RequestEvent::ACCESS_TOKEN_ISSUED,
+            OAuth2RequestEvent::REFRESH_TOKEN_ISSUED,
+            OAuth2RequestEvent::REFRESH_TOKEN_CLIENT_FAILED,
+        ];
+
+        foreach ($events as $event) {
+            $server->getEmitter()->addListener($event, $listener);
+        }
 
         return $server;
     }
@@ -92,6 +107,7 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
 
         $refreshTokenTTL = new \DateInterval($configuration->getRefreshTokensExpireIn());
         $grant->setRefreshTokenTTL($refreshTokenTTL);
+
         return $grant;
     }
 
@@ -124,6 +140,7 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
 
         $refreshTokenTTL = new \DateInterval($configuration->getRefreshTokensExpireIn());
         $grant->setRefreshTokenTTL($refreshTokenTTL);
+
         return $grant;
     }
 }
