@@ -3,8 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Http\Firewall;
 
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ServerRequestInterface;
-use R3H6\Oauth2Server\Exception\AccessDeniedException;
 
 /***
  *
@@ -36,7 +36,7 @@ class AuthenticatedRule implements RuleInterface
         $isAuthenticated = ($frontendUser->user['uid'] ?? 0) > 0; // Groups are not yet loaded in context api
 
         if ($this->authenticated && !$isAuthenticated) {
-            throw new AccessDeniedException('No frontend user authentication', 1613842994163);
+            throw OAuthServerException::accessDenied('No frontend user authentication');
         }
     }
 }

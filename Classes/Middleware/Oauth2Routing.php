@@ -11,7 +11,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use R3H6\Oauth2Server\Http\RequestAttribute;
 use R3H6\Oauth2Server\Routing\RouteCollection;
-use R3H6\Oauth2Server\Utility\HashUtility;
 
 /***
  *

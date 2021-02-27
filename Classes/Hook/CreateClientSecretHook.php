@@ -47,7 +47,6 @@ class CreateClientSecretHook
     public function processDatamap_postProcessFieldArray($status, $table, $id, array &$fieldArray, DataHandler $dataHandler)
     {
         if ($table === 'tx_oauth2server_domain_model_client' && $status === 'new') {
-
             if (!isset($fieldArray['identifier'])) {
                 $fieldArray['identifier'] = $this->random->generateRandomHexString(20);
             }

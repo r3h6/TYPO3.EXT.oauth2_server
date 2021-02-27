@@ -3,8 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Security;
 
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ServerRequestInterface;
-use R3H6\Oauth2Server\Exception\AccessDeniedException;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\Http\RequestAttribute;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
@@ -34,7 +34,7 @@ class ExtbaseGuard
             $target = $request->getAttribute(RequestAttribute::TARGET);
             $route = $request->getAttribute(RequestAttribute::ROUTE);
             if ($target !== true || $route === null || $route->getName() !== $routeName) {
-                throw new AccessDeniedException('Requested firewall rule did not apply', 1613599356249);
+                throw OAuthServerException::accessDenied('Requested firewall rule did not apply');
             }
         } catch (\Exception $exception) {
             $this->fillResponseAndStop($exception, $response);

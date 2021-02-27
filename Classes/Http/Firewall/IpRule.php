@@ -3,8 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Http\Firewall;
 
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ServerRequestInterface;
-use R3H6\Oauth2Server\Exception\AccessDeniedException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***
@@ -33,7 +33,7 @@ class IpRule implements RuleInterface
     public function __invoke(ServerRequestInterface $request)
     {
         if ($this->ip && !GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $this->ip)) {
-            throw new AccessDeniedException('IP restriction', 1613681711046);
+            throw OAuthServerException::accessDenied('IP restriction');
         }
     }
 }

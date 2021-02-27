@@ -3,8 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Http\Firewall;
 
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ServerRequestInterface;
-use R3H6\Oauth2Server\Exception\AccessDeniedException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***
@@ -34,7 +34,7 @@ class ScopesRule implements RuleInterface
     {
         $tokenScopes = $request->getAttribute('oauth_scopes', []);
         if (!empty($this->scopes) && count(array_intersect($this->scopes, $tokenScopes)) !== count($this->scopes)) {
-            throw new AccessDeniedException('Require scopes "' . implode('", "', $this->scopes) . '"', 1613596676896);
+            throw OAuthServerException::accessDenied('Require scopes "' . implode('", "', $this->scopes) . '"');
         }
     }
 }

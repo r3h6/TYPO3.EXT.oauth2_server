@@ -67,6 +67,7 @@ trait FunctionalTestHelper
 
     protected function getLastCookie(): string
     {
+        $matches = [];
         preg_match_all('/Set Cookie: (?<cookie>[a-z0-9]+)/', file_get_contents('typo3temp/var/log/auth.log'), $matches);
         return end($matches['cookie']);
     }

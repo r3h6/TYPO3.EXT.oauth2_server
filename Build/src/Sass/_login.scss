@@ -11,18 +11,24 @@
         margin-top: 1rem;
         display: inline-block;
     }
-    .typo3-messages {
+    ul {
         list-style: none;
         p {
             margin-bottom: 0;
         }
     }
+    > ul > li > ul,
     .alert {
         position: relative;
         padding: .75rem 1.25rem;
         margin-bottom: 1rem;
         border: 1px solid transparent;
         border-radius: .25rem;
+    }
+    > ul > li > ul {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
     }
     .alert-success {
         color: #155724;
