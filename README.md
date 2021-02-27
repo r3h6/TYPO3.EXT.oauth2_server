@@ -4,8 +4,9 @@ OAuth2 server for TYPO3 based on [PHP League's OAuth2 Server](https://oauth2.the
 
 Features:
 - Supports all grant types from PHP League's OAuth2 Server
+- Scopes can be limited to clients
+- Grant types can be limited to clients
 - Can be used to protect API's from other extensions
-- Clients can be limited to certain scopes
 
 
 ## Installation
@@ -23,14 +24,16 @@ Create your own [public and private keys](https://oauth2.thephpleague.com/instal
 Use the provided key pair only for development.
 
 You must explicit enable the OAuth2 server in your site configuration yaml by adding at least following configuration:
+```yaml
+oauth2: []
+```
 
 For the authorization code grant you must create a frontend login and a consent page.<br>
 This extensions provides a Typoscript setup with a basic design.
 
+Create a sysfolder and add a client record.
 
-```yaml
-oauth2: []
-```
+![Page tree with new client](./docs/images/pagetree-with-client.png "Page tree with new client")
 
 ## Endpoints
 
