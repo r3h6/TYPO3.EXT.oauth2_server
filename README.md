@@ -145,7 +145,7 @@ class ExtbaseController extends ActionController
 ## Middlewares
 
 This extensions adds several middlewares to the stack.
-In order to work correctly the must be executed in the expected order.
+They must be executed in the expected order in order to work correctly.
 
 ```
 ...
