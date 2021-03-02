@@ -8,23 +8,25 @@ call_user_func(
         // Hooks
         $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \R3H6\Oauth2Server\Hook\CreateClientSecretHook::class;
 
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'],
-            [
-                'tx_oauth2server_domain_model_authcode' => [
-                    'dateField' => 'expires_at',
-                    'expirePeriod' => 1,
-                ],
-                'tx_oauth2server_domain_model_accesstoken' => [
-                    'dateField' => 'expires_at',
-                    'expirePeriod' => 1,
-                ],
-                'tx_oauth2server_domain_model_refreshtoken' => [
-                    'dateField' => 'expires_at',
-                    'expirePeriod' => 1,
-                ],
-            ]
-        );
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'],
+                [
+                    'tx_oauth2server_domain_model_authcode' => [
+                        'dateField' => 'expires_at',
+                        'expirePeriod' => 1,
+                    ],
+                    'tx_oauth2server_domain_model_accesstoken' => [
+                        'dateField' => 'expires_at',
+                        'expirePeriod' => 1,
+                    ],
+                    'tx_oauth2server_domain_model_refreshtoken' => [
+                        'dateField' => 'expires_at',
+                        'expirePeriod' => 1,
+                    ],
+                ]
+            );
+        }
 
         // Plugins
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
