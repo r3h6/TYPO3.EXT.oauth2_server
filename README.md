@@ -163,3 +163,7 @@ r3h6/oauth2-server/dispatcher
 typo3/cms-frontend/base-redirect-resolver
 ...
 ```
+
+## Credits
+
+- [Marco Huber](https://marco-huber.de/) for handing over the extension key and sharing his ideas
