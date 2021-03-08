@@ -1,9 +1,10 @@
 <?php
+
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Model;
 
-use League\OAuth2\Server\Entities\Traits\ScopeTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
 /***
  *
@@ -15,12 +16,19 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
  *  (c) 2020
  *
  ***/
+
 /**
  * Scope
  */
-final class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implements ScopeEntityInterface
+class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implements ScopeEntityInterface
 {
     use EntityTrait;
+
+    /** @var string */
+    protected $description = '';
+
+    /** @var bool */
+    protected $consent = true;
 
     public function __construct($name)
     {
@@ -32,5 +40,23 @@ final class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject im
         return $this->getIdentifier();
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
 
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
+
+    public function getConsent()
+    {
+        return $this->consent;
+    }
+
+    public function setConsent(bool $consent)
+    {
+        $this->consent = $consent;
+    }
 }

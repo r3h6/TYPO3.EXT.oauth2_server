@@ -1,13 +1,14 @@
 <?php
+
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Repository;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 
 /***
  *
@@ -19,6 +20,7 @@ use Psr\Log\LoggerAwareTrait;
  *  (c) 2020
  *
  ***/
+
 /**
  * The repository for Clients
  */
@@ -40,15 +42,16 @@ class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository impleme
         return $this->findOneByIdentifier($clientIdentifier);
     }
 
-
     public function validateClient($clientIdentifier, $clientSecret, $grantType)
     {
         $client = $this->findOneByIdentifier($clientIdentifier);
 
         if ($client === null) {
+            $this->logger->debug('No client found', ['identifier' => $clientIdentifier]);
             return false;
         }
         if (GeneralUtility::inList($client->getGrantType(), $grantType) === false) {
+            $this->logger->debug('Grant type not allowed by client', ['identifier' => $clientIdentifier, 'grantType' => $grantType]);
             return false;
         }
 

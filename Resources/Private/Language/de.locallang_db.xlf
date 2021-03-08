@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-02-27T10:52:42Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+			<trans-unit id="tx_oauth2server_domain_model_client" approved="yes">
+				<source><![CDATA[OAuth2 Client]]></source>
+				<target><![CDATA[OAuth2 Client]]></target>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_client.allowed_scopes" approved="yes">
+				<source><![CDATA[Allowed scopes]]></source>
+				<target><![CDATA[Erlaubte Scopes]]></target>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_client.allowed_scopes.items.0" approved="yes">
+				<source><![CDATA[There are no scopes defined in sites configuration!]]></source>
+				<target><![CDATA[Es sind keine Scopes konfiguriert in der Seitenkonfiguration.]]></target>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type" approved="yes">
+				<source><![CDATA[Grant type]]></source>
+				<target><![CDATA[Grant Type]]></target>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.authorization_code" approved="yes">
+				<source><![CDATA[Authorization code grant]]></source>
+				<target><![CDATA[Authorization Code Grant]]></target>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.client_credentials" approved="yes">
+				<source><![CDATA[Client credentials grant]]></source>
+				<target><![CDATA[Client Credentials Grant]]></target>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.implicit" approved="yes">
+				<source><![CDATA[Implicit grant]]></source>
+				<target><![CDATA[Implicit Grant]]></target>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.password" approved="yes">
+				<source><![CDATA[Resource owner password credentials grant]]></source>
+				<target><![CDATA[Resource Owner Password Credentials Grant]]></target>
+			</trans-unit>
+			<trans-unit id="tx_oauth2server_domain_model_client.grant_type.refresh_token" approved="yes">
+				<source><![CDATA[Refresh token grant]]></source>
+				<target><![CDATA[Refresh Token Grant]]></target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

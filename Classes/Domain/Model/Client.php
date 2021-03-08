@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Model;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -15,10 +17,11 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
  *  (c) 2020
  *
  ***/
+
 /**
  * Client
  */
-final class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements ClientEntityInterface
+class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements ClientEntityInterface
 {
     use EntityTrait;
     use ClientTrait;
@@ -31,7 +34,7 @@ final class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implem
     /**
      * @var string
      */
-    protected $grantType;
+    protected $grantType = '';
 
     /**
      * @var string
@@ -42,6 +45,11 @@ final class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implem
      * @var bool
      */
     protected $skipConsent = false;
+
+    /**
+     * @var string
+     */
+    protected $allowedScopes = '';
 
     /**
      * Get the value of grantType
@@ -101,5 +109,25 @@ final class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implem
     public function setSkipConsent(bool $skipConsent)
     {
         $this->skipConsent = $skipConsent;
+    }
+
+    /**
+     * Get the value of allowedScopes
+     *
+     * @return  string
+     */
+    public function getAllowedScopes()
+    {
+        return $this->allowedScopes;
+    }
+
+    /**
+     * Set the value of allowedScopes
+     *
+     * @param  string  $allowedScopes
+     */
+    public function setAllowedScopes(string $allowedScopes)
+    {
+        $this->allowedScopes = $allowedScopes;
     }
 }

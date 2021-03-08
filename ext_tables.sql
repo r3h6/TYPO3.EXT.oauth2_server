@@ -18,7 +18,8 @@ CREATE TABLE tx_oauth2server_domain_model_client (
 	grant_type varchar(255) DEFAULT '' NOT NULL,
 	redirect_uri text,
 	is_confidential smallint(5) unsigned DEFAULT '0' NOT NULL,
-	skip_consent smallint(5) unsigned DEFAULT '0' NOT NULL
+	skip_consent smallint(5) unsigned DEFAULT '0' NOT NULL,
+	allowed_scopes text
 
 );
 

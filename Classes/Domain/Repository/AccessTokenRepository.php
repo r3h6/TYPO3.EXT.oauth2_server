@@ -1,18 +1,10 @@
 <?php
+
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Repository;
 
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerAwareInterface;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use R3H6\Oauth2Server\Utility\ScopeUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use R3H6\Oauth2Server\Domain\Model\AccessToken;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /***
  *
@@ -24,87 +16,15 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
  *  (c) 2020
  *
  ***/
+
 /**
  * The repository for AccessTokens
  */
-class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements AccessTokenRepositoryInterface, LoggerAwareInterface
+class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    use QueryBuilderAwareRepositoryTrait;
-    use LoggerAwareTrait;
-
-    private const TABLE = 'tx_oauth2server_domain_model_accesstoken';
-
-    /**
-     * @override
-     */
-    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
+    public function persist()
     {
-        $this->logger->debug('Get new token', ['client' => $clientEntity->getIdentifier(), 'scopes' => $scopes, 'userIdentifier' => $userIdentifier]);
-
-        $accessToken = new AccessToken();
-        $accessToken->setClient($clientEntity);
-        $accessToken->setUserIdentifier($userIdentifier);
-        $accessToken->setExpiryDateTime(\DateTimeImmutable::createFromMutable((new \DateTime())->add(new \DateInterval('PT6H'))));
-
-        foreach ($scopes as $scope) {
-            $accessToken->addScope($scope);
-        }
-
-        return $accessToken;
-    }
-
-
-    /**
-     * @override
-     */
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
-    {
-        $now = time();
-        $queryBuilder = $this->createQueryBuilder();
-        $queryBuilder
-            ->insert(self::TABLE)
-            ->values([
-                'identifier' => $accessTokenEntity->getIdentifier(),
-                'expires_at' => $accessTokenEntity->getExpiryDateTime()->getTimestamp(),
-                'user' => $accessTokenEntity->getUserIdentifier(),
-                'scopes' => ScopeUtility::toString(...$accessTokenEntity->getScopes()),
-                'client' => $accessTokenEntity->getClient()->getIdentifier(),
-                'revoked' => 0,
-                'crdate' => $now,
-                'tstamp' => $now,
-            ])
-            ->execute();
-    }
-
-    /**
-     * @override
-     */
-    public function revokeAccessToken($tokenId)
-    {
-        $this->logger->debug('Revoke access token', ['identifier' => $tokenId]);
-
-        $queryBuilder = $this->createQueryBuilder();
-        $queryBuilder
-            ->update(self::TABLE)
-            ->where(
-                $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($tokenId))
-            )
-            ->set('revoked', 1)
-            ->set('tstamp', time())
-            ->execute();
-    }
-
-    /**
-     * @override
-     */
-    public function isAccessTokenRevoked($tokenId)
-    {
-        $row = $this->selectOneByIdentifier($tokenId);
-        if ($row) {
-            return (bool) $row['revoked'];
-        }
-
-        return true;
+        $this->persistenceManager->persistAll();
     }
 
     /**
@@ -114,19 +34,21 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository im
      */
     public function hasValidAccessToken($userId, $clientId, array $scopes)
     {
-        $queryBuilder = $this->createQueryBuilder();
-        $row = $queryBuilder
-            ->select('*')
-            ->from(self::TABLE)
-            ->where(
-                $queryBuilder->expr()->eq('user', $queryBuilder->createNamedParameter($userId)),
-                $queryBuilder->expr()->eq('client', $queryBuilder->createNamedParameter($clientId)),
-                $queryBuilder->expr()->eq('revoked', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-            )
-            ->orderBy('expires_at', 'DESC')
-            ->execute()
-            ->fetch();
+        $query = $this->createQuery();
+        $query->matching(
+            $query->logicalAnd([
+                $query->equals('user', $userId),
+                $query->equals('client', $clientId),
+                $query->equals('revoked', false),
+            ])
+        );
+        $query->setOrderings([
+            'expiresAt' => QueryInterface::ORDER_DESCENDING,
+        ]);
+        $query->setLimit(1);
 
-        return ($row && array_diff(GeneralUtility::trimExplode(',', $row['scopes']), $scopes) === []);
+        $token = $query->execute()->getFirst();
+
+        return $token !== null && array_diff(GeneralUtility::trimExplode(',', $token->getScopes()), $scopes) === [];
     }
 }

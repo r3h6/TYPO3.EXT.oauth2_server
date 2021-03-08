@@ -1,0 +1,8 @@
+plugin.tx_oauth2server_consent {
+  #cat=basic/file/a; type=color; label=LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.header_logo
+  headerLogo = EXT:backend/Resources/Public/Images/typo3_orange.svg
+  #cat=basic/color/a; type=color; label=LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.primary_color
+  primaryColor =
+  #cat=basic//a; type=string; label=LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.footer_text
+  footerText = TYPO3 - Inspire people to share
+}

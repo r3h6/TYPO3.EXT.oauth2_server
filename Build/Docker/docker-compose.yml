@@ -312,7 +312,7 @@ services:
         fi
         php -v | grep '^PHP';
         php -n -c /etc/php/cli-no-xdebug/php.ini \
-          .Build/bin/phpstan analyze -c Build/phpstan.neon
+          .Build/bin/phpstan analyze -c phpstan.neon
       "
 
   unit:

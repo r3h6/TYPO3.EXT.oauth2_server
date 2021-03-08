@@ -1,0 +1,27 @@
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid $gray;
+    margin-bottom: 1rem;
+    border-radius: 2px;
+
+    &:focus {
+        border-color: $darkgray;
+    }
+}
+
+button,
+input[type="submit"],
+input[type="reset"] {
+    width: 100%;
+    color: $white;
+    border: 1px solid $primary;
+    background-color: $primary;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+
+    &:hover {
+        box-shadow: inset 0 0 100px rgb(0 0 0 / 20%);
+    }
+}

@@ -1,37 +1,43 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Controller;
 
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerAwareInterface;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Http\HtmlResponse;
-use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\RedirectResponse;
-use R3H6\Oauth2Server\Utility\HashUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use R3H6\Oauth2Server\Utility\ScopeUtility;
-use TYPO3\CMS\Core\Routing\RouterInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use League\OAuth2\Server\AuthorizationServer;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use R3H6\Oauth2Server\Domain\Repository\UserRepository;
-use League\OAuth2\Server\Exception\OAuthServerException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use R3H6\Oauth2Server\Domain\Model\Client;
 use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
+use R3H6\Oauth2Server\Domain\Repository\UserRepository;
+use R3H6\Oauth2Server\Http\RequestAttribute;
+use R3H6\Oauth2Server\Mvc\Controller\AuthorizationContext;
+use R3H6\Oauth2Server\Utility\ScopeUtility;
+use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Routing\RouterInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+ /**
+  * Authorization endpoint
+  */
 class AuthorizationController implements LoggerAwareInterface
 {
     public const AUTH_REQUEST_SESSION_KEY = 'oauth2/authRequest';
 
     use LoggerAwareTrait;
-    use ExceptionHandlingTrait;
-
-    /**
-     * @var \League\OAuth2\Server\AuthorizationServer
-     */
-    protected $server;
 
     /**
      * @var \R3H6\Oauth2Server\Domain\Repository\UserRepository
@@ -43,103 +49,136 @@ class AuthorizationController implements LoggerAwareInterface
      */
     protected $accessTokenRepository;
 
-    public function __construct(AuthorizationServer $server, UserRepository $userRepository, AccessTokenRepository $accessTokenRepository)
+    /**
+     * @var AuthorizationServer
+     */
+    protected $server;
+
+    public function __construct(UserRepository $userRepository, AccessTokenRepository $accessTokenRepository, AuthorizationServer $server)
     {
-        $this->server = $server;
         $this->userRepository = $userRepository;
         $this->accessTokenRepository = $accessTokenRepository;
+        $this->server = $server;
     }
 
     public function startAuthorization(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var \R3H6\Oauth2Server\Configuration\RuntimeConfiguration configuration */
-        $configuration = $request->getAttribute('oauth2');
-
-        /** @var \TYPO3\CMS\Core\Site\Entity\Site $site */
-        $site = $request->getAttribute('site');
-
-        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication */
-        $frontendUser = $request->getAttribute('frontend.user');
+        $this->logger->debug('Start authorization');
+        $context = $this->createContext($request);
 
         // Validate the HTTP request and return an AuthorizationRequest object.
         $authRequest = $this->server->validateAuthorizationRequest($request);
-        $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, $authRequest);
+        $context->setAuthRequest($authRequest);
 
-        $client = $authRequest->getClient();
-        $isAuthenticated = ($frontendUser->user['uid'] ?? 0) > 0; // Groups are not yet loaded in context api
-        $consentPageUid = (int) $configuration->get('server.consentPageUid');
-
-        if (!$consentPageUid) {
-            throw new \RuntimeException('Missing configuration consent page uid', 1612712296482);
+        // Check if user is logged in, if so, add user to authorization request.
+        if ($context->isAuthenticated()) {
+            $user = $this->userRepository->findByUid($context->getFrontendUserUid());
+            $this->logger->debug('Set user to authorization request', ['user' => $user]);
+            $authRequest->setUser($user);
         }
 
-        $consentUrl = (string) $site->getRouter()->generateUri($consentPageUid, [], '', RouterInterface::ABSOLUTE_URL);
-        $redirectUrl = $client->doSkipConsent() ? (string) $request->getUri(): $consentUrl;
+        $context->getFrontendUser()->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, $authRequest);
 
-        if (!$isAuthenticated) {
-            return new RedirectResponse('/?_='.urlencode(HashUtility::encode($redirectUrl)));
+        if ($this->requiresAuthentication($context)) {
+            return $this->createAuthenticationRedirect($context);
         }
 
-        $clientId = $client->getIdentifier();
-        if ($client->doSkipConsent()) {
-            $this->logger->debug('client skips consent', ['clientId' => $clientId]);
-            return $this->approveAuthorization($request);
+        if ($this->requiresConsent($context)) {
+            return $this->createConsentRedirect($context);
         }
 
-        $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);
-        $userId = $user->getIdentifier();
-        $scopes = ScopeUtility::toStrings(...$authRequest->getScopes());
-        if ($this->accessTokenRepository->hasValidAccessToken($userId, $clientId, $scopes)) {
-            $this->logger->debug('has valid access token', ['userId' => $userId, 'clientId' => $clientId, 'scopes' => $scopes]);
-            return $this->approveAuthorization($request);
-        }
-
-        return new RedirectResponse($consentUrl);
+        return $this->approveAuthorization($request);
     }
 
     public function approveAuthorization(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication */
-        $frontendUser = $request->getAttribute('frontend.user');
-
-        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|null */
-        $authRequest = $frontendUser->getSessionData(self::AUTH_REQUEST_SESSION_KEY);
-        $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, null);
-
-        // Once the user has logged in set the user on the AuthorizationRequest
-        $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);
-
-
-
-
-        $authRequest->setUser($user);
-
-        // Consent
-        $authRequest->setAuthorizationApproved(true);
-
-        return $this->withErrorHandling(function() use ($authRequest) {
-            return $this->server->completeAuthorizationRequest($authRequest, new Response());
-        });
+        $this->logger->debug('Approve authorization');
+        $context = $this->createContext($request);
+        return $this->finishAuthorization($context, true);
     }
 
     public function denyAuthorization(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication */
-        $frontendUser = $request->getAttribute('frontend.user');
+        $this->logger->debug('Deny authorization');
+        $context = $this->createContext($request);
+        return $this->finishAuthorization($context, false);
+    }
+
+    protected function finishAuthorization(AuthorizationContext $context, bool $approved): ResponseInterface
+    {
+        $frontendUser = $context->getFrontendUser();
 
         /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|null */
         $authRequest = $frontendUser->getSessionData(self::AUTH_REQUEST_SESSION_KEY);
         $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, null);
 
-        // Once the user has logged in set the user on the AuthorizationRequest
-        $user = $this->userRepository->findByUid((int)$frontendUser->user['uid']);
-        $authRequest->setUser($user);
+        if ($authRequest === null) {
+            throw new \RuntimeException('Try to approve authorization without starting it', 1614192910231);
+        }
 
-        // Consent
-        $authRequest->setAuthorizationApproved(false);
+        if ($authRequest->getUser() === null) {
+            throw new \RuntimeException('Try to approve authorization request without user', 1614192781931);
+        }
 
-        return $this->withErrorHandling(function() use ($authRequest) {
-            return $this->server->completeAuthorizationRequest($authRequest, new Response());
-        });
+        $authRequest->setAuthorizationApproved($approved);
+
+        return $this->server->completeAuthorizationRequest($authRequest, new Response());
+    }
+
+    protected function createContext(ServerRequestInterface $request)
+    {
+        $context = GeneralUtility::makeInstance(AuthorizationContext::class);
+        $context->setRequest($request);
+        $context->setSite($request->getAttribute('site'));
+        $context->setFrontendUser($request->getAttribute('frontend.user'));
+        $context->setConfiguration($request->getAttribute(RequestAttribute::CONFIGURATION));
+        return $context;
+    }
+
+    protected function requiresAuthentication(AuthorizationContext $context): bool
+    {
+        $authRequest = $context->getAuthRequest();
+        return $authRequest->getUser() === null;
+    }
+
+    protected function requiresConsent(AuthorizationContext $context): bool
+    {
+        $authRequest = $context->getAuthRequest();
+        $user = $authRequest->getUser();
+        $client = $authRequest->getClient();
+        $scopes = ScopeUtility::toStrings(...$authRequest->getScopes());
+
+        if ($user && $this->accessTokenRepository->hasValidAccessToken($user->getIdentifier(), $client->getIdentifier(), $scopes)) {
+            $this->logger->debug('Does not require consent because of valid access token');
+            return false;
+        }
+
+        if ($client instanceof Client && $client->doSkipConsent()) {
+            $this->logger->debug('Does not requrie consent because of client setting');
+            return false;
+        }
+        return $authRequest->isAuthorizationApproved() !== true;
+    }
+
+    protected function createAuthenticationRedirect(AuthorizationContext $context): ResponseInterface
+    {
+        $this->logger->debug('Forward to login');
+        $selfUrl = (string)$context->getRequest()->getUri();
+        $parameters = ['redirect_url' => $selfUrl];
+        $loginPageUid = $context->getConfiguration()->getLoginPageUid();
+        if ($loginPageUid) {
+            $forwardUrl = (string)$context->getSite()->getRouter()->generateUri((string)$loginPageUid, $parameters, '', RouterInterface::ABSOLUTE_URL);
+            return new RedirectResponse($forwardUrl);
+        }
+
+        return new RedirectResponse('/?' . http_build_query($parameters));
+    }
+
+    protected function createConsentRedirect(AuthorizationContext $context): ResponseInterface
+    {
+        $this->logger->debug('Forward to consent');
+        $consentPageUid = $context->getConfiguration()->getConsentPageUid();
+        $forwardUrl = (string)$context->getSite()->getRouter()->generateUri((string)$consentPageUid, [], '', RouterInterface::ABSOLUTE_URL);
+        return new RedirectResponse($forwardUrl);
     }
 }

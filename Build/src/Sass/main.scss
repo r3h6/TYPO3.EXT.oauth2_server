@@ -1,3 +1,8 @@
 @import "variables";
-@import "bootstrap";
-@import "custom";
+@import "mixins";
+@import "normalize";
+@import "typography";
+@import "layout";
+@import "form";
+@import "login";
+@import "consent";

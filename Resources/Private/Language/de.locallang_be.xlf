@@ -1,15 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-02-07T15:25:40Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-02-27T10:47:59Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-			<trans-unit id="flash_message.client_secret" approved="yes" xml:space="preserve">
-				<source><![CDATA[Make sure to copy your client secret now. You won’t be able to see it again:
-%s]]></source>
-				<target><![CDATA[Stellen Sie sicher, dass Sie das "Client Secret" jetzt sichern. Sie werden es nicht mehr sehen können:
-%s]]></target>
+			<trans-unit id="constant.footer_text" approved="yes">
+				<source><![CDATA[Footnote: Static text in footer.]]></source>
+				<target><![CDATA[Fussnote: Text im Footer.]]></target>
+			</trans-unit>
+			<trans-unit id="constant.header_logo" approved="yes">
+				<source><![CDATA[Logo: Path to image file.]]></source>
+				<target><![CDATA[Logo: Pfad zu Bilddatei.]]></target>
+			</trans-unit>
+			<trans-unit id="constant.primary_color" approved="yes">
+				<source><![CDATA[Key color: Theme color for buttons and links.]]></source>
+				<target><![CDATA[Markenfarbe: Farbe für Buttons und Links.]]></target>
+			</trans-unit>
+			<trans-unit id="ext_conf_template.privateKey" approved="yes">
+				<source><![CDATA[Private key: Path to crt file (make sure the file is not public accessible)]]></source>
+				<target><![CDATA[Private key: Pfad zu crt Datei (in einem nich öffentlichen Verzeichnis)]]></target>
+			</trans-unit>
+			<trans-unit id="ext_conf_template.publicKey" approved="yes">
+				<source><![CDATA[Public key: Path to crt file.]]></source>
+				<target><![CDATA[Public key: Pfad zu crt Datei (in einem nich öffentlichen Verzeichnis)]]></target>
+			</trans-unit>
+			<trans-unit id="ext_conf_template.server.consentPageUid" approved="yes">
+				<source><![CDATA[Consent Page: Page UID with "Oauth2: Consent" plugin.]]></source>
+				<target><![CDATA[Consent Seite: Seiten UID mit "Oauth2: Consent" Plugin.]]></target>
+			</trans-unit>
+			<trans-unit id="ext_conf_template.server.loginPageUid" approved="yes">
+				<source><![CDATA[Login Page: Page UID with frontend login.]]></source>
+				<target><![CDATA[Login Seite: Seiten UID mit Frontend Login.]]></target>
+			</trans-unit>
+			<trans-unit id="flash_message.client_secret" approved="yes">
+				<source><![CDATA[Make sure to copy your client secret now. You won’t be able to see it again: %s]]></source>
+				<target><![CDATA[Stellen Sie sicher, dass Sie das "Client Secret" jetzt sichern. Sie werden es nicht mehr sehen können: %s]]></target>
 			</trans-unit>
 		</body>
 	</file>

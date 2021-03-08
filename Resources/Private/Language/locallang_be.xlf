@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2021-02-07T15:25:40Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2021-02-27T10:47:59Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="constant.footer_text">
+				<source><![CDATA[Footnote: Static text in footer.]]></source>
+			</trans-unit>
+			<trans-unit id="constant.header_logo">
+				<source><![CDATA[Logo: Path to image file.]]></source>
+			</trans-unit>
+			<trans-unit id="constant.primary_color">
+				<source><![CDATA[Key color: Theme color for buttons and links.]]></source>
+			</trans-unit>
 			<trans-unit id="ext_conf_template.privateKey">
 				<source><![CDATA[Private key: Path to crt file (make sure the file is not public accessible)]]></source>
 			</trans-unit>
@@ -14,9 +23,11 @@
 			<trans-unit id="ext_conf_template.server.consentPageUid">
 				<source><![CDATA[Consent Page: Page UID with "Oauth2: Consent" plugin.]]></source>
 			</trans-unit>
-			<trans-unit id="flash_message.client_secret" xml:space="preserve">
-				<source><![CDATA[Make sure to copy your client secret now. You won’t be able to see it again:
-%s]]></source>
+			<trans-unit id="ext_conf_template.server.loginPageUid">
+				<source><![CDATA[Login Page: Page UID with frontend login.]]></source>
+			</trans-unit>
+			<trans-unit id="flash_message.client_secret">
+				<source><![CDATA[Make sure to copy your client secret now. You won’t be able to see it again: %s]]></source>
 			</trans-unit>
 		</body>
 	</file>

@@ -1,21 +1,33 @@
 <?php
 
+declare(strict_types=1);
 namespace R3H6\Oauth2Server\Controller;
 
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Http\HtmlResponse;
-use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
-use R3H6\Oauth2Server\Domain\Repository\UserRepository;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\Response;
 
+/***
+ *
+ * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2020
+ *
+ ***/
+
+ /**
+  * Token endpoint
+  */
 class TokenController
 {
     /**
-     * @var \League\OAuth2\Server\AuthorizationServer
+     * @var AuthorizationServer
      */
-    protected $server;
+    private $server;
 
     public function __construct(AuthorizationServer $server)
     {
@@ -24,7 +36,6 @@ class TokenController
 
     public function issueAccessToken(ServerRequestInterface $request): ResponseInterface
     {
-        $response = $this->server->respondToAccessTokenRequest($request, new Response());
-        return $response;
+        return $this->server->respondToAccessTokenRequest($request, new Response());
     }
 }

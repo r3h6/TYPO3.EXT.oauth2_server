@@ -4,7 +4,7 @@
             "config": {
                 "position": [
                     4,
-                    74.333343505859375
+                    74.333333373069763
                 ]
             },
             "name": "New Model Object",
@@ -43,7 +43,7 @@
             "config": {
                 "position": [
                     229,
-                    73.333343505859375
+                    73.333333373069763
                 ]
             },
             "name": "New Model Object",
@@ -149,7 +149,7 @@
             "config": {
                 "position": [
                     927,
-                    62.333343505859375
+                    62.333333373069763
                 ]
             },
             "name": "New Model Object",
@@ -265,6 +265,17 @@
                             "propertyName": "skipConsent",
                             "propertyType": "Boolean",
                             "uid": "564105276474"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsL10nModeExclude": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "allowedScopes",
+                            "propertyType": "Text",
+                            "uid": "332005432717"
                         }
                     ]
                 },
@@ -277,7 +288,7 @@
             "config": {
                 "position": [
                     456,
-                    72.333343505859375
+                    72.333333373069763
                 ]
             },
             "name": "New Model Object",
@@ -361,7 +372,7 @@
             "config": {
                 "position": [
                     1162,
-                    61.333343505859375
+                    61.333333373069763
                 ]
             },
             "name": "New Model Object",
@@ -400,7 +411,7 @@
             "config": {
                 "position": [
                     690,
-                    68.333343505859375
+                    68.333333373069763
                 ]
             },
             "name": "New Model Object",
@@ -529,7 +540,7 @@
     "wires": [],
     "storagePath": "\/var\/www\/html\/packages\/",
     "log": {
-        "last_modified": "2021-02-06 07:03",
+        "last_modified": "2021-02-15 06:36",
         "extension_builder_version": "9.11.0",
         "be_user": " (1)"
     }

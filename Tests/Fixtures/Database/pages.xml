@@ -12,7 +12,7 @@
         <!-- CCJL1/s3TQLMHj9le2bBUlD7tmkPZKlOTZGgBQRb3BE= -->
         <secret>$argon2i$v=19$m=65536,t=16,p=1$NEtuaGV3YlRZd3FYUExKOQ$XT54GLVXwSkiA7K/Wxgk7PjwusW7Ggt8vayEQoJfVYs</secret>
         <name>Test</name>
-        <grant_type>authorization_code</grant_type>
+        <grant_type>authorization_code,client_credentials,implicit,password,refresh_token</grant_type>
         <redirect_uri>http://localhost/</redirect_uri>
         <is_confidential>1</is_confidential>
     </tx_oauth2server_domain_model_client>
@@ -25,7 +25,7 @@
         <uid>1</uid>
         <pid>0</pid>
         <username>user</username>
-        <password>$argon2i$v=19$m=65536,t=16,p=1$d2sudnlVLnFLR2FiZ1R2bQ$6dzuZ230KJGsWGPLrxQEHIOQQViuh1EZW+rHnL8LtT4</password>
+        <password>$argon2i$v=19$m=65536,t=16,p=1$L243eFg0a1VXMXZXVU9hSw$9FS7csryKXuSfc3P7S6myD6zTuqRMQ9CUz0qrvSF0H4</password>
         <usergroup>1</usergroup>
     </fe_users>
 </dataset>

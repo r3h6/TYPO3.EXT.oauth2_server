@@ -20,7 +20,7 @@ return [
         'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_client.gif'
     ],
     'interface' => [
-        'showRecordFieldList' => 'identifier,name,secret,grant_type,redirect_uri,is_confidential,skip_consent',
+        'showRecordFieldList' => 'hidden, row_description, identifier, name, secret, grant_type, redirect_uri, is_confidential, skip_consent, allowed_scopes',
     ],
     'types' => [
         '1' => ['showitem' => '
@@ -35,6 +35,7 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                 --palette--;;hidden,
                 --palette--;;access,
+                allowed_scopes,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                 rowDescription,
         '],
@@ -197,5 +198,19 @@ return [
                 'default' => 0,
             ]
         ],
+        'allowed_scopes' => [
+            'exclude' => false,
+            'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.allowed_scopes',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectCheckBox',
+                'itemsProcFunc' => \R3H6\Oauth2Server\Hook\AllowedScopesItemsProcFunc::class . '->addItems',
+                'size' => 10,
+                'items' => [
+                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.allowed_scopes.items.0', '--div--']
+                ]
+            ]
+        ],
+
     ],
 ];
