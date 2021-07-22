@@ -125,7 +125,7 @@ class AuthorizationController implements LoggerAwareInterface
         return $this->server->completeAuthorizationRequest($authRequest, new Response());
     }
 
-    protected function createContext(ServerRequestInterface $request)
+    protected function createContext(ServerRequestInterface $request): AuthorizationContext
     {
         $context = GeneralUtility::makeInstance(AuthorizationContext::class);
         $context->setRequest($request);
