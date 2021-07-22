@@ -24,12 +24,21 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
 class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements ClientEntityInterface
 {
     use EntityTrait;
-    use ClientTrait;
+
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * @var string
      */
     protected $redirectUri;
+
+    /**
+     * @var bool
+     */
+    protected $isConfidential = false;
 
     /**
      * @var string
@@ -129,5 +138,38 @@ class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements C
     public function setAllowedScopes(string $allowedScopes)
     {
         $this->allowedScopes = $allowedScopes;
+    }
+
+    /**
+     * Get the client's name.
+     *
+     * @return string
+     * @codeCoverageIgnore
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Returns the registered redirect URI (as a string).
+     *
+     * Alternatively return an indexed array of redirect URIs.
+     *
+     * @return string|string[]
+     */
+    public function getRedirectUri()
+    {
+        return $this->redirectUri;
+    }
+
+    /**
+     * Returns true if the client is confidential.
+     *
+     * @return bool
+     */
+    public function isConfidential()
+    {
+        return $this->isConfidential;
     }
 }
