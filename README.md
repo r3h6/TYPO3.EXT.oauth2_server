@@ -63,6 +63,11 @@ oauth2:
   # Type: string
   refreshTokensExpireIn: 'P1M'
 
+  # Requires all public clients to provide a PKCE code challenge
+  # See https://oauth2.thephpleague.com/upgrade-guide/
+  # Type: boolean
+  requireCodeChallengeForPublicClients: true
+
   # Page uid with "Oauth2: Consent" plugin
   # Type: int
   consentPageUid: 0

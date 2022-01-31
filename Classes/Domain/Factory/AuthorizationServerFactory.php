@@ -113,12 +113,17 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
 
     protected function getAuthCodeGrant(Configuration $configuration): AuthCodeGrant
     {
+        /** @var AuthCodeGrant $grant */
         $grant = GeneralUtility::makeInstance(
             AuthCodeGrant::class,
             GeneralUtility::makeInstance(AuthCodeRepositoryInterface::class),
             GeneralUtility::makeInstance(RefreshTokenRepositoryInterface::class),
             new \DateInterval('PT10M')
         );
+
+        if (false === $configuration->getRequireCodeChallengeForPublicClients()) {
+            $grant->disableRequireCodeChallengeForPublicClients();
+        }
 
         $refreshTokenTTL = new \DateInterval($configuration->getRefreshTokensExpireIn());
         $grant->setRefreshTokenTTL($refreshTokenTTL);

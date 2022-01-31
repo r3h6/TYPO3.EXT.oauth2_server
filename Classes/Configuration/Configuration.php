@@ -34,6 +34,7 @@ class Configuration implements \ArrayAccess, SingletonInterface
         'routePrefix' => 'oauth2',
         'accessTokensExpireIn' => 'P1M',
         'refreshTokensExpireIn' => 'P1M',
+        'requireCodeChallengeForPublicClients' => true,
         'consentPageUid' => 0,
         'loginPageUid' => 0,
         'scopes' => [],
@@ -103,6 +104,11 @@ class Configuration implements \ArrayAccess, SingletonInterface
     public function getRefreshTokensExpireIn(): string
     {
         return self::$configuration['refreshTokensExpireIn'];
+    }
+
+    public function getRequireCodeChallengeForPublicClients(): bool
+    {
+        return (bool)self::$configuration['requireCodeChallengeForPublicClients'];
     }
 
     public function getConsentPageUid(): int
