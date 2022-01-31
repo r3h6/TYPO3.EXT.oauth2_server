@@ -27,7 +27,6 @@
 		}
 	},
 	"replace": {
-		"r3h6/oauth2-server": "self.version",
 		"typo3-ter/oauth2-server": "self.version"
 	},
 	"scripts": {
