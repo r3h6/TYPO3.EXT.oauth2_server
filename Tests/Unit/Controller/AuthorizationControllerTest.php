@@ -3,20 +3,20 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Unit\Controller;
 
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use R3H6\Oauth2Server\Configuration\Configuration;
+use R3H6\Oauth2Server\Controller\AuthorizationController;
+use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
+use R3H6\Oauth2Server\Domain\Repository\UserRepository;
+use R3H6\Oauth2Server\Http\RequestAttribute;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Http\RedirectResponse;
-use Psr\Http\Message\ServerRequestInterface;
-use R3H6\Oauth2Server\Http\RequestAttribute;
-use League\OAuth2\Server\AuthorizationServer;
-use R3H6\Oauth2Server\Configuration\Configuration;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
-use R3H6\Oauth2Server\Domain\Repository\UserRepository;
-use R3H6\Oauth2Server\Controller\AuthorizationController;
-use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
-use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /***
  *
