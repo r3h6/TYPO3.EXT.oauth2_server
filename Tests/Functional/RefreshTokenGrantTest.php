@@ -25,10 +25,12 @@ class RefreshTokenGrantTest extends FunctionalTestCase
     use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
 
     /**
-     * @todo
+     * @test
      */
     public function accessTokenIsIssued()
     {
+        self::markTestIncomplete('Todo');
+
         $refreshToken = $this->createRefreshToken();
         self::assertSame('', $refreshToken);
         $response = $this->doFrontendRequest(

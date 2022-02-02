@@ -2,9 +2,8 @@ includes:
   - .Build/vendor/saschaegerer/phpstan-typo3/extension.neon
 
 parameters:
+  parallel:
+      maximumNumberOfProcesses: 5
   level: 5
   paths:
     - Classes/
-  ignoreErrors:
-    - '#Constant TYPO3_MODE not found#'
-
