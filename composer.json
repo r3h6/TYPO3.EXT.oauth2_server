@@ -4,8 +4,14 @@
 	"license":  [
 		"GPL-2.0-or-later"
 	],
-	"description": "",
-	"authors": [],
+	"description": "OAuth2 server for TYPO3",
+	"authors": [
+		{
+			"name": "R3 H6",
+			"email": "r3h6@outlook.com",
+			"role": "Developer"
+		}
+	],
 	"config": {
 		"vendor-dir": ".Build/vendor",
 		"bin-dir": ".Build/bin"
