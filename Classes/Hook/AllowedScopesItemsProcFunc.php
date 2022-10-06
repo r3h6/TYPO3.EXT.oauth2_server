@@ -18,9 +18,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * AllowedScopesItemsProcFunc
-  */
+/**
+ * AllowedScopesItemsProcFunc
+ */
 class AllowedScopesItemsProcFunc
 {
     public function addItems(array &$configuration)

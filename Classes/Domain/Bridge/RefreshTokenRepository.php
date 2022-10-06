@@ -21,9 +21,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * Implementation of PHP League's refresh token repository
-  */
+/**
+ * Implementation of PHP League's refresh token repository
+ */
 class RefreshTokenRepository implements SingletonInterface, RefreshTokenRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

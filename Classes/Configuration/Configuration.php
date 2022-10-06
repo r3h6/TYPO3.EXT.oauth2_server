@@ -20,9 +20,9 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  *
  ***/
 
- /**
-  * Configuration
-  */
+/**
+ * Configuration
+ */
 class Configuration implements \ArrayAccess, SingletonInterface
 {
     /**
@@ -44,25 +44,25 @@ class Configuration implements \ArrayAccess, SingletonInterface
                 'path' => '/authorize',
                 'target' => AuthorizationController::class . '::startAuthorization',
                 'authorization' => false,
-                'methods' => ['GET']
+                'methods' => ['GET'],
             ],
             'oauth2_authorize_approve' => [
                 'path' => '/authorize',
                 'target' => AuthorizationController::class . '::approveAuthorization',
                 'authorization' => false,
-                'methods' => ['POST']
+                'methods' => ['POST'],
             ],
             'oauth2_authorize_deny' => [
                 'path' => '/authorize',
                 'target' => AuthorizationController::class . '::denyAuthorization',
                 'authorization' => false,
-                'methods' => ['DELETE']
+                'methods' => ['DELETE'],
             ],
             'oauth2_token' => [
                 'path' => '/token',
                 'target' => TokenController::class . '::issueAccessToken',
                 'authorization' => false,
-                'methods' => ['POST']
+                'methods' => ['POST'],
             ],
             'oauth2_revoke' => [
                 'path' => '/revoke',

@@ -18,9 +18,9 @@ use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
  *
  ***/
 
- /**
-  * Implementation of PHP League's refresh token entity
-  */
+/**
+ * Implementation of PHP League's refresh token entity
+ */
 final class RefreshToken implements RefreshTokenEntityInterface
 {
     use EntityTrait;

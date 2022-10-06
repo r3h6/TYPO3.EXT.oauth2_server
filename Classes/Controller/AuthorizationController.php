@@ -30,9 +30,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * Authorization endpoint
-  */
+/**
+ * Authorization endpoint
+ */
 class AuthorizationController implements LoggerAwareInterface
 {
     public const AUTH_REQUEST_SESSION_KEY = 'oauth2/authRequest';

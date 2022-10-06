@@ -18,9 +18,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * HttpsRule
-  */
+/**
+ * HttpsRule
+ */
 class HttpsRule implements RuleInterface
 {
     private $https;

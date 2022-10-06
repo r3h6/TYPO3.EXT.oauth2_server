@@ -17,9 +17,9 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  ***/
 
- /**
-  * AuthenticatedRule
-  */
+/**
+ * AuthenticatedRule
+ */
 class AuthenticatedRule implements RuleInterface
 {
     private $authenticated;

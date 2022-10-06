@@ -19,9 +19,9 @@ use TYPO3\CMS\Core\Http\Response;
  *
  ***/
 
- /**
-  * Token endpoint
-  */
+/**
+ * Token endpoint
+ */
 class TokenController
 {
     /**

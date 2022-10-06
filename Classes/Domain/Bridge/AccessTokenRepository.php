@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * Implementation of PHP League's access token repository
-  */
+/**
+ * Implementation of PHP League's access token repository
+ */
 class AccessTokenRepository implements SingletonInterface, AccessTokenRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

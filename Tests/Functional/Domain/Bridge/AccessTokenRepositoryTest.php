@@ -45,7 +45,7 @@ class AccessTokenRepositoryTest extends FunctionalTestCase
     {
         $client = $this->prophesize(ClientEntityInterface::class)->reveal();
         $scopes = [
-            $this->createScopeMock('test')
+            $this->createScopeMock('test'),
         ];
         $userIdentifier = 123;
 

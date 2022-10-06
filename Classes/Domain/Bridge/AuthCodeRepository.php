@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * Implementation of PHP League's auth code repository
-  */
+/**
+ * Implementation of PHP League's auth code repository
+ */
 class AuthCodeRepository implements SingletonInterface, AuthCodeRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

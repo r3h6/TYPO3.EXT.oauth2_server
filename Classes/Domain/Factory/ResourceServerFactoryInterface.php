@@ -17,9 +17,9 @@ use R3H6\Oauth2Server\Configuration\Configuration;
  *
  ***/
 
- /**
-  * ResourceServerFactoryInterface
-  */
+/**
+ * ResourceServerFactoryInterface
+ */
 interface ResourceServerFactoryInterface
 {
     public function __invoke(Configuration $configuration): ResourceServer;

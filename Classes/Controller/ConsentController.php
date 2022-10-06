@@ -21,9 +21,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  *
  ***/
 
- /**
-  * Consent plugin
-  */
+/**
+ * Consent plugin
+ */
 class ConsentController extends ActionController
 {
     /**

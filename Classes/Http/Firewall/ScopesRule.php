@@ -18,9 +18,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * ScopesRule
-  */
+/**
+ * ScopesRule
+ */
 class ScopesRule implements RuleInterface
 {
     private $scopes;

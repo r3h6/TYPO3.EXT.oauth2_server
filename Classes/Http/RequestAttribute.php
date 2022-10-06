@@ -14,9 +14,9 @@ namespace R3H6\Oauth2Server\Http;
  *
  ***/
 
- /**
-  * RequestAttribute
-  */
+/**
+ * RequestAttribute
+ */
 final class RequestAttribute
 {
     public const CONFIGURATION = 'oauth2.config';

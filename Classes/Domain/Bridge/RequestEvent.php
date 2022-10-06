@@ -19,9 +19,9 @@ use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
  *
  ***/
 
- /**
-  * Forwards events from PHP League's OAuth2 Server to TYPO3.
-  */
+/**
+ * Forwards events from PHP League's OAuth2 Server to TYPO3.
+ */
 final class RequestEvent implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
