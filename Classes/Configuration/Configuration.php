@@ -135,21 +135,25 @@ class Configuration implements \ArrayAccess, SingletonInterface
         ArrayUtility::mergeRecursiveWithOverrule(self::$configuration, $overrideConfiguration, true, true, false);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         throw new \RuntimeException('Array access to configuration is read only', 1613841524309);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset(self::$configuration[$offset]);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         throw new \RuntimeException('Array access to configuration is read only', 1613841557884);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return isset(self::$configuration[$offset]) ? self::$configuration[$offset] : null;

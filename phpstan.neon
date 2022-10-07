@@ -1,9 +1,20 @@
 includes:
-  - .Build/vendor/saschaegerer/phpstan-typo3/extension.neon
+    - .Build/vendor/saschaegerer/phpstan-typo3/extension.neon
 
 parameters:
-  parallel:
-      maximumNumberOfProcesses: 5
-  level: 5
-  paths:
-    - Classes/
+    parallel:
+        maximumNumberOfProcesses: 5
+    level: 5
+    paths:
+        - Classes/
+    excludePaths:
+        analyse:
+            - Classes/Security/
+    typo3:
+        requestGetAttributeMapping:
+            oauth_scopes: array
+            oauth_user_id: int
+            oauth_access_token_id: string
+            oauth2.config: \R3H6\Oauth2Server\Configuration\Configuration
+            oauth2.route: \R3H6\Oauth2Server\Routing\Route
+            oauth2.target: string

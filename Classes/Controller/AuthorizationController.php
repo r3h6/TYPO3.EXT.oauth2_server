@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace R3H6\Oauth2Server\Controller;
 
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -77,7 +78,7 @@ class AuthorizationController implements LoggerAwareInterface
             $authRequest->setUser($user);
         }
 
-        $context->getFrontendUser()->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, $authRequest);
+        $context->getFrontendUser()->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, serialize($authRequest));
 
         if ($this->requiresAuthentication($context)) {
             return $this->createAuthenticationRedirect($context);
@@ -108,11 +109,11 @@ class AuthorizationController implements LoggerAwareInterface
     {
         $frontendUser = $context->getFrontendUser();
 
-        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|null */
-        $authRequest = $frontendUser->getSessionData(self::AUTH_REQUEST_SESSION_KEY);
+        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|false|null $authRequest */
+        $authRequest = unserialize($frontendUser->getSessionData(self::AUTH_REQUEST_SESSION_KEY) ?? '');
         $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, null);
 
-        if ($authRequest === null) {
+        if (!$authRequest instanceof AuthorizationRequest) {
             throw new \RuntimeException('Try to approve authorization without starting it', 1614192910231);
         }
 

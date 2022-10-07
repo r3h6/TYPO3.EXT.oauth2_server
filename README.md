@@ -141,7 +141,8 @@ class ExtbaseController extends ActionController
 
     public function initializeAction()
     {
-        $this->guard->checkAccess($GLOBALS['TYPO3_REQUEST'], 'my_resource', $this->response);
+        $this->guard->checkAccess($GLOBALS['TYPO3_REQUEST'], 'my_resource', $this->response); //v10
+        $this->guard->checkAccess($GLOBALS['TYPO3_REQUEST'], 'my_resource'); //v11
     }
 }
 

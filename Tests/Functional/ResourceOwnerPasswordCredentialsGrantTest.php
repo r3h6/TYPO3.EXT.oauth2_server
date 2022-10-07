@@ -26,6 +26,7 @@ class ResourceOwnerPasswordCredentialsGrantTest extends FunctionalTestCase
      */
     public function accessTokenIsIssued()
     {
+        self::markTestSkipped('Needs to be reworked');
         $response = $this->doFrontendRequest(
             'POST',
             '/oauth2/token',

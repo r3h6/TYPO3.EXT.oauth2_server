@@ -23,9 +23,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AllowedScopesItemsProcFunc
 {
-    public function addItems(array &$configuration)
+    public function addItems(array &$configuration): void
     {
-        $pid = $configuration['row']['pid'];
+        $pid = (int)$configuration['row']['pid'];
+        if ($pid < 1) {
+            return;
+        }
 
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $site = $siteFinder->getSiteByPageId($pid);

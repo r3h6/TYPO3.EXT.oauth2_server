@@ -50,8 +50,8 @@ class ConsentController extends ActionController
             throw new ForbiddenException();
         }
 
-        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest */
-        $authRequest = $GLOBALS['TSFE']->fe_user->getSessionData(AuthorizationController::AUTH_REQUEST_SESSION_KEY);
+        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|false|null $authRequest */
+        $authRequest = unserialize($GLOBALS['TSFE']->fe_user->getSessionData(AuthorizationController::AUTH_REQUEST_SESSION_KEY) ?? '');
 
         if (!$authRequest instanceof AuthorizationRequest) {
             throw new PageNotFoundException();

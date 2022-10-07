@@ -4,7 +4,7 @@ THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd "$THIS_SCRIPT_DIR" || exit 1
 cd ../Docker || exit 1
 
-export PHP=${PHP:-7.4}
+export PHP=${PHP:-8.1}
 export DOCKER_PHP_IMAGE=`echo "typo3/core-testing-php${PHP}" | sed -e 's/\.//'`
 export ROOT_DIR=`readlink -f ${PWD}/../../`
 export HOST_UID=`id -u`
@@ -13,6 +13,11 @@ SUITE=$1
 ARGS="${@:2}"
 
 case $SUITE in
+    clean)
+        rm -rf $ROOT_DIR/.Build
+        rm $ROOT_DIR/composer.lock
+        exit 0;
+    ;;
     composer)
         docker-compose run composer $ARGS
     ;;
