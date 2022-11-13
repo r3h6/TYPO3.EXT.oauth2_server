@@ -19,9 +19,9 @@ use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
  *
  ***/
 
- /**
-  * Implementation of PHP League's access token entity
-  */
+/**
+ * Implementation of PHP League's access token entity
+ */
 final class AccessToken implements AccessTokenEntityInterface
 {
     use AccessTokenTrait;

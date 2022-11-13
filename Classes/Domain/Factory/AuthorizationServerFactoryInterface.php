@@ -17,9 +17,9 @@ use R3H6\Oauth2Server\Configuration\Configuration;
  *
  ***/
 
- /**
-  * AuthorizationServerFactoryInterface
-  */
+/**
+ * AuthorizationServerFactoryInterface
+ */
 interface AuthorizationServerFactoryInterface
 {
     public function __invoke(Configuration $configuration): AuthorizationServer;

@@ -19,9 +19,9 @@ use TYPO3\CMS\Core\Http\Response;
  *
  ***/
 
- /**
-  * Revoke access token endpoint
-  */
+/**
+ * Revoke access token endpoint
+ */
 class RevokeController
 {
     /**

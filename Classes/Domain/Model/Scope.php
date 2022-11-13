@@ -35,6 +35,7 @@ class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implemen
         $this->setIdentifier($name);
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->getIdentifier();

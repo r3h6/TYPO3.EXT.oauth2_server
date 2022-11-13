@@ -32,7 +32,9 @@ class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implement
     public function initializeObject()
     {
         /** \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
-        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
+        $querySettings = version_compare(TYPO3_version, '11.5', '>=') ?
+            GeneralUtility::makeInstance(Typo3QuerySettings::class):
+            $this->objectManager->get(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
     }

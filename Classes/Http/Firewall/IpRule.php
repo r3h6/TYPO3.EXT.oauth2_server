@@ -18,9 +18,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * IpRule
-  */
+/**
+ * IpRule
+ */
 class IpRule implements RuleInterface
 {
     private $ip;

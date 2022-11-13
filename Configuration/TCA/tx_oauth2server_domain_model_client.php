@@ -19,9 +19,6 @@ return [
         'searchFields' => 'identifier,name',
         'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_client.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden, row_description, identifier, name, secret, grant_type, redirect_uri, is_confidential, skip_consent, allowed_scopes',
-    ],
     'types' => [
         '1' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,

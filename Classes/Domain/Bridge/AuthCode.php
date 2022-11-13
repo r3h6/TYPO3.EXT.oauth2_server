@@ -19,9 +19,9 @@ use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
  *
  ***/
 
- /**
-  * Implementation of PHP League's auth code entity
-  */
+/**
+ * Implementation of PHP League's auth code entity
+ */
 final class AuthCode implements AuthCodeEntityInterface
 {
     use EntityTrait;

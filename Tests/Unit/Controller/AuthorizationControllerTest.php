@@ -92,13 +92,13 @@ class AuthorizationControllerTest extends UnitTestCase
 
         $request->getUri()->willReturn(new Uri('http://localhost/'));
 
-        $authRequest = $this->prophesize(AuthorizationRequest::class);
-        $this->server->validateAuthorizationRequest($request->reveal())->willReturn($authRequest->reveal());
+        $authRequest = new AuthorizationRequest();//$this->prophesize(AuthorizationRequest::class);
+        $this->server->validateAuthorizationRequest($request->reveal())->willReturn($authRequest);
 
         $response = $this->subject->startAuthorization($request->reveal());
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertRegExp('#/\?redirect_url=#', $response->getHeader('Location')[0]);
-        $frontenUser->setAndSaveSessionData('oauth2/authRequest', $authRequest->reveal())->shouldHaveBeenCalled();
+        $frontenUser->setAndSaveSessionData('oauth2/authRequest', serialize($authRequest))->shouldHaveBeenCalled();
     }
 }

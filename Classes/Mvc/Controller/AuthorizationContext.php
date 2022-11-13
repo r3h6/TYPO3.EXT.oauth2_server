@@ -20,9 +20,9 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  *
  ***/
 
- /**
-  * AuthorizationContext
-  */
+/**
+ * AuthorizationContext
+ */
 class AuthorizationContext
 {
     /** @var ServerRequestInterface */

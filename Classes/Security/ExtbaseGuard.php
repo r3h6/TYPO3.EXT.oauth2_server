@@ -8,7 +8,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\Http\RequestAttribute;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\Response;
 
 /***
  *
@@ -28,7 +27,7 @@ class ExtbaseGuard
 {
     use ExceptionHandlingTrait;
 
-    public function checkAccess(ServerRequestInterface $request, string $routeName, Response $response)
+    public function checkAccess(ServerRequestInterface $request, string $routeName, $response = null)
     {
         try {
             $target = $request->getAttribute(RequestAttribute::TARGET);
@@ -37,11 +36,18 @@ class ExtbaseGuard
                 throw OAuthServerException::accessDenied('Requested firewall rule did not apply');
             }
         } catch (\Exception $exception) {
+            if (version_compare(TYPO3_version, '11.5', '>=')) {
+                $errorResponse = $this->withErrorHandling(function () use ($exception) {
+                    throw $exception;
+                });
+                // @phpstan-ignore-next-line
+                throw new StopActionException('', 0, null, $errorResponse);
+            }
             $this->fillResponseAndStop($exception, $response);
         }
     }
 
-    private function fillResponseAndStop(\Exception $exception, Response $response)
+    private function fillResponseAndStop(\Exception $exception, $response)
     {
         $errorResponse = $this->withErrorHandling(function () use ($exception) {
             throw $exception;

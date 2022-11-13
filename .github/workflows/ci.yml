@@ -9,25 +9,37 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ '7.2', '7.3', '7.4' ]
+        env:
+          - { PHP: '7.4', TYPO3_VERSION: ^10.4 }
+          - { PHP: '7.3', TYPO3_VERSION: ^10.4 }
+          - { PHP: '7.2', TYPO3_VERSION: ^10.4 }
+          - { PHP: '8.1', TYPO3_VERSION: ^11.5 }
+          - { PHP: '8.0', TYPO3_VERSION: ^11.5 }
+          - { PHP: '7.4', TYPO3_VERSION: ^11.5 }
+
+    env: ${{ matrix.env }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Composer
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s composerInstall
-
-      - name: Composer validate
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s composerValidate
+      - name: Install
+        run: ./Build/Scripts/runTests.sh composer require typo3/cms-core="${TYPO3_VERSION}" --no-suggest
 
       - name: Lint PHP
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s lint
+        run: ./Build/Scripts/runTests.sh composer ci:php:lint
+
+      - name: PHP Coding Standards Fixer
+        run: ./Build/Scripts/runTests.sh composer ci:php:cs
 
       - name: PHPStan
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s phpstan
+        run: ./Build/Scripts/runTests.sh composer ci:php:stan
+
+      # - name: PHP Mess Detector
+      #   run: ./Build/Scripts/runTests.sh composer ci:php:md
 
       - name: Unit tests
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s unit
+        run: ./Build/Scripts/runTests.sh unit
 
       - name: Functional tests
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s functional
+        run: ./Build/Scripts/runTests.sh functional

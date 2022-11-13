@@ -16,9 +16,9 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  ***/
 
- /**
-  * RuleInterface
-  */
+/**
+ * RuleInterface
+ */
 interface RuleInterface
 {
     public function __invoke(ServerRequestInterface $request);

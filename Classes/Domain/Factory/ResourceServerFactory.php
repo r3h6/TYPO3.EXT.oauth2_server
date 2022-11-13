@@ -19,9 +19,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * ResourceServerFactory
-  */
+/**
+ * ResourceServerFactory
+ */
 class ResourceServerFactory implements ResourceServerFactoryInterface
 {
     public function __invoke(Configuration $configuration): ResourceServer

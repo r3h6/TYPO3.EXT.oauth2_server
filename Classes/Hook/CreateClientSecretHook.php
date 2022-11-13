@@ -22,9 +22,9 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *
  ***/
 
- /**
-  * CreateClientSecretHook
-  */
+/**
+ * CreateClientSecretHook
+ */
 class CreateClientSecretHook
 {
 
@@ -44,7 +44,10 @@ class CreateClientSecretHook
         $this->random = $random;
     }
 
-    public function processDatamap_postProcessFieldArray($status, $table, $id, array &$fieldArray, DataHandler $dataHandler)
+    /**
+     * @param string|int $id
+     */
+    public function processDatamap_postProcessFieldArray(string $status, string $table, $id, array &$fieldArray, DataHandler $dataHandler): void
     {
         if ($table === 'tx_oauth2server_domain_model_client' && $status === 'new') {
             if (!isset($fieldArray['identifier'])) {
@@ -62,11 +65,11 @@ class CreateClientSecretHook
         }
     }
 
-    protected function addFlashMessage($message, $title = '', $severity = FlashMessage::INFO)
+    protected function addFlashMessage(string $message, string $title = '', int $severity = FlashMessage::INFO): void
     {
-        $message = GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity);
+        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true);
 
         $messageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
-        $messageQueue->addMessage($message);
+        $messageQueue->addMessage($flashMessage);
     }
 }

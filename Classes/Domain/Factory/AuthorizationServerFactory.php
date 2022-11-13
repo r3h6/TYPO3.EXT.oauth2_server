@@ -32,9 +32,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
- /**
-  * AuthorizationServerFactory
-  */
+/**
+ * AuthorizationServerFactory
+ */
 class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
 {
     public function __invoke(Configuration $configuration): AuthorizationServer
@@ -121,7 +121,7 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
             new \DateInterval('PT10M')
         );
 
-        if (false === $configuration->getRequireCodeChallengeForPublicClients()) {
+        if ($configuration->getRequireCodeChallengeForPublicClients() === false) {
             $grant->disableRequireCodeChallengeForPublicClients();
         }
 

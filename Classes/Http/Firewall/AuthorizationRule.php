@@ -17,9 +17,9 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  ***/
 
- /**
-  * AuthorizationRule
-  */
+/**
+ * AuthorizationRule
+ */
 class AuthorizationRule implements RuleInterface
 {
     private $authorization;

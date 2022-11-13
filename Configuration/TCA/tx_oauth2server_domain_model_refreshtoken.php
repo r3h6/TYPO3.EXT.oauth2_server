@@ -13,9 +13,6 @@ return [
         'searchFields' => 'identifier',
         'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_refreshtoken.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'identifier, expires_at, access_token, revoked',
-    ],
     'types' => [
         '1' => ['showitem' => 'identifier, expires_at, access_token, revoked'],
     ],
