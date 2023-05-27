@@ -29,7 +29,7 @@ class ResourceServerFactory implements ResourceServerFactoryInterface
         $server = GeneralUtility::makeInstance(
             ResourceServer::class,
             GeneralUtility::makeInstance(AccessTokenRepositoryInterface::class),
-            GeneralUtility::getFileAbsFileName($configuration->getPublicKey())
+            $configuration->getPublicKey()
         );
 
         return $server;

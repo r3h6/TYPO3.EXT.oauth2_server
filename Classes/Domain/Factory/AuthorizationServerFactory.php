@@ -45,7 +45,7 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
             $this->getClientRepository($configuration),
             $this->getAccessTokenRepository($configuration),
             $this->getScopeRepository($configuration),
-            GeneralUtility::getFileAbsFileName($configuration->getPrivateKey()),
+            $configuration->getPrivateKey(),
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'],
             $this->getResponseType($configuration)
         );
