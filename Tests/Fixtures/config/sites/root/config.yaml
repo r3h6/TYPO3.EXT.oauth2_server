@@ -17,4 +17,5 @@ languages:
 rootPageId: 1
 routes: {  }
 websiteTitle: 'Test Oauth2 Server'
-oauth2: []
+oauth2:
+  enabled: true

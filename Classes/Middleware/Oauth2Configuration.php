@@ -34,7 +34,7 @@ class Oauth2Configuration implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $siteConfiguration = $request->getAttribute('site')->getConfiguration()['oauth2'] ?? false;
-        if ($siteConfiguration === false) {
+        if ($siteConfiguration === false || !($siteConfiguration['enabled'] ?? true)) {
             return $handler->handle($request);
         }
 
