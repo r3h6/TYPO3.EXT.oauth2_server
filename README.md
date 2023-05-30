@@ -29,7 +29,7 @@ oauth2: []
 ```
 
 For the authorization code grant you must create a frontend login and a consent page.<br>
-This extensions provides a Typoscript setup with a basic design.
+This extension provides a Typoscript setup with a basic design.
 
 Create a sysfolder and add a client record.
 
@@ -37,16 +37,19 @@ Create a sysfolder and add a client record.
 
 ## Endpoints
 
-Endpoint | Description
---- | ---
-/oauth2/authorize | GET = Start authorization, POST = Accept, DELETE = Deny
-/oauth2/token | Issues token
-/oauth2/revoke | Revokes an access token
+| Endpoint          | Description                                             |
+|-------------------|---------------------------------------------------------|
+| /oauth2/authorize | GET = Start authorization, POST = Accept, DELETE = Deny |
+| /oauth2/token     | Issues token                                            |
+| /oauth2/revoke    | Revokes an access token                                 |
 
 ## Configuration
 
 ```yaml
 oauth2:
+  # Optional. Defaults to 'true'
+  enabled: true
+
   # Path to private key
   # Type: string
   privateKey: 'EXT:oauth2_server/Resources/Private/Keys/private.key'
