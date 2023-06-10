@@ -3,10 +3,17 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Controller;
 
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use Lcobucci\JWT\Encoding\CannotDecodeContent;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Token\InvalidTokenStructure;
+use Lcobucci\JWT\Token\Parser;
+use Lcobucci\JWT\Token\UnsupportedHeaderFound;
+use Lcobucci\JWT\UnencryptedToken;
 
 /***
  *
@@ -36,8 +43,10 @@ class RevokeController
 
     public function revokeAccessToken(ServerRequestInterface $request): ResponseInterface
     {
-        $tokenId = $request->getAttribute('oauth_access_token_id');
+        $parser = new Parser(new JoseEncoder());
+        $token = $parser->parse($request->getParsedBody()['token']);
+        $tokenId = $token->claims()->get('jti');
         $this->accessTokenRepository->revokeAccessToken($tokenId);
-        return new Response('', 204);
+        return new JsonResponse([], Response::HTTP_OK);
     }
 }

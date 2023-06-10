@@ -67,6 +67,8 @@ class Configuration implements \ArrayAccess, SingletonInterface
             'oauth2_revoke' => [
                 'path' => '/revoke',
                 'target' => RevokeController::class . '::revokeAccessToken',
+                'authorization' => false,
+                'methods' => ['POST'],
             ],
         ],
     ];

@@ -5,6 +5,8 @@ namespace R3H6\Oauth2Server;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***
  *
@@ -33,9 +35,13 @@ trait ExceptionHandlingTrait
         try {
             return $callback();
         } catch (OAuthServerException $exception) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->error($exception->getMessage(), $exception->getTrace());
             return $exception->generateHttpResponse(new Response());
             // @codeCoverageIgnoreStart
         } catch (\Exception $exception) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->error($exception->getMessage(), $exception->getTrace());
             return (new OAuthServerException($exception->getMessage(), $exception->getCode(), 'unknown_error', 500))
                 ->generateHttpResponse(new Response());
             // @codeCoverageIgnoreEnd
