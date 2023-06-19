@@ -40,7 +40,7 @@ class Oauth2Authenticator implements MiddlewareInterface
         }
 
         $authorization = $route->getOptions()['authorization'] ?? true;
-        if ($authorization === false) {
+        if ($authorization === false && !$request->hasHeader('authorization')) {
             return $handler->handle($request);
         }
 

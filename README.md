@@ -95,6 +95,12 @@ oauth2:
       # Type: string
       path: /rest/.*
 
+      # Defines whether authorization is required
+      # Note: A given authorization header is still processed even if this is disabled.
+      #       This is great for APIs with optional authentication
+      # Type: boolean
+      authorization: true
+
       # Resource methods (optional)
       # Type: string|array
       methods: POST|GET
