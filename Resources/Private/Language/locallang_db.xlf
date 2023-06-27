@@ -42,7 +42,7 @@
 				<source><![CDATA[Name]]></source>
 			</trans-unit>
 			<trans-unit id="tx_oauth2server_domain_model_client.redirect_uri">
-				<source><![CDATA[Redirect URL]]></source>
+				<source><![CDATA[Redirect URLs - One per line]]></source>
 			</trans-unit>
 			<trans-unit id="tx_oauth2server_domain_model_client.secret">
 				<source><![CDATA[Secret]]></source>

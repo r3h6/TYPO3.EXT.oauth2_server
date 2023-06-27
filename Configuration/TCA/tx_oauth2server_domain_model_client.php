@@ -164,8 +164,9 @@ return [
             'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.redirect_uri',
             'config' => [
-                'type' => 'input',
-                'size' => 30,
+                'type' => 'text',
+                'cols' => 30,
+                'rows' => 3,
                 'eval' => 'trim'
             ]
         ],
