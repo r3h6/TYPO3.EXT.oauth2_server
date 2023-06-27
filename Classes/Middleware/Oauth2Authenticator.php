@@ -8,8 +8,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\Http\RequestAttribute;
+use R3H6\Oauth2Server\Routing\Route;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -33,14 +35,21 @@ class Oauth2Authenticator implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        /** @var Route|null $route */
         $route = $request->getAttribute(RequestAttribute::ROUTE);
 
         if ($route === null) {
             return $handler->handle($request);
         }
 
-        $authorization = $route->getOptions()['authorization'] ?? true;
-        if ($authorization === false && !$request->hasHeader('authorization')) {
+        /** @var Configuration $configuration */
+        $configuration = $request->getAttribute(RequestAttribute::CONFIGURATION);
+
+        // authorization is required, if the route says so, or
+        // if the route does not require it, the header is present and the route it is not an endpoint of ours
+        $checkAuth = ($route->getOptions()['authorization'] ?? true)
+            || $request->hasHeader('authorization') && !isset($configuration->getEndpoints()[$route->getName()]);
+        if (!$checkAuth) {
             return $handler->handle($request);
         }
 
@@ -69,7 +78,6 @@ class Oauth2Authenticator implements MiddlewareInterface
             });
         }
 
-        // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($request);exit;
         return $handler->handle($request);
     }
 }
