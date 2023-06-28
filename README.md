@@ -17,6 +17,17 @@ Features:
 $ composer require r3h6/oauth2-server
 ```
 
+### Webserver
+
+Note that depending on the webserver and PHP integration therein you might need some additional configuration.
+
+Specifically Apache + CGI (PHP-FPM) needs additional vhost/htaccess configuration in order to have proper `authorization` header handling.
+
+```
+SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+```
+
+See also: https://symfony.com/doc/current/setup/web_server_configuration.html#using-mod-proxy-fcgi-with-apache-2-4
 
 ## Integration
 
@@ -29,7 +40,7 @@ oauth2: []
 ```
 
 For the authorization code grant you must create a frontend login and a consent page.<br>
-This extension provides a Typoscript setup with a basic design.
+This extension provides a TypoScript setup with a basic design.
 
 Create a sysfolder and add a client record.
 
@@ -133,7 +144,7 @@ oauth2:
 
 ## Protecting resources from Extbase plugins.
 
-Extbase plugins with routing can still be called through query parameters.<br>
+Extbase-plugins with routing can still be called through query parameters.<br>
 Such requests bypass the request validation of this extension.<br>
 You should therefore make some htaccess rules denying such request,<br>
 implement the request validation by yourself or<br>
@@ -159,7 +170,7 @@ class ExtbaseController extends ActionController
 
 ## Middlewares
 
-This extensions adds several middlewares to the stack.
+This extension adds several middlewares to the stack.
 They must be executed in the expected order in order to work correctly.
 
 ```
