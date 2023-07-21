@@ -52,11 +52,7 @@ return [
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_refreshtoken.revoked',
             'config' => [
                 'type' => 'check',
-                'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
-                    ]
-                ],
+                'renderType' => 'checkboxToggle',
                 'default' => 0,
             ]
         ],
