@@ -22,11 +22,11 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '1.5.1',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-11.5.99',
+            'typo3' => '12.4.0-12.4.99',
         ],
         'conflicts' => [],
         'suggests' => [
-            'scheduler' => '10.4.0-11.5.99',
+            'scheduler' => '12.4.0-12.4.99',
         ],
     ],
 ];
