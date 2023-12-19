@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 use R3H6\Oauth2Server\Domain\Model\User;
+use R3H6\Oauth2Server\Domain\Model\UserGroup;
 
 return [
     User::class => [
@@ -11,5 +12,8 @@ return [
                 'fieldName' => 'uid'
             ],
         ],
+    ],
+    UserGroup::class => [
+        'tableName' => 'fe_groups',
     ],
 ];
