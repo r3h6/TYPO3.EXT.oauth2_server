@@ -71,7 +71,7 @@ class RefreshTokenRepositoryTest extends FunctionalTestCase
      */
     public function revokeRefreshTokenUpdatesDatabaseRecord()
     {
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.csv'));
         $this->subject->revokeRefreshToken('aaaabbbbccccddddeeeeffffgggg');
         $this->assertCSVDataSet('EXT:oauth2_server/Tests/Fixtures/DatabaseAssertions/revokeRefreshTokenUpdatesDatabaseRecord.csv');
     }
@@ -89,7 +89,7 @@ class RefreshTokenRepositoryTest extends FunctionalTestCase
      */
     public function isRefreshTokenRevokedReturnsFalseForNotRevokedRefreshToken()
     {
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.csv'));
         self::assertFalse($this->subject->isRefreshTokenRevoked('aaaabbbbccccddddeeeeffffgggg'));
     }
     /**
@@ -97,7 +97,7 @@ class RefreshTokenRepositoryTest extends FunctionalTestCase
      */
     public function isRefreshTokenRevokedReturnsFalseForRevokedRefreshToken()
     {
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.csv'));
         self::assertTrue($this->subject->isRefreshTokenRevoked('hhhhiiiijjjjkkkkllllmmmmnnnn'));
     }
 }

@@ -1,0 +1,12 @@
+"pages",,,,,,,
+,"uid","pid","title",,,,,
+,"1","0","Test Oauth2 Server",,,,,
+"tx_oauth2server_domain_model_client",,,,,,,
+,"uid","pid","identifier","secret","name","grant_type","redirect_uri","is_confidential"
+,"1","1","660e56d72c12f9a1e2ec","$argon2i$v=19$m=65536,t=16,p=1$NEtuaGV3YlRZd3FYUExKOQ$XT54GLVXwSkiA7K/Wxgk7PjwusW7Ggt8vayEQoJfVYs","Test","authorization_code,client_credentials,implicit,password,refresh_token","http://localhost/","1"
+"fe_groups",,,,,,,
+,"uid","pid","title",,,,,
+,"1","1","Oauth2",,,,,
+"fe_users",,,,,,,
+,"uid","pid","username","password","usergroup",,,
+,"1","0","user","$argon2i$v=19$m=65536,t=16,p=1$L243eFg0a1VXMXZXVU9hSw$9FS7csryKXuSfc3P7S6myD6zTuqRMQ9CUz0qrvSF0H4","1",,,
