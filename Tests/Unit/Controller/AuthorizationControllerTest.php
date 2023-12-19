@@ -56,7 +56,7 @@ class AuthorizationControllerTest extends UnitTestCase
      */
     private $accessTokenRepository;
 
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     public function setUp(): void
     {
