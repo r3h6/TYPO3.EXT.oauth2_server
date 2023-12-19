@@ -1,9 +1,14 @@
 <?php
 
+use R3H6\Oauth2Server\Middleware\Oauth2Configuration;
+use R3H6\Oauth2Server\Middleware\Oauth2Routing;
+use R3H6\Oauth2Server\Middleware\Oauth2Authenticator;
+use R3H6\Oauth2Server\Middleware\Oauth2Firewall;
+use R3H6\Oauth2Server\Middleware\Oauth2Dispatcher;
 return [
     'frontend' => [
         'r3h6/oauth2-server/configuration' => [
-            'target' => \R3H6\Oauth2Server\Middleware\Oauth2Configuration::class,
+            'target' => Oauth2Configuration::class,
             'after' => [
                 'typo3/cms-frontend/site',
             ],
@@ -12,7 +17,7 @@ return [
             ],
         ],
         'r3h6/oauth2-server/routing' => [
-            'target' => \R3H6\Oauth2Server\Middleware\Oauth2Routing::class,
+            'target' => Oauth2Routing::class,
             'after' => [
                 'r3h6/oauth2-server/configuration',
             ],
@@ -21,7 +26,7 @@ return [
             ],
         ],
         'r3h6/oauth2-server/authentication' => [
-            'target' => \R3H6\Oauth2Server\Middleware\Oauth2Authenticator::class,
+            'target' => Oauth2Authenticator::class,
             'after' => [
                 'r3h6/oauth2-server/routing',
             ],
@@ -30,7 +35,7 @@ return [
             ],
         ],
         'r3h6/oauth2-server/firewall' => [
-            'target' => \R3H6\Oauth2Server\Middleware\Oauth2Firewall::class,
+            'target' => Oauth2Firewall::class,
             'after' => [
                 'typo3/cms-frontend/authentication',
             ],
@@ -39,7 +44,7 @@ return [
             ],
         ],
         'r3h6/oauth2-server/dispatcher' => [
-            'target' => \R3H6\Oauth2Server\Middleware\Oauth2Dispatcher::class,
+            'target' => Oauth2Dispatcher::class,
             'after' => [
                 'r3h6/oauth2-server/firewall',
             ],

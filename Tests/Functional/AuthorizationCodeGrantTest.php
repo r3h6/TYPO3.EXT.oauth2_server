@@ -19,7 +19,7 @@ namespace R3H6\Oauth2Server\Tests\Functional;
  */
 class AuthorizationCodeGrantTest extends FunctionalTestCase
 {
-    use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
+    use FunctionalTestHelper;
 
     /**
      * @test

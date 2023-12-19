@@ -3,6 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Functional;
 
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\Writer\FileWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***
@@ -44,8 +46,8 @@ abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functiona
             'R3H6' => [
                 'Oauth2Server' => [
                     'writerConfiguration' => [
-                        \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
-                            \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [],
+                        LogLevel::DEBUG => [
+                            FileWriter::class => [],
                         ],
                     ],
                 ],
@@ -55,8 +57,8 @@ abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functiona
                     'Frontend' => [
                         'Authentication' => [
                             'writerConfiguration' => [
-                                \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
-                                    \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
+                                LogLevel::DEBUG => [
+                                    FileWriter::class => [
                                         'logFile' =>  'typo3temp/var/log/auth.log',
                                     ],
                                 ],

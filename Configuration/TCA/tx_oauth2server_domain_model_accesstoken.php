@@ -31,11 +31,8 @@ return [
             'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_accesstoken.expires_at',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'size' => 10,
-                'eval' => 'datetime',
-                'default' => time()
+                'type' => 'datetime',
+                'size' => 10
             ],
         ],
         'user' => [

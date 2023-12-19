@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use R3H6\Oauth2Server\Configuration\Configuration;
 use TYPO3\CMS\Core\Context\Context;
@@ -36,12 +37,13 @@ class ConsentController extends ActionController
      */
     protected $configuration;
 
-    public function showAction()
+    public function showAction(): ResponseInterface
     {
         $authRequest = $this->getAuthRequestOrFail();
         $this->view->assign('configuration', $this->configuration);
         $this->view->assign('client', $authRequest->getClient());
         $this->view->assign('scopes', $authRequest->getScopes());
+        return $this->htmlResponse();
     }
 
     protected function getAuthRequestOrFail(): AuthorizationRequest
@@ -50,7 +52,7 @@ class ConsentController extends ActionController
             throw new ForbiddenException();
         }
 
-        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|false|null $authRequest */
+        /** @var AuthorizationRequest|false|null $authRequest */
         $authRequest = unserialize($GLOBALS['TSFE']->fe_user->getSessionData(AuthorizationController::AUTH_REQUEST_SESSION_KEY) ?? '');
 
         if (!$authRequest instanceof AuthorizationRequest) {

@@ -3,6 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -24,14 +26,14 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 /**
  * The repository for Clients
  */
-class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ClientRepositoryInterface, LoggerAwareInterface
+class ClientRepository extends Repository implements ClientRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     public function initializeObject()
     {
         /** \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
-        $querySettings = version_compare(TYPO3_version, '11.5', '>=') ?
+        $querySettings = version_compare(GeneralUtility::makeInstance(Typo3Version::class)->getVersion(), '11.5', '>=') ?
             GeneralUtility::makeInstance(Typo3QuerySettings::class):
             $this->objectManager->get(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);

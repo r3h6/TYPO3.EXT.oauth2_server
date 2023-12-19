@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Hook;
 
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -29,12 +30,12 @@ class CreateClientSecretHook
 {
 
     /**
-     * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
+     * @var FlashMessageService
      */
     protected $flashMessageService;
 
     /**
-     * @var \TYPO3\CMS\Core\Crypto\Random
+     * @var Random
      */
     protected $random;
 
@@ -65,7 +66,7 @@ class CreateClientSecretHook
         }
     }
 
-    protected function addFlashMessage(string $message, string $title = '', int $severity = FlashMessage::INFO): void
+    protected function addFlashMessage(string $message, string $title = '', int $severity = AbstractMessage::INFO): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true);
 

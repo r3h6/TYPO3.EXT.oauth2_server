@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
@@ -27,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * The repository for Scopes
  */
-class ScopeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ScopeRepositoryInterface, LoggerAwareInterface
+class ScopeRepository extends Repository implements ScopeRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

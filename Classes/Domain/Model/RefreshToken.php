@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /***
  *
  * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
@@ -13,11 +14,10 @@ namespace R3H6\Oauth2Server\Domain\Model;
  *  (c) 2020
  *
  ***/
-
 /**
  * RefreshToken
  */
-class RefreshToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class RefreshToken extends AbstractEntity
 {
     /** @var string */
     protected $identifier;

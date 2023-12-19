@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Unit\Controller;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Psr\Http\Message\ServerRequestInterface;
@@ -34,6 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AuthorizationControllerTest extends UnitTestCase
 {
+    use ProphecyTrait;
     /**
      * @var AuthorizationController
      */
@@ -98,7 +100,7 @@ class AuthorizationControllerTest extends UnitTestCase
         $response = $this->subject->startAuthorization($request->reveal());
 
         self::assertInstanceOf(RedirectResponse::class, $response);
-        self::assertRegExp('#/\?redirect_url=#', $response->getHeader('Location')[0]);
+        self::assertMatchesRegularExpression('#/\?redirect_url=#', $response->getHeader('Location')[0]);
         $frontenUser->setAndSaveSessionData('oauth2/authRequest', serialize($authRequest))->shouldHaveBeenCalled();
     }
 }

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Client
  */
-class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements ClientEntityInterface
+class Client extends AbstractEntity implements ClientEntityInterface
 {
     use EntityTrait;
 

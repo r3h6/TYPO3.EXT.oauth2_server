@@ -3,6 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Functional\Domain\Bridge;
 
+use Prophecy\PhpUnit\ProphecyTrait;
+use R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use R3H6\Oauth2Server\Domain\Bridge\RefreshTokenRepository;
@@ -25,7 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RefreshTokenRepositoryTest extends FunctionalTestCase
 {
-    use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
+    use ProphecyTrait;
+    use FunctionalTestHelper;
 
     /**
      * @var RefreshTokenRepository

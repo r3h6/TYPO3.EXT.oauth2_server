@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
@@ -20,7 +21,7 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
 /**
  * Scope
  */
-class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implements ScopeEntityInterface
+class Scope extends AbstractValueObject implements ScopeEntityInterface
 {
     use EntityTrait;
 

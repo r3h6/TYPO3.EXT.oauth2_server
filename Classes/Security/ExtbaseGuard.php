@@ -3,6 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Security;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ServerRequestInterface;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
@@ -36,7 +38,7 @@ class ExtbaseGuard
                 throw OAuthServerException::accessDenied('Requested firewall rule did not apply');
             }
         } catch (\Exception $exception) {
-            if (version_compare(TYPO3_version, '11.5', '>=')) {
+            if (version_compare(GeneralUtility::makeInstance(Typo3Version::class)->getVersion(), '11.5', '>=')) {
                 $errorResponse = $this->withErrorHandling(function () use ($exception) {
                     throw $exception;
                 });

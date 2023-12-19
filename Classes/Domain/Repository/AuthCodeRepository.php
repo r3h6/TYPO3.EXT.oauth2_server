@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
 /***
  *
  * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
@@ -13,11 +14,10 @@ namespace R3H6\Oauth2Server\Domain\Repository;
  *  (c) 2020
  *
  ***/
-
 /**
  * The repository for AuthCodes
  */
-class AuthCodeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class AuthCodeRepository extends Repository
 {
     public function persist()
     {

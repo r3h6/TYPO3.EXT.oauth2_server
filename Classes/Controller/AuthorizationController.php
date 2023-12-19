@@ -41,12 +41,12 @@ class AuthorizationController implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var \R3H6\Oauth2Server\Domain\Repository\UserRepository
+     * @var UserRepository
      */
     protected $userRepository;
 
     /**
-     * @var \R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository
+     * @var AccessTokenRepository
      */
     protected $accessTokenRepository;
 
@@ -109,7 +109,7 @@ class AuthorizationController implements LoggerAwareInterface
     {
         $frontendUser = $context->getFrontendUser();
 
-        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest|false|null $authRequest */
+        /** @var AuthorizationRequest|false|null $authRequest */
         $authRequest = unserialize($frontendUser->getSessionData(self::AUTH_REQUEST_SESSION_KEY) ?? '');
         $frontendUser->setAndSaveSessionData(self::AUTH_REQUEST_SESSION_KEY, null);
 
