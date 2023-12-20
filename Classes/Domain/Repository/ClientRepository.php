@@ -60,7 +60,7 @@ class ClientRepository extends Repository implements ClientRepositoryInterface, 
         }
 
         $passwordHashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-        $hashInstance = $passwordHashFactory->getDefaultHashInstance(TYPO3_MODE);
+        $hashInstance = $passwordHashFactory->getDefaultHashInstance('FE');
         return $hashInstance->checkPassword($clientSecret, $client->getSecret());
     }
 }
