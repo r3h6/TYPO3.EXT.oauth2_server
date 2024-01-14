@@ -3,13 +3,13 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Security;
 
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ServerRequestInterface;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\Http\RequestAttribute;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 /***
  *
@@ -43,7 +43,7 @@ class ExtbaseGuard
                     throw $exception;
                 });
                 // @phpstan-ignore-next-line
-                throw new StopActionException('', 0, null, $errorResponse);
+                throw new ImmediateResponseException($errorResponse);
             }
             $this->fillResponseAndStop($exception, $response);
         }
@@ -57,6 +57,6 @@ class ExtbaseGuard
 
         $response->setStatus($errorResponse->getStatusCode(), $errorResponse->getReasonPhrase());
         $response->setContent((string)$errorResponse->getBody());
-        throw new StopActionException();
+        throw new ImmediateResponseException($errorResponse);
     }
 }
