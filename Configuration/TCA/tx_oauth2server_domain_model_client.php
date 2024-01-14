@@ -17,6 +17,9 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime'
         ],
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
         'searchFields' => 'identifier,name',
         'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_client.gif'
     ],
