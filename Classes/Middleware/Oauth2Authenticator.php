@@ -62,6 +62,10 @@ class Oauth2Authenticator implements MiddlewareInterface
         try {
             $request = $resourceServer->validateAuthenticatedRequest($request);
 
+            $parametersFromPost = $request->getParsedBody();
+            $parametersFromPost['logintype'] = LoginType::LOGIN;
+            $request = $request->withParsedBody($parametersFromPost);
+
             $GLOBALS['TYPO3_REQUEST'] = $request;
             //$GLOBALS['T3_SERVICES']['auth'][Oauth2AuthService::class]['available'] = true
             // we have to set $_POST directly, because
