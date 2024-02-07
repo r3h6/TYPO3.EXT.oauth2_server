@@ -8,6 +8,7 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -29,12 +30,12 @@ class CreateClientSecretHook
 {
 
     /**
-     * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
+     * @var FlashMessageService
      */
     protected $flashMessageService;
 
     /**
-     * @var \TYPO3\CMS\Core\Crypto\Random
+     * @var Random
      */
     protected $random;
 
@@ -65,7 +66,7 @@ class CreateClientSecretHook
         }
     }
 
-    protected function addFlashMessage(string $message, string $title = '', int $severity = FlashMessage::INFO): void
+    protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true);
 

@@ -17,16 +17,14 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'R3 H6',
     'author_email' => 'r3h6@outlook.com',
     'state' => 'beta',
-    'createDirs' => '',
-    'clearCacheOnLoad' => 0,
     'version' => '1.5.1',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-11.5.99',
+            'typo3' => '12.4.0-12.4.99',
         ],
         'conflicts' => [],
         'suggests' => [
-            'scheduler' => '10.4.0-11.5.99',
+            'scheduler' => '12.4.0-12.4.99',
         ],
     ],
 ];

@@ -3,6 +3,10 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Functional;
 
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\Writer\FileWriter;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***
  *
  * This file is part of the "OAuth2 Server" Extension for TYPO3 CMS.
@@ -19,15 +23,15 @@ namespace R3H6\Oauth2Server\Tests\Functional;
  */
 abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/oauth2_server',
     ];
 
-    protected $pathsToLinkInTestInstance = [
+    protected array $pathsToLinkInTestInstance = [
         'typo3conf/ext/oauth2_server/Tests/Fixtures/config/sites' => 'typo3conf/sites',
     ];
 
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         // 'SYS' => [
         //     'encryptionKey' => self::ENCRYPTION_KEY,
         // ],
@@ -42,8 +46,8 @@ abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functiona
             'R3H6' => [
                 'Oauth2Server' => [
                     'writerConfiguration' => [
-                        \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
-                            \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [],
+                        LogLevel::DEBUG => [
+                            FileWriter::class => [],
                         ],
                     ],
                 ],
@@ -53,8 +57,8 @@ abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functiona
                     'Frontend' => [
                         'Authentication' => [
                             'writerConfiguration' => [
-                                \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
-                                    \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
+                                LogLevel::DEBUG => [
+                                    FileWriter::class => [
                                         'logFile' =>  'typo3temp/var/log/auth.log',
                                     ],
                                 ],
@@ -69,7 +73,7 @@ abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functiona
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/pages.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/pages.csv'));
         $this->setUpFrontendRootPage(1);
     }
 }

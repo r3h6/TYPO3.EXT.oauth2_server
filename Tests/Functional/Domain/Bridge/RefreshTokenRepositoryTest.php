@@ -3,6 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Functional\Domain\Bridge;
 
+use Prophecy\PhpUnit\ProphecyTrait;
+use R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use R3H6\Oauth2Server\Domain\Bridge\RefreshTokenRepository;
@@ -25,7 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RefreshTokenRepositoryTest extends FunctionalTestCase
 {
-    use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
+    use ProphecyTrait;
+    use FunctionalTestHelper;
 
     /**
      * @var RefreshTokenRepository
@@ -71,7 +74,7 @@ class RefreshTokenRepositoryTest extends FunctionalTestCase
      */
     public function revokeRefreshTokenUpdatesDatabaseRecord()
     {
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.csv'));
         $this->subject->revokeRefreshToken('aaaabbbbccccddddeeeeffffgggg');
         $this->assertCSVDataSet('EXT:oauth2_server/Tests/Fixtures/DatabaseAssertions/revokeRefreshTokenUpdatesDatabaseRecord.csv');
     }
@@ -89,7 +92,7 @@ class RefreshTokenRepositoryTest extends FunctionalTestCase
      */
     public function isRefreshTokenRevokedReturnsFalseForNotRevokedRefreshToken()
     {
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.csv'));
         self::assertFalse($this->subject->isRefreshTokenRevoked('aaaabbbbccccddddeeeeffffgggg'));
     }
     /**
@@ -97,7 +100,7 @@ class RefreshTokenRepositoryTest extends FunctionalTestCase
      */
     public function isRefreshTokenRevokedReturnsFalseForRevokedRefreshToken()
     {
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_refreshtoken.csv'));
         self::assertTrue($this->subject->isRefreshTokenRevoked('hhhhiiiijjjjkkkkllllmmmmnnnn'));
     }
 }

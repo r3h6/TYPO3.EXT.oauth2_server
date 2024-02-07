@@ -3,6 +3,8 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Functional\Domain\Bridge;
 
+use Prophecy\PhpUnit\ProphecyTrait;
+use R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use R3H6\Oauth2Server\Domain\Bridge\AccessTokenRepository;
@@ -25,7 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AccessTokenRepositoryTest extends FunctionalTestCase
 {
-    use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
+    use ProphecyTrait;
+    use FunctionalTestHelper;
 
     /**
      * @var AccessTokenRepository
@@ -84,7 +87,7 @@ class AccessTokenRepositoryTest extends FunctionalTestCase
      */
     public function revokeAccessTokenUpdatesDatabaseRecord()
     {
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_accesstoken.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_accesstoken.csv'));
         $this->subject->revokeAccessToken('aaaabbbbccccddddeeeeffffgggg');
         $this->assertCSVDataSet('EXT:oauth2_server/Tests/Fixtures/DatabaseAssertions/revokeAccessTokenUpdatesDatabaseRecord.csv');
     }
@@ -102,7 +105,7 @@ class AccessTokenRepositoryTest extends FunctionalTestCase
      */
     public function isAccessTokenRevokedReturnsFalseForNotRevokedAccessToken()
     {
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_accesstoken.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_accesstoken.csv'));
         self::assertFalse($this->subject->isAccessTokenRevoked('aaaabbbbccccddddeeeeffffgggg'));
     }
     /**
@@ -110,7 +113,7 @@ class AccessTokenRepositoryTest extends FunctionalTestCase
      */
     public function isAccessTokenRevokedReturnsFalseForRevokedAccessToken()
     {
-        $this->importDataSet('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_accesstoken.xml');
+        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName('EXT:oauth2_server/Tests/Fixtures/Database/tx_oauth2server_domain_model_accesstoken.csv'));
         self::assertTrue($this->subject->isAccessTokenRevoked('hhhhiiiijjjjkkkkllllmmmmnnnn'));
     }
 }

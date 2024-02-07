@@ -3,10 +3,10 @@
 declare(strict_types=1);
 namespace R3H6\Oauth2Server\Tests\Unit\Domain\Repository;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use R3H6\Oauth2Server\Domain\Model\Client;
 use R3H6\Oauth2Server\Domain\Model\Scope;
 use R3H6\Oauth2Server\Domain\Repository\ScopeRepository;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /***
@@ -25,13 +25,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ScopeRepositoryTest extends UnitTestCase
 {
+    use ProphecyTrait;
     /**
      * @test
      */
     public function finalizeScopesReturnsSameScopesIfClientAllowedScopesIsEmpty()
     {
-        $objectManager = $this->prophesize(ObjectManagerInterface::class);
-        $repository = new ScopeRepository($objectManager->reveal());
+        $repository = new ScopeRepository();
 
         $scopes = [];
         $scopes[] = new Scope('a');
@@ -50,8 +50,7 @@ class ScopeRepositoryTest extends UnitTestCase
      */
     public function finalizeScopesReturnsOnlyAllowedScopes()
     {
-        $objectManager = $this->prophesize(ObjectManagerInterface::class);
-        $repository = new ScopeRepository($objectManager->reveal());
+        $repository = new ScopeRepository();
 
         $scopes = [];
         $scopes[] = new Scope('a');

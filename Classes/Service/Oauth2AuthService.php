@@ -32,7 +32,7 @@ class Oauth2AuthService extends AbstractAuthenticationService
 
     public function getRequest(): ?ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'] ?? null;
+        return $this->authInfo['request'] ?? $GLOBALS['TYPO3_REQUEST'];
     }
 
     public function getUser()
