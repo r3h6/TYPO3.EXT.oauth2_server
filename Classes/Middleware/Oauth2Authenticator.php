@@ -57,6 +57,9 @@ class Oauth2Authenticator implements MiddlewareInterface
         // $resourceServerFactory = GeneralUtility::makeInstance(ResourceServerFactory::class);
         // $resourceServer = $resourceServerFactory($configuration);
 
+        // this is required so that Extbase ConfigurationManager deems this as FE context
+        // the next line causes the ConfigurationManager to get initialized (due to DI chain)
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $resourceServer = GeneralUtility::makeInstance(ResourceServer::class);
 
         try {
