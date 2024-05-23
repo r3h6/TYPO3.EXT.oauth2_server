@@ -38,6 +38,6 @@ class RevokeController
     {
         $tokenId = $request->getAttribute('oauth_access_token_id');
         $this->accessTokenRepository->revokeAccessToken($tokenId);
-        return new Response('', 204);
+        return (new Response())->withStatus(204);
     }
 }
