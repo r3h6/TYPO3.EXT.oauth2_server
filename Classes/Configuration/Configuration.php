@@ -24,7 +24,7 @@ class Configuration implements SingletonInterface
         'privateKey' => 'EXT:oauth2_server/Resources/Private/Keys/private.key',
         'publicKey' => 'EXT:oauth2_server/Resources/Private/Keys/public.key',
         'routePrefix' => 'oauth2',
-        'accessTokensExpireIn' => 'P1M',
+        'accessTokensExpireIn' => 'PT1H',
         'refreshTokensExpireIn' => 'P1M',
         'requireCodeChallengeForPublicClients' => true,
         'consentPageUid' => null,

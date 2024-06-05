@@ -17,8 +17,11 @@ use R3H6\Oauth2Server\Domain\Repository\UserRepository;
 use R3H6\Oauth2Server\Mvc\Controller\AuthorizationContext;
 use R3H6\Oauth2Server\Session\Session;
 use R3H6\Oauth2Server\Utility\ScopeUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\RouterInterface;
+use TYPO3\CMS\Core\Security\RequestToken;
 
 /***
  *
@@ -39,7 +42,8 @@ class AuthorizationController
         private readonly AuthorizationServer $server,
         private readonly LoggerInterface $logger,
         private readonly ResponseFactoryInterface $responseFactory,
-        private readonly Configuration $configuration
+        private readonly Configuration $configuration,
+        private readonly Context $context,
     ) {}
 
     public function startAuthorization(ServerRequestInterface $request): ResponseInterface
@@ -62,17 +66,13 @@ class AuthorizationController
             return $this->createConsentRedirect($context);
         }
 
-        return $this->approveAuthorization($request);
+        return $this->finishAuthorization($context, true);
     }
 
     public function approveAuthorization(ServerRequestInterface $request): ResponseInterface
     {
-        $authRequest = Session::fromRequest($request)->get();
-        Session::fromRequest($request)->clear();
-        if (!$authRequest instanceof AuthorizationRequest) {
-            throw new \RuntimeException('Try to approve authorization without starting it', 1614192910231);
-        }
-
+        $this->validateRequestToken();
+        $authRequest = $this->getAuthRequestFromSession($request);
         $context = new AuthorizationContext($request, $authRequest, $this->configuration);
         $this->logger->debug('Approve authorization');
         return $this->finishAuthorization($context, true);
@@ -80,14 +80,30 @@ class AuthorizationController
 
     public function denyAuthorization(ServerRequestInterface $request): ResponseInterface
     {
-        $authRequest = Session::fromRequest($request)->get();
-        Session::fromRequest($request)->clear();
-        if (!$authRequest instanceof AuthorizationRequest) {
-            throw new \RuntimeException('Try to deny authorization without starting it', 1614192910231);
-        }
+        $this->validateRequestToken();
+        $authRequest = $this->getAuthRequestFromSession($request);
         $context = new AuthorizationContext($request, $authRequest, $this->configuration);
         $this->logger->debug('Deny authorization');
         return $this->finishAuthorization($context, false);
+    }
+
+    protected function validateRequestToken(): void
+    {
+        $securityAspect = SecurityAspect::provideIn($this->context);
+        $requestToken = $securityAspect->getReceivedRequestToken();
+        if (!$requestToken instanceof RequestToken || $requestToken->scope !== 'oauth2/consent') {
+            throw new \RuntimeException('Invalid request token', 1614192910231);
+        }
+    }
+
+    protected function getAuthRequestFromSession(ServerRequestInterface $request): AuthorizationRequest
+    {
+        $authRequest = Session::fromRequest($request)->get();
+        Session::fromRequest($request)->clear();
+        if (!$authRequest instanceof AuthorizationRequest) {
+            throw new \RuntimeException('No authorization flow started', 1614192910231);
+        }
+        return $authRequest;
     }
 
     protected function finishAuthorization(AuthorizationContext $context, bool $approved): ResponseInterface

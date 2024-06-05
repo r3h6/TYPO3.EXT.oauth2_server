@@ -58,7 +58,8 @@
 		"ci:libs:pack": "phar-composer build softcreatr/jsonpath Resources/Private/Php/jsonpath.phar",
 		"fix:php:cs": "php-cs-fixer fix",
 		"test:rector": "rector process --dry-run",
-		"fix:rector": "rector process"
+		"fix:rector": "rector process",
+		"ci:typo3:scan": "typo3scan scan Classes/ -i strong"
 	},
 	"extra": {
 		"typo3/cms": {
@@ -67,6 +68,7 @@
 		}
 	},
 	"require-dev": {
+		"michielroos/typo3scan": "^1.7",
 		"phpmd/phpmd": "^2.15",
 		"phpspec/prophecy": "^1.19",
 		"saschaegerer/phpstan-typo3": "^1.10",

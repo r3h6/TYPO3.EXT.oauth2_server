@@ -3,6 +3,8 @@
 namespace R3H6\Oauth2Server\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\NoConfigurationException;
@@ -23,8 +25,10 @@ use Symfony\Component\Routing\RouteCollection;
  *
  ***/
 
-abstract class AbstractRouter implements RouterInterface
+abstract class AbstractRouter implements RouterInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     abstract protected function getRoutes(): RouteCollection;
 
     public function match(ServerRequestInterface $request): ?Route
@@ -41,6 +45,7 @@ abstract class AbstractRouter implements RouterInterface
         try {
             $parameters = $matcher->matchRequest($symfonyRequest);
         } catch (ResourceNotFoundException | MethodNotAllowedException | NoConfigurationException $e) {
+            $this->logger->debug('No route found', ['exception' => $e]);
             return null;
         }
 

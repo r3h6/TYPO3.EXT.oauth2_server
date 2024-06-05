@@ -10,6 +10,7 @@ use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\Session\Session;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Error\Http\ForbiddenException;
+use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
@@ -48,6 +49,9 @@ class ConsentController extends ActionController
             );
         }
 
+        $requestToken = RequestToken::create('oauth2/consent');
+
+        $this->view->assign('requestToken', $requestToken);
         $this->view->assign('configuration', $this->configuration);
         $this->view->assign('client', $authRequest->getClient());
         $this->view->assign('scopes', $authRequest->getScopes());

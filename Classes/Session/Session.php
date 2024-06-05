@@ -32,7 +32,7 @@ final class Session
 
     public function get(): ?AuthorizationRequest
     {
-        $authRequest = unserialize($this->frontendUserAuthentication->getKey('ses', self::AUTH_REQUEST));
+        $authRequest = unserialize((string)$this->frontendUserAuthentication->getKey('ses', self::AUTH_REQUEST));
         if ($authRequest instanceof AuthorizationRequest) {
             return $authRequest;
         }

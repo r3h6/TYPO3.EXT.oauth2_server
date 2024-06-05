@@ -15,15 +15,15 @@
     </f:if>
     <div class="actions">
         <div class="action">
-            <form action="/{configuration.routePrefix}/authorize" method="post">
+            <f:form actionUri="/{configuration.routePrefix}/authorize" method="post" requestToken="{requestToken}">
                 <button class="btn-approve" type="submit"><f:translate key="label.button_approve"/></button>
-            </form>
+            </f:form>
         </div>
         <div class="action">
-            <form action="/{configuration.routePrefix}/authorize" method="post">
+            <f:form actionUri="/{configuration.routePrefix}/authorize" method="post" requestToken="{requestToken}">
                 <input type="hidden" name="_method" value="DELETE">
                 <button class="btn-deny" type="submit"><f:translate key="label.button_deny"/></button>
-            </form>
+            </f:form>
         </div>
     </div>
 

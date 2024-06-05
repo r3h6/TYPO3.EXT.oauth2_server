@@ -45,7 +45,7 @@ class Dispatcher implements MiddlewareInterface
             return $this->handleException($exception);
         }
 
-        $controller = $route->getOptions()['controller'] ?? null;
+        $controller = $route->getDefaults()['_controller'] ?? null;
         if ($controller === null) {
             return $handler->handle($request);
         }
