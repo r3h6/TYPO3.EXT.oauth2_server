@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Bridge;
 
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
@@ -21,9 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-/**
- * Implementation of PHP League's refresh token repository
- */
 class RefreshTokenRepository implements SingletonInterface, RefreshTokenRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;

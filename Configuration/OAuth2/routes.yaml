@@ -1,0 +1,57 @@
+oauth_token:
+    path: /token
+    controller: R3H6\Oauth2Server\Controller\TokenController::issueAccessToken
+    methods: [POST]
+    schemes: https
+    options:
+      oauth2_constraints: true
+
+
+oauth_authorize:
+    path: /authorize
+    controller: R3H6\Oauth2Server\Controller\AuthorizationController::startAuthorization
+    methods: [GET]
+    schemes: https
+    options:
+      oauth2_constraints: true
+
+
+oauth_authorize_approve:
+    path: /authorize
+    controller: R3H6\Oauth2Server\Controller\AuthorizationController::approveAuthorization
+    methods: [POST]
+    schemes: https
+    options:
+      oauth2_constraints: true
+
+
+
+oauth_authorize_deny:
+    path: /authorize
+    controller: R3H6\Oauth2Server\Controller\AuthorizationController::denyAuthorization
+    methods: [DELETE]
+    schemes: https
+    options:
+      oauth2_constraints: true
+
+
+
+oauth_revoke:
+    path: /revoke
+    controller: R3H6\Oauth2Server\Controller\RevokeController::revokeAccessToken
+    methods: [POST]
+    schemes: https
+    options:
+      oauth2_constraints: true
+
+oauth_test:
+    path: /test
+    methods: [POST]
+    schemes: https
+    options:
+      oauth2_constraints:
+        - 'frontend.user.isLoggedIn == true'
+        - 'ip("172.18.*")'
+        - '"foo" in request.getAttribute("oauth_scopes")'
+
+

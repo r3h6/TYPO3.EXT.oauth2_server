@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Model;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -18,9 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-/**
- * Client
- */
 class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements ClientEntityInterface
 {
     use EntityTrait;

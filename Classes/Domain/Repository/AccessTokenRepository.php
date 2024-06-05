@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -17,9 +18,6 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  *
  ***/
 
-/**
- * The repository for AccessTokens
- */
 class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     public function persist()
@@ -36,11 +34,11 @@ class AccessTokenRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->logicalAnd([
+            $query->logicalAnd(
                 $query->equals('user', $userId),
                 $query->equals('client', $clientId),
                 $query->equals('revoked', false),
-            ])
+            )
         );
         $query->setOrderings([
             'expiresAt' => QueryInterface::ORDER_DESCENDING,

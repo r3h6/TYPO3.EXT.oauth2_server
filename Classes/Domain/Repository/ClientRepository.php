@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
@@ -21,9 +22,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
  *
  ***/
 
-/**
- * The repository for Clients
- */
 class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ClientRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
@@ -31,9 +29,7 @@ class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository impleme
     public function initializeObject()
     {
         /** \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
-        $querySettings = version_compare(TYPO3_version, '11.5', '>=') ?
-            GeneralUtility::makeInstance(Typo3QuerySettings::class):
-            $this->objectManager->get(Typo3QuerySettings::class);
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
     }
@@ -58,7 +54,7 @@ class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository impleme
         }
 
         $passwordHashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-        $hashInstance = $passwordHashFactory->getDefaultHashInstance(TYPO3_MODE);
+        $hashInstance = $passwordHashFactory->getDefaultHashInstance('FE');
         return $hashInstance->checkPassword($clientSecret, $client->getSecret());
     }
 }

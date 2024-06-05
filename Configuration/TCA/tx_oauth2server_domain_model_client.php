@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client',
@@ -14,17 +15,17 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
-            'endtime' => 'endtime'
+            'endtime' => 'endtime',
         ],
         'searchFields' => 'identifier,name',
-        'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_client.gif'
+        'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_client.gif',
     ],
     'types' => [
         '1' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                 identifier,
-                name,
                 secret,
+                name,
                 grant_type,
                 redirect_uri,
                 is_confidential,
@@ -64,9 +65,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
         'hidden' => [
             'exclude' => true,
@@ -78,10 +79,10 @@ return [
                     [
                         0 => '',
                         1 => '',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
-            ]
+            ],
         ],
         'starttime' => [
             'exclude' => true,
@@ -90,10 +91,10 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
+                'default' => 0,
             ],
             'l10n_mode' => 'exclude',
-            'l10n_display' => 'defaultAsReadonly'
+            'l10n_display' => 'defaultAsReadonly',
         ],
         'endtime' => [
             'exclude' => true,
@@ -104,11 +105,11 @@ return [
                 'eval' => 'datetime,int',
                 'default' => 0,
                 'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2038)
-                ]
+                    'upper' => mktime(0, 0, 0, 1, 1, 2038),
+                ],
             ],
             'l10n_mode' => 'exclude',
-            'l10n_display' => 'defaultAsReadonly'
+            'l10n_display' => 'defaultAsReadonly',
         ],
         'rowDescription' => [
             'exclude' => true,
@@ -116,37 +117,45 @@ return [
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
-                'cols' => 30
-            ]
+                'cols' => 30,
+            ],
         ],
         'identifier' => [
-            'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.identifier',
             'config' => [
                 'readOnly' => true,
-                'type' => 'input',
+                'type' => 'uuid',
                 'size' => 30,
-                'eval' => 'trim,alphanum_x,unique'
+                'eval' => 'trim,alphanum_x,unique',
             ],
         ],
         'name' => [
-            'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.name',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required'
+                'eval' => 'trim,required',
             ],
         ],
         'secret' => [
-            'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.secret',
             'config' => [
-                'type' => 'passthrough'
+                // 'readOnly' => true,
+                'type' => 'password',
+                'fieldControl' => [
+                    'passwordGenerator' => [
+                        'renderType' => 'passwordGenerator',
+                        // 'options' => [
+                        //     'title' => 'Create random password',
+                        //     'passwordRules' => [
+                        //         'specialCharacters' => true,
+                        //     ],
+                        // ],
+                    ],
+                ],
             ],
         ],
         'grant_type' => [
-            'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type',
             'config' => [
                 'type' => 'select',
@@ -161,45 +170,41 @@ return [
             ],
         ],
         'redirect_uri' => [
-            'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.redirect_uri',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
                 'rows' => 3,
-                'eval' => 'trim'
-            ]
+                'eval' => 'trim',
+            ],
         ],
         'is_confidential' => [
-            'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.is_confidential',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 0,
-            ]
+            ],
         ],
         'skip_consent' => [
-            'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.skip_consent',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 0,
-            ]
+            ],
         ],
         'allowed_scopes' => [
-            'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.allowed_scopes',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'itemsProcFunc' => \R3H6\Oauth2Server\Hook\AllowedScopesItemsProcFunc::class . '->addItems',
+                // 'itemsProcFunc' => \R3H6\Oauth2Server\Hook\AllowedScopesItemsProcFunc::class . '->addItems',
                 'size' => 10,
                 'items' => [
-                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.allowed_scopes.items.0', '--div--']
-                ]
-            ]
+                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.allowed_scopes.items.0', '--div--'],
+                ],
+            ],
         ],
 
     ],

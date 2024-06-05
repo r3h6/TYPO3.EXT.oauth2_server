@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Controller;
 
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
@@ -19,9 +20,6 @@ use TYPO3\CMS\Core\Http\Response;
  *
  ***/
 
-/**
- * Revoke access token endpoint
- */
 class RevokeController
 {
     /**

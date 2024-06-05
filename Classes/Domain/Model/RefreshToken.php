@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Model;
 
 /***
@@ -14,9 +15,6 @@ namespace R3H6\Oauth2Server\Domain\Model;
  *
  ***/
 
-/**
- * RefreshToken
- */
 class RefreshToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /** @var string */

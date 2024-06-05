@@ -7,38 +7,37 @@ services:
   R3H6\Oauth2Server\:
     resource: '../Classes/*'
 
-  R3H6\Oauth2Server\Hook\:
-    resource: '../Classes/Hook/*'
+  R3H6\Oauth2Server\Server\Server:
     public: true
 
   R3H6\Oauth2Server\Controller\:
     resource: '../Classes/Controller/*'
     public: true
 
-  R3H6\Oauth2Server\Domain\Repository\ClientRepository:
-    calls:
-      - initializeObject: []
 
-  R3H6\Oauth2Server\Domain\Repository\UserRepository:
-    calls:
-      - initializeObject: []
+
+
+  # R3H6\Oauth2Server\Domain\Repository\ClientRepository:
+  #   calls:
+  #     - initializeObject: []
+
+  # R3H6\Oauth2Server\Domain\Repository\UserRepository:
+  #   calls:
+  #     - initializeObject: []
 
   R3H6\Oauth2Server\Domain\Bridge\RequestEvent:
     public: true
 
   League\OAuth2\Server\AuthorizationServer:
-    factory: '@R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactoryInterface'
-    public: true
+    factory: '@R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory'
+    # public: true
 
-  R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactoryInterface:
-    class: R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory
+  # R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactoryInterface:
+  #   class: R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory
 
   League\OAuth2\Server\ResourceServer:
-    factory: '@R3H6\Oauth2Server\Domain\Factory\ResourceServerFactoryInterface'
+    factory: '@R3H6\Oauth2Server\Domain\Factory\ResourceServerFactory'
     public: true
-
-  R3H6\Oauth2Server\Domain\Factory\ResourceServerFactoryInterface:
-    class: R3H6\Oauth2Server\Domain\Factory\ResourceServerFactory
 
   League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface:
     class: R3H6\Oauth2Server\Domain\Bridge\AccessTokenRepository

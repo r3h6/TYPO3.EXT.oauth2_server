@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Factory;
 
 use League\OAuth2\Server\AuthorizationServer;
@@ -32,10 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-/**
- * AuthorizationServerFactory
- */
-class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
+class AuthorizationServerFactory
 {
     public function __invoke(Configuration $configuration): AuthorizationServer
     {

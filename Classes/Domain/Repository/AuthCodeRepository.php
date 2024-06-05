@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
 /***
@@ -14,9 +15,6 @@ namespace R3H6\Oauth2Server\Domain\Repository;
  *
  ***/
 
-/**
- * The repository for AuthCodes
- */
 class AuthCodeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     public function persist()

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Model;
 
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -17,9 +18,6 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
  *
  ***/
 
-/**
- * Scope
- */
 class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implements ScopeEntityInterface
 {
     use EntityTrait;

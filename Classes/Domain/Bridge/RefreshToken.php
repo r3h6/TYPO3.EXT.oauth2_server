@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Bridge;
 
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
@@ -18,9 +19,6 @@ use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
  *
  ***/
 
-/**
- * Implementation of PHP League's refresh token entity
- */
 final class RefreshToken implements RefreshTokenEntityInterface
 {
     use EntityTrait;
