@@ -7,9 +7,6 @@ services:
   R3H6\Oauth2Server\:
     resource: '../Classes/*'
 
-  R3H6\Oauth2Server\Server\Server:
-    public: true
-
   R3H6\Oauth2Server\Controller\:
     resource: '../Classes/Controller/*'
     public: true
@@ -30,10 +27,7 @@ services:
 
   League\OAuth2\Server\AuthorizationServer:
     factory: '@R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory'
-    # public: true
-
-  # R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactoryInterface:
-  #   class: R3H6\Oauth2Server\Domain\Factory\AuthorizationServerFactory
+    public: true
 
   League\OAuth2\Server\ResourceServer:
     factory: '@R3H6\Oauth2Server\Domain\Factory\ResourceServerFactory'

@@ -6,6 +6,7 @@ namespace R3H6\Oauth2Server\Controller;
 
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -14,6 +15,8 @@ use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\Domain\Model\Client;
 use R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository;
 use R3H6\Oauth2Server\Domain\Repository\UserRepository;
+use R3H6\Oauth2Server\Event\ModifyAuthenticationRedirectEvent;
+use R3H6\Oauth2Server\Event\ModifyConsentRedirectEvent;
 use R3H6\Oauth2Server\Mvc\Controller\AuthorizationContext;
 use R3H6\Oauth2Server\Session\Session;
 use R3H6\Oauth2Server\Utility\ScopeUtility;
@@ -44,6 +47,7 @@ class AuthorizationController
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly Configuration $configuration,
         private readonly Context $context,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function startAuthorization(ServerRequestInterface $request): ResponseInterface
@@ -58,12 +62,30 @@ class AuthorizationController
 
         Session::fromRequest($request)->set($authRequest);
 
-        if ($this->requiresAuthentication($context)) {
-            return $this->createAuthenticationRedirect($context);
+        $modifyAuthenticationRedirectEvent = new ModifyAuthenticationRedirectEvent(
+            $this->configuration,
+            $context,
+            $this->requiresAuthentication($context),
+            $this->createAuthenticationRedirect($context)
+        );
+
+        $this->eventDispatcher->dispatch($modifyAuthenticationRedirectEvent);
+
+        if ($modifyAuthenticationRedirectEvent->getRequiresAuthentication()) {
+            return $modifyAuthenticationRedirectEvent->getResponse();
         }
 
-        if ($this->requiresConsent($context)) {
-            return $this->createConsentRedirect($context);
+        $modifyConsentRedirectEvent = new ModifyConsentRedirectEvent(
+            $this->configuration,
+            $context,
+            $this->requiresConsent($context),
+            $this->createConsentRedirect($context)
+        );
+
+        $this->eventDispatcher->dispatch($modifyConsentRedirectEvent);
+
+        if ($modifyConsentRedirectEvent->getRequiresConsent()) {
+            return $modifyConsentRedirectEvent->getResponse();
         }
 
         return $this->finishAuthorization($context, true);
@@ -164,8 +186,7 @@ class AuthorizationController
         if ($loginPageUid) {
             $forwardUrl = (string)$context->getSite()->getRouter()->generateUri((string)$loginPageUid, $parameters, '', RouterInterface::ABSOLUTE_URL);
         }
-
-        $this->logger->debug('Forward to login', ['url' => $forwardUrl]);
+        $this->logger->debug('Builded forward to login url', ['url' => $forwardUrl]);
         return new RedirectResponse($forwardUrl);
     }
 
@@ -173,7 +194,7 @@ class AuthorizationController
     {
         $consentPageUid = $context->getConfiguration()->getConsentPageUid();
         $forwardUrl = (string)$context->getSite()->getRouter()->generateUri((string)$consentPageUid, [], '', RouterInterface::ABSOLUTE_URL);
-        $this->logger->debug('Forward to consent', ['url' => $forwardUrl]);
+        $this->logger->debug('Builded forward to consent url', ['url' => $forwardUrl]);
         return new RedirectResponse($forwardUrl);
     }
 }

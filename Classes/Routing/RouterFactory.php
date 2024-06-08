@@ -2,6 +2,7 @@
 
 namespace R3H6\Oauth2Server\Routing;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use R3H6\Oauth2Server\Configuration\Configuration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,6 +22,7 @@ class RouterFactory
 {
     public function __construct(
         private readonly Configuration $configuration,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function fromRequest(ServerRequestInterface $request): RouterInterface
@@ -28,6 +30,6 @@ class RouterFactory
         $path = trim($request->getUri()->getPath(), '/');
         $prefix = trim($this->configuration->getRoutePrefix(), '/');
         $class = str_starts_with($path, $prefix) ? AuthorizationRouter::class : ResourceRouter::class;
-        return GeneralUtility::makeInstance($class, $this->configuration);
+        return GeneralUtility::makeInstance($class, $this->eventDispatcher, $this->configuration);
     }
 }

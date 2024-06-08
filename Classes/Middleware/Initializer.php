@@ -51,17 +51,24 @@ class Initializer implements MiddlewareInterface
         $request = $request->withAttribute('oauth2.route', $route);
 
         if ($request->hasHeader('Authorization')) {
-            $resourceServer = GeneralUtility::makeInstance(ResourceServer::class);
             try {
-                $request = $resourceServer->validateAuthenticatedRequest($request);
-                $request = $request->withQueryParams(array_merge($request->getQueryParams(), ['logintype' => 'login']));
-                $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
-                $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] = false;
+                $request = $this->handleAuthorization($request);
             } catch (\Exception $exception) {
                 return $this->handleException($exception);
             }
         }
 
         return $handler->handle($request);
+    }
+
+    private function handleAuthorization(ServerRequestInterface $request): ServerRequestInterface
+    {
+        $resourceServer = GeneralUtility::makeInstance(ResourceServer::class);
+        $request = $resourceServer->validateAuthenticatedRequest($request);
+        $request = $request->withQueryParams(array_merge($request->getQueryParams(), ['logintype' => 'login']));
+        $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] = false;
+
+        return $request;
     }
 }

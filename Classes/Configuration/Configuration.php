@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  *
  ***/
 
-class Configuration implements SingletonInterface
+class Configuration implements \ArrayAccess, SingletonInterface
 {
     private array $configuration = [
         'privateKey' => 'EXT:oauth2_server/Resources/Private/Keys/private.key',
@@ -30,32 +30,32 @@ class Configuration implements SingletonInterface
         'consentPageUid' => null,
         'loginPageUid' => null,
         'scopes' => [],
-        'resourceRoutes' => [],
-        'extensions' => [],
+        'resources' => [],
     ];
 
-    public function getOauth2Routes(): array
+    public function offsetExists(mixed $offset): bool
     {
-        $routes = ['EXT:oauth2_server/Configuration/OAuth2/'];
-        foreach ($this->configuration['extensions'] as $extensionKey) {
-            $routes[] = 'EXT:' . $extensionKey . '/Configuration/OAuth2/';
-        }
-        return $routes;
+        return isset($this->configuration[$offset]);
     }
 
-    public function getResourceRoutes(): array
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->configuration['resourceRoutes'];
+        return $this->configuration[$offset] ?? null;
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        throw new \RuntimeException('Configuration is read-only', 1717703562513);
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        throw new \RuntimeException('Configuration is read-only', 1717703572984);
     }
 
     public function getRoutePrefix(): string
     {
         return $this->configuration['routePrefix'];
-    }
-
-    public function getServerClass(): string
-    {
-        return $this->configuration['serverClass'];
     }
 
     public function getResources(): array

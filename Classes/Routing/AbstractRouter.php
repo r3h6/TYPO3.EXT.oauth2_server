@@ -34,6 +34,10 @@ abstract class AbstractRouter implements RouterInterface, LoggerAwareInterface
     public function match(ServerRequestInterface $request): ?Route
     {
         $routes = $this->getRoutes();
+        if (empty($routes)) {
+            $this->logger->debug('No routes configured');
+            return null;
+        }
 
         $symfonyRequest = (new HttpFoundationFactory())->createRequest($request);
         $symfonyRequest->setMethod($symfonyRequest->get('_method', $symfonyRequest->getMethod()));

@@ -2,7 +2,9 @@
 
 namespace R3H6\Oauth2Server\Routing;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use R3H6\Oauth2Server\Configuration\Configuration;
+use R3H6\Oauth2Server\Event\ModifyResourceServerRoutesEvent;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\RouteCollection;
@@ -22,15 +24,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ResourceRouter extends AbstractRouter
 {
     public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Configuration $configuration,
     ) {}
 
     protected function getRoutes(): RouteCollection
     {
-        $routes = $this->configuration->getOauth2Routes();
-        $routes = array_map(fn(string $path) => GeneralUtility::getFileAbsFileName($path), $routes);
+        $resources = $this->configuration->getResources();
+        $resources = array_map(fn(string $path) => GeneralUtility::getFileAbsFileName($path), $resources);
 
-        $loader = new YamlFileLoader(new FileLocator($routes));
-        return $loader->load('routes.yaml');
+        $routes = new RouteCollection();
+        foreach ($resources as $resource) {
+            $loader = new YamlFileLoader(new FileLocator($resource));
+            $routes->addCollection($loader->load('routes.yaml'));
+        }
+
+        $event = new ModifyResourceServerRoutesEvent($this->configuration, $routes);
+        $this->eventDispatcher->dispatch($event);
+
+        return $routes;
     }
 }

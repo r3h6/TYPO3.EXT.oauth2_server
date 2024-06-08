@@ -38,7 +38,7 @@ class Dispatcher implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $expressions = (array)($route->getOptions()['oauth2_constraints'] ?? 'false');
+        $expressions = (array)($route->getOptions()['oauth2_constraints'] ?? 'null != request.getAttribute("oauth_access_token_id")');
         try {
             $this->checkConstraints($request, $expressions);
         } catch (\Exception $exception) {

@@ -45,10 +45,8 @@
 		"typo3-ter/oauth2-server": "self.version"
 	},
 	"scripts": {
-		"post-install-cmd": [
-			"typo3 extension:setup"
-		],
 		"post-autoload-dump": [
+			"typo3 extension:setup",
 			"TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
 		],
 		"ci:php:cs": "php-cs-fixer fix -v --dry-run --using-cache no --diff",

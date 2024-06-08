@@ -17,7 +17,7 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
  *
  ***/
 
-class User extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements UserEntityInterface
+class User extends FrontendUser implements UserEntityInterface
 {
     public function getIdentifier()
     {

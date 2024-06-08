@@ -50,7 +50,7 @@ oauth_test:
     schemes: https
     options:
       oauth2_constraints:
-        - 'frontend.user.isLoggedIn == true'
+        # - { condition: 'frontend.user.isLoggedIn == true', message: 'You must be logged in to access this resource.', code: 401 }
         - 'ip("172.18.*")'
         - '"foo" in request.getAttribute("oauth_scopes")'
 
