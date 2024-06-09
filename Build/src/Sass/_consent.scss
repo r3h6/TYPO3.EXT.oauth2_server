@@ -8,14 +8,29 @@
     }
     .scopes {
         margin-bottom: 1rem;
-        display: flex;
-        flex-flow: row wrap;
-        dt {
-            font-weight: bold;
+        padding-left: 2rem;
+        list-style: none;
+        li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            &:before {
+                content: "•";
+                color: var(--background-color);
+                position: absolute;
+                left: -2rem;
+                font-size: 3em;
+                line-height: 0.333em;
+            }
         }
-        dd + dt {
-            margin-top: 0.5rem;
-        }
+        // margin-bottom: 1rem;
+        // display: flex;
+        // flex-flow: row wrap;
+        // dt {
+        //     font-weight: bold;
+        // }
+        // dd + dt {
+        //     margin-top: 0.5rem;
+        // }
     }
     .btn-approve {
         &::before {

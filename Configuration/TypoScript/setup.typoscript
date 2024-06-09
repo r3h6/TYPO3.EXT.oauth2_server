@@ -10,9 +10,12 @@ page {
     10 = TEXT
     10.if.isTrue = {$plugin.tx_oauth2server_consent.primaryColor}
     10.value (
-      a { color: {$plugin.tx_oauth2server_consent.primaryColor}; }
-      button, input[type="submit"], input[type="reset"] { background-color: {$plugin.tx_oauth2server_consent.primaryColor}; border-color: {$plugin.tx_oauth2server_consent.primaryColor}; }
-      .card-footer { border-top-color: {$plugin.tx_oauth2server_consent.primaryColor} }
+      :root { --primary-color: {$plugin.tx_oauth2server_consent.primaryColor}; }
+    )
+    20 = TEXT
+    20.if.isTrue = {$plugin.tx_oauth2server_consent.backgroundColor}
+    20.value (
+      :root { --background-color: {$plugin.tx_oauth2server_consent.backgroundColor}; }
     )
   }
 

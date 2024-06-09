@@ -34,7 +34,7 @@ abstract class AbstractRouter implements RouterInterface, LoggerAwareInterface
     public function match(ServerRequestInterface $request): ?Route
     {
         $routes = $this->getRoutes();
-        if (empty($routes)) {
+        if (count($routes) === 0) {
             $this->logger->debug('No routes configured');
             return null;
         }

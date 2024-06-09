@@ -4,14 +4,13 @@
     <h3><f:translate key="label.consent" /></h3>
     <p><f:format.raw><f:translate key="label.client_consent_request" arguments="{0: '{client.name}'}"/></f:format.raw></p>
     <f:if condition="{scopes}">
-        <dl class="scopes">
+        <ul class="scopes">
             <f:for each="{scopes}" as="scope" iteration="i">
                 <f:if condition="{scope.consent}">
-                    <dt>{scope.identifier}</dt>
-                    <dd><f:translate key="{f:if(condition: '{scope.description}', then: '{scope.description}', else: 'scope_{scope.identifier}')}">{scope.description}</f:translate></dd>
+                    <li><f:translate key="{f:if(condition: '{scope.description}', then: '{scope.description}', else: 'scope_{scope.identifier}')}">{scope.identifier}</f:translate></li>
                 </f:if>
             </f:for>
-        </dl>
+        </ul>
     </f:if>
     <div class="actions">
         <div class="action">

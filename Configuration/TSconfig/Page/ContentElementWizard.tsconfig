@@ -1,0 +1,13 @@
+mod.wizards.newContentElement.wizardItems.forms {
+    elements {
+        oauth2server_consent {
+            iconIdentifier = mimetypes-x-content-consent
+            title = LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:plugin.oauth2server_consent.title
+            description = LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:plugin.oauth2server_consent.description
+            tt_content_defValues {
+                CType = oauth2server_consent
+            }
+        }
+    }
+    show := addToList(oauth2server_consent)
+}

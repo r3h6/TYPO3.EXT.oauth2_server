@@ -19,14 +19,14 @@ $EM_CONF[$_EXTKEY] = [
     'state' => 'beta',
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
-    'version' => '1.5.4',
+    'version' => '2.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-11.5.99',
+            'typo3' => '12.4.0-13.4.99',
         ],
         'conflicts' => [],
         'suggests' => [
-            'scheduler' => '10.4.0-11.5.99',
+            'scheduler' => '12.4.0-13.4.99',
         ],
     ],
 ];

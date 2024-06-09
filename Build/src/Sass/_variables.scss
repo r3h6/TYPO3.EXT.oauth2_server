@@ -4,3 +4,16 @@ $primary: #f80 !default;
 $lightgray: #e0e0e0 !default;
 $gray: #eee !default;
 $darkgray: #ccc !default;
+
+
+@mixin focus {
+    &:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.5);
+    }
+}
+
+:root {
+    --primary-color: #{$primary};
+    --background-color: #{$lightgray};
+}

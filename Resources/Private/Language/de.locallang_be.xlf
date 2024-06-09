@@ -17,6 +17,9 @@
 				<source><![CDATA[Key color: Theme color for buttons and links.]]></source>
 				<target><![CDATA[Markenfarbe: Farbe für Buttons und Links.]]></target>
 			</trans-unit>
+			<trans-unit id="constant.background_color">
+				<source><![CDATA[Hintergrundfarbe: Farbe für Hintergrund.]]></source>
+			</trans-unit>
 			<trans-unit id="ext_conf_template.privateKey" approved="yes">
 				<source><![CDATA[Private key: Path to crt file (make sure the file is not public accessible)]]></source>
 				<target><![CDATA[Private key: Pfad zu crt Datei (in einem nich öffentlichen Verzeichnis)]]></target>
@@ -36,6 +39,14 @@
 			<trans-unit id="flash_message.client_secret" approved="yes">
 				<source><![CDATA[Make sure to copy your client secret now. You won’t be able to see it again: %s]]></source>
 				<target><![CDATA[Stellen Sie sicher, dass Sie das "Client Secret" jetzt sichern. Sie werden es nicht mehr sehen können: %s]]></target>
+			</trans-unit>
+			<trans-unit id="plugin.oauth2server_consent.title">
+				<source><![CDATA[OAuth2: Consent]]></source>
+				<target><![CDATA[OAuth2: Consent]]></target>
+			</trans-unit>
+			<trans-unit id="plugin.oauth2server_consent.description">
+				<source><![CDATA[Displays a form to inform the user and request permission for an application to access their private data.]]></source>
+				<target><![CDATA[Zeigt ein Formular an, um den Benutzer zu informieren und um die Erlaubnis zu bitten, dass eine Anwendung auf seine privaten Daten zugreifen darf.]]></target>
 			</trans-unit>
 		</body>
 	</file>
