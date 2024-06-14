@@ -9,9 +9,10 @@ DUMP=Build/Data/db.sql
 rm $DUMP
 mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables be_groups >> $DUMP
 mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables be_users >> $DUMP
-mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables fe_users >> $DUMP
+mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables fe_groups >> $DUMP
 mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables fe_users >> $DUMP
 mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables pages >> $DUMP
+mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables sys_news >> $DUMP
 mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables sys_template >> $DUMP
 mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables tt_content >> $DUMP
 mysqldump db --compact --skip-extended-insert --add-drop-table --no-set-names --where="deleted=0" --tables tx_oauth2server_domain_model_client >> $DUMP

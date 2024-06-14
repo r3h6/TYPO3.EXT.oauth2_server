@@ -16,9 +16,7 @@
 		"php": "~8.1.0 || ~8.2.0 || ~8.3.0",
 		"league/oauth2-server": "^8.5.4",
 		"symfony/psr-http-message-bridge": "^6.4",
-		"typo3/cms-core": "^12.4",
-		"typo3/cms-felogin": "^12.4",
-		"typo3/cms-reports": "^12.4"
+		"typo3/cms-core": "^12.4 || ^13.1"
 	},
 	"require-dev": {
 		"ergebnis/composer-normalize": "^2.42",
@@ -27,11 +25,13 @@
 		"phpunit/phpcov": "^9.0",
 		"saschaegerer/phpstan-typo3": "^1.10",
 		"ssch/typo3-rector": "^2.6",
-		"typo3/cms-belog": "^12.4",
-		"typo3/cms-extensionmanager": "^12.4",
-		"typo3/cms-fluid-styled-content": "^12.4",
-		"typo3/cms-lowlevel": "^12.4",
-		"typo3/cms-tstemplate": "^12.4",
+		"typo3/cms-belog": "^12.4 || ^13.1",
+		"typo3/cms-extensionmanager": "^12.4 || ^13.1",
+		"typo3/cms-felogin": "^12.4 || ^13.1",
+		"typo3/cms-fluid-styled-content": "^12.4 || ^13.1",
+		"typo3/cms-lowlevel": "^12.4 || ^13.1",
+		"typo3/cms-reports": "^12.4 || ^13.1",
+		"typo3/cms-tstemplate": "^12.4 || ^13.1",
 		"typo3/coding-standards": "^0.7",
 		"typo3/testing-framework": "^8.0"
 	},
@@ -68,18 +68,11 @@
 		}
 	},
 	"scripts": {
-		"ci:libs:pack": "phar-composer build softcreatr/jsonpath Resources/Private/Php/jsonpath.phar",
-		"ci:php:cs": "php-cs-fixer fix -v --dry-run --using-cache no --diff",
-		"ci:php:lint": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
-		"ci:php:stan": "phpstan --no-progress",
-		"ci:test:unit": "phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit/",
-		"ci:test:functional": "phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml Tests/Functional/",
-		"ci:typo3:scan": "typo3scan scan Classes/ -i strong",
-		"fix:composer:normalize": "@composer normalize --no-check-lock",
-		"fix:php:cs": "php-cs-fixer fix",
-		"rector:fix": "rector process",
-		"rector:test": "rector process --dry-run",
-		"coverage:create-directories": "mkdir -p .Build/coverage",
+		"ci:coverage": [
+			"@ci:coverage:unit",
+			"@ci:coverage:functional",
+			"@ci:coverage:merge"
+		],
 		"ci:coverage:functional": [
 			"@coverage:create-directories",
 			"XDEBUG_MODE=coverage phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml --coverage-filter Classes --coverage-php=.Build/coverage/functional.cov Tests/Functional"
@@ -92,10 +85,17 @@
 			"@coverage:create-directories",
 			"XDEBUG_MODE=coverage phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --coverage-filter Classes --coverage-php=.Build/coverage/unit.cov Tests/Unit"
 		],
-		"ci:coverage": [
-			"@ci:coverage:unit",
-			"@ci:coverage:functional",
-			"@ci:coverage:merge"
-		]
+		"ci:libs:pack": "phar-composer build softcreatr/jsonpath Resources/Private/Php/jsonpath.phar",
+		"ci:php:cs": "php-cs-fixer fix -v --dry-run --using-cache no --diff",
+		"ci:php:lint": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
+		"ci:php:stan": "phpstan --no-progress",
+		"ci:test:functional": "phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml Tests/Functional/",
+		"ci:test:unit": "phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit/",
+		"ci:typo3:scan": "typo3scan scan Classes/ -i strong",
+		"coverage:create-directories": "mkdir -p .Build/coverage",
+		"fix:composer:normalize": "@composer normalize --no-check-lock",
+		"fix:php:cs": "php-cs-fixer fix",
+		"rector:fix": "rector process",
+		"rector:test": "rector process --dry-run"
 	}
 }
