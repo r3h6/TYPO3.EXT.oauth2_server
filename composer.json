@@ -68,9 +68,6 @@
 		}
 	},
 	"scripts": {
-		"post-autoload-dump": [
-			"typo3 extension:setup"
-		],
 		"ci:libs:pack": "phar-composer build softcreatr/jsonpath Resources/Private/Php/jsonpath.phar",
 		"ci:php:cs": "php-cs-fixer fix -v --dry-run --using-cache no --diff",
 		"ci:php:lint": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
