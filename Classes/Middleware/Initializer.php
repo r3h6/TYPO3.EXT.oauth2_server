@@ -44,7 +44,7 @@ class Initializer implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $typoscript = new FrontendTypoScript(new RootNode(), []);
+        $typoscript = GeneralUtility::makeInstance(FrontendTypoScript::class, new RootNode(), [], [], []);
         $typoscript->setSetupArray([]);
         $request = $request->withAttribute('frontend.typoscript', $typoscript);
         $GLOBALS['TYPO3_REQUEST'] = $request;

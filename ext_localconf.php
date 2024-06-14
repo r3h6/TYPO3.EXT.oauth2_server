@@ -2,7 +2,7 @@
 
 defined('TYPO3') || die('Access denied.');
 
-(function () {
+(static function () {
     if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
         \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'],
@@ -34,10 +34,6 @@ defined('TYPO3') || die('Access denied.');
         ],
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
     );
-
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
-        @import \'EXT:oauth2_server/Configuration/TSconfig/Page/ContentElementWizard.tsconfig\'
-    ');
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
         'oauth2_server',

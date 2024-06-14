@@ -13,8 +13,8 @@ jobs:
           - { PHP: '8.1', TYPO3_VERSION: ^12.4 }
           - { PHP: '8.2', TYPO3_VERSION: ^12.4 }
           - { PHP: '8.3', TYPO3_VERSION: ^12.4 }
-          # - { PHP: '8.2', TYPO3_VERSION: ^13.1 }
-          # - { PHP: '8.3', TYPO3_VERSION: ^13.1 }
+          - { PHP: '8.2', TYPO3_VERSION: ~13.1.0 }
+          - { PHP: '8.3', TYPO3_VERSION: ~13.1.0 }
 
     env: ${{ matrix.env }}
 
