@@ -24,6 +24,9 @@ final class ScopeUtility
         return implode(', ', static::toStrings(...$scopes));
     }
 
+    /**
+     * @return string[]
+     */
     public static function toStrings(ScopeEntityInterface ...$scopes): array
     {
         return array_map(function (ScopeEntityInterface $scope) {

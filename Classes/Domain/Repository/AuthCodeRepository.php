@@ -15,9 +15,13 @@ namespace R3H6\Oauth2Server\Domain\Repository;
  *
  ***/
 
+/**
+ * @extends \TYPO3\CMS\Extbase\Persistence\Repository<\R3H6\Oauth2Server\Domain\Model\AuthCode>
+ * @method ?\R3H6\Oauth2Server\Domain\Model\AuthCode findOneBy(array $criteria)
+ */
 class AuthCodeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    public function persist()
+    public function persist(): void
     {
         $this->persistenceManager->persistAll();
     }

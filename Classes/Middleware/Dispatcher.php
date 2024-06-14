@@ -2,11 +2,13 @@
 
 namespace R3H6\Oauth2Server\Middleware;
 
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Http\DispatcherInterface;
@@ -74,14 +76,16 @@ class Dispatcher implements MiddlewareInterface
         $variables['request'] = $request;
 
         $language = new ExpressionLanguage();
-        foreach ($defaultProvider->getExpressionLanguageProviders() as $provider) {
-            $language->registerProvider(GeneralUtility::makeInstance($provider));
+        foreach ($defaultProvider->getExpressionLanguageProviders() as $providerClass) {
+            $provider = GeneralUtility::makeInstance($providerClass);
+            assert($provider instanceof ExpressionFunctionProviderInterface);
+            $language->registerProvider($provider);
         }
 
         foreach ($expressions as $expression) {
             $result = $language->evaluate($expression, $variables);
             if ($result === false) {
-                throw new \Exception("Constraint failed: $expression");
+                throw OAuthServerException::accessDenied("Constraint failed: $expression");
             }
         }
     }

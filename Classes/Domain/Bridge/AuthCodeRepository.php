@@ -27,15 +27,7 @@ class AuthCodeRepository implements SingletonInterface, AuthCodeRepositoryInterf
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var \R3H6\Oauth2Server\Domain\Repository\AuthCodeRepository
-     */
-    private $repository;
-
-    public function __construct(\R3H6\Oauth2Server\Domain\Repository\AuthCodeRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(private \R3H6\Oauth2Server\Domain\Repository\AuthCodeRepository $repository) {}
 
     public function getNewAuthCode()
     {
@@ -44,7 +36,7 @@ class AuthCodeRepository implements SingletonInterface, AuthCodeRepositoryInterf
         return new AuthCode();
     }
 
-    public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
+    public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity): void
     {
         $newToken = GeneralUtility::makeInstance(\R3H6\Oauth2Server\Domain\Model\AuthCode::class);
         $newToken->setIdentifier($authCodeEntity->getIdentifier());
@@ -56,10 +48,14 @@ class AuthCodeRepository implements SingletonInterface, AuthCodeRepositoryInterf
         $this->repository->persist();
     }
 
-    public function revokeAuthCode($codeId)
+    public function revokeAuthCode($codeId): void
     {
         $this->logger->debug('Revoke auth code', ['identifier' => $codeId]);
-        $token = $this->repository->findOneByIdentifier($codeId);
+        $token = $this->repository->findOneBy(['identifier' => $codeId]);
+        if (!$token) {
+            $this->logger->warning('Auth code not found', ['identifier' => $codeId]);
+            return;
+        }
         $token->setRevoked(true);
         $this->repository->update($token);
         $this->repository->persist();
@@ -67,10 +63,11 @@ class AuthCodeRepository implements SingletonInterface, AuthCodeRepositoryInterf
 
     public function isAuthCodeRevoked($codeId)
     {
-        $token = $this->repository->findOneByIdentifier($codeId);
+        $token = $this->repository->findOneBy(['identifier' => $codeId]);
         if ($token) {
             return $token->getRevoked();
         }
+        $this->logger->warning('Auth code not found', ['identifier' => $codeId]);
         return true;
     }
 }

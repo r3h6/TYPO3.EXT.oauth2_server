@@ -4,6 +4,7 @@ namespace R3H6\Oauth2Server\Session;
 
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /***
@@ -23,16 +24,20 @@ final class Session
 
     public static function fromRequest(ServerRequestInterface $request): self
     {
-        return new self($request->getAttribute('frontend.user'));
+        $frontendUser = $request->getAttribute('frontend.user');
+        if ($frontendUser instanceof FrontendUserAuthentication === false) {
+            throw new \RuntimeException('FrontendUserAuthentication not found in request attributes', 1718220842598);
+        }
+        return GeneralUtility::makeInstance(self::class, $frontendUser);
     }
 
-    private function __construct(
-        private readonly FrontendUserAuthentication $frontendUserAuthentication
+    public function __construct(
+        private readonly FrontendUserAuthentication $frontendUser
     ) {}
 
     public function get(): ?AuthorizationRequest
     {
-        $authRequest = unserialize((string)$this->frontendUserAuthentication->getKey('ses', self::AUTH_REQUEST));
+        $authRequest = unserialize((string)$this->frontendUser->getKey('ses', self::AUTH_REQUEST));
         if ($authRequest instanceof AuthorizationRequest) {
             return $authRequest;
         }
@@ -41,11 +46,11 @@ final class Session
 
     public function set(AuthorizationRequest $authRequest): void
     {
-        $this->frontendUserAuthentication->setKey('ses', self::AUTH_REQUEST, serialize($authRequest));
+        $this->frontendUser->setKey('ses', self::AUTH_REQUEST, serialize($authRequest));
     }
 
     public function clear(): void
     {
-        $this->frontendUserAuthentication->setKey('ses', self::AUTH_REQUEST, null);
+        $this->frontendUser->setKey('ses', self::AUTH_REQUEST, null);
     }
 }

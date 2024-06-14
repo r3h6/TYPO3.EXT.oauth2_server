@@ -28,15 +28,10 @@ use TYPO3\CMS\Frontend\Controller\ErrorController;
 
 class ConsentController extends ActionController
 {
-    /**
-     * @var Context
-     */
-    protected $context;
-
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    public function __construct(
+        protected Context $context,
+        protected Configuration $configuration
+    ) {}
 
     public function showAction(): ResponseInterface
     {
@@ -71,15 +66,5 @@ class ConsentController extends ActionController
             throw new ForbiddenException('No authorization request found in session');
         }
         return $authRequest;
-    }
-
-    public function injectContext(Context $context): void
-    {
-        $this->context = $context;
-    }
-
-    public function injectConfiguration(Configuration $configuration): void
-    {
-        $this->configuration = $configuration;
     }
 }

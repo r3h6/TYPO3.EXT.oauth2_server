@@ -32,7 +32,7 @@ class Oauth2AuthService extends AbstractAuthenticationService
         return $this->authInfo['request'];
     }
 
-    public function getUser()
+    public function getUser(): array|bool
     {
         $request = $this->getRequest();
         $userId = $request->getAttribute('oauth_user_id') ?? null;

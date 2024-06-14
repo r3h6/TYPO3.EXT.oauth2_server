@@ -18,6 +18,9 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  *
  ***/
 
+/**
+ * @implements \ArrayAccess<string, mixed>
+ */
 class Configuration implements \ArrayAccess, SingletonInterface
 {
     private array $configuration = [
@@ -111,6 +114,6 @@ class Configuration implements \ArrayAccess, SingletonInterface
 
     public function merge(array $overrideConfiguration): void
     {
-        ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $overrideConfiguration, true, true, false);
+        ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $overrideConfiguration, true, false, false);
     }
 }

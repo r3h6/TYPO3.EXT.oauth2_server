@@ -46,7 +46,7 @@ oauth_revoke:
 
 oauth_test:
     path: /test
-    methods: [POST]
+    methods: [GET, POST]
     schemes: https
     options:
       oauth2_constraints:

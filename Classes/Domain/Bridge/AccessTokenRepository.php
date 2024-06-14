@@ -28,15 +28,7 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var \R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository
-     */
-    private $repository;
-
-    public function __construct(\R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(private \R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository $repository) {}
 
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
@@ -54,7 +46,7 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
         return $accessToken;
     }
 
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
+    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
     {
         $newToken = GeneralUtility::makeInstance(\R3H6\Oauth2Server\Domain\Model\AccessToken::class);
         $newToken->setPid(0);
@@ -67,10 +59,14 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
         $this->repository->persist();
     }
 
-    public function revokeAccessToken($tokenId)
+    public function revokeAccessToken($tokenId): void
     {
         $this->logger->debug('Revoke access token', ['identifier' => $tokenId]);
-        $token = $this->repository->findOneByIdentifier($tokenId);
+        $token = $this->repository->findOneBy(['identifier' => $tokenId]);
+        if (!$token) {
+            $this->logger->warning('Access token not found', ['identifier' => $tokenId]);
+            return;
+        }
         $token->setRevoked(true);
         $this->repository->update($token);
         $this->repository->persist();
@@ -78,10 +74,11 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
 
     public function isAccessTokenRevoked($tokenId)
     {
-        $token = $this->repository->findOneByIdentifier($tokenId);
+        $token = $this->repository->findOneBy(['identifier' => $tokenId]);
         if ($token) {
             return $token->getRevoked();
         }
+        $this->logger->warning('Access token not found', ['identifier' => $tokenId]);
         return true;
     }
 }

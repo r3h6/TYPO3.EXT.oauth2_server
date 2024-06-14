@@ -17,25 +17,14 @@ namespace R3H6\Oauth2Server\Domain\Model;
 
 class AccessToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-    /** @var string */
-    protected $identifier = '';
+    protected string $identifier = '';
+    protected ?\DateTimeImmutable $expiresAt = null;
+    protected string $user = '';
+    protected string $scopes = '';
+    protected string $client = '';
+    protected bool $revoked = false;
 
-    /** @var \DateTimeImmutable */
-    protected $expiresAt;
-
-    /** @var string */
-    protected $user = '';
-
-    /** @var string */
-    protected $scopes = '';
-
-    /** @var string */
-    protected $client = '';
-
-    /** @var bool */
-    protected $revoked = false;
-
-    public function setIdentifier(string $identifier)
+    public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }
@@ -45,17 +34,17 @@ class AccessToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         return $this->identifier;
     }
 
-    public function setExpiresAt(\DateTimeImmutable $expiresAt)
+    public function setExpiresAt(?\DateTimeImmutable $expiresAt): void
     {
         $this->expiresAt = $expiresAt;
     }
 
-    public function getExpiresAt(): \DateTimeImmutable
+    public function getExpiresAt(): ?\DateTimeImmutable
     {
         return $this->expiresAt;
     }
 
-    public function setUser(string $user)
+    public function setUser(string $user): void
     {
         $this->user = $user;
     }
@@ -65,7 +54,7 @@ class AccessToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         return $this->user;
     }
 
-    public function setScopes(string $scopes)
+    public function setScopes(string $scopes): void
     {
         $this->scopes = $scopes;
     }
@@ -75,7 +64,7 @@ class AccessToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         return $this->scopes;
     }
 
-    public function setClient(string $client)
+    public function setClient(string $client): void
     {
         $this->client = $client;
     }
@@ -85,12 +74,12 @@ class AccessToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         return $this->client;
     }
 
-    public function setRevoked($revoked)
+    public function setRevoked(bool $revoked): void
     {
         $this->revoked = $revoked;
     }
 
-    public function getRevoked()
+    public function getRevoked(): bool
     {
         return $this->revoked;
     }

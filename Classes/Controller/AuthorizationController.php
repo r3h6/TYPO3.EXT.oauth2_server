@@ -142,7 +142,10 @@ class AuthorizationController
 
     protected function setUserToAuthorizationRequest(AuthorizationContext $context): void
     {
-        $user = $this->userRepository->findByUid($context->getFrontendUserUid());
+        $user = $this->userRepository->findByUid((int)$context->getFrontendUserUid());
+        if ($user === null) {
+            throw new \RuntimeException('User not found', 1718223076476);
+        }
         $this->logger->debug('Set user to authorization request', ['user' => $user]);
         $context->getAuthRequest()->setUser($user);
     }

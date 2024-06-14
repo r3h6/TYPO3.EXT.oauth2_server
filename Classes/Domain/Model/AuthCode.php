@@ -17,80 +17,69 @@ namespace R3H6\Oauth2Server\Domain\Model;
 
 class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-    /** @var string */
-    protected $identifier;
+    protected string $identifier = '';
+    protected ?\DateTimeImmutable $expiresAt = null;
+    protected string $user = '';
+    protected string $scopes = '';
+    protected string $client = '';
+    protected bool $revoked = false;
 
-    /** @var \DateTime */
-    protected $expiresAt;
-
-    /** @var string */
-    protected $user;
-
-    /** @var string */
-    protected $scopes;
-
-    /** @var string */
-    protected $client;
-
-    /** @var bool */
-    protected $revoked;
-
-    public function setIdentifier($identifier)
+    public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    public function setExpiresAt($expiresAt)
+    public function setExpiresAt(\DateTimeImmutable $expiresAt): void
     {
         $this->expiresAt = $expiresAt;
     }
 
-    public function getExpiresAt()
+    public function getExpiresAt(): ?\DateTimeImmutable
     {
         return $this->expiresAt;
     }
 
-    public function setUser($user)
+    public function setUser(string|int|null $user): void
     {
-        $this->user = $user;
+        $this->user = (string)$user;
     }
 
-    public function getUser()
+    public function getUser(): string
     {
         return $this->user;
     }
 
-    public function setScopes($scopes)
+    public function setScopes(string $scopes): void
     {
         $this->scopes = $scopes;
     }
 
-    public function getScopes()
+    public function getScopes(): string
     {
         return $this->scopes;
     }
 
-    public function setClient($client)
+    public function setClient(string $client): void
     {
         $this->client = $client;
     }
 
-    public function getClient()
+    public function getClient(): string
     {
         return $this->client;
     }
 
-    public function setRevoked($revoked)
+    public function setRevoked(bool $revoked): void
     {
         $this->revoked = $revoked;
     }
 
-    public function getRevoked()
+    public function getRevoked(): bool
     {
         return $this->revoked;
     }

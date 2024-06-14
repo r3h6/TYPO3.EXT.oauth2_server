@@ -1,0 +1,17 @@
+"pages"
+,"uid","pid","doktype","title","slug"
+,1,0,1,"Login","/"
+,2,1,1,"Consent","/consent"
+,3,1,254,"Users","/users"
+,4,1,254,"Clients","/clients"
+"tx_oauth2server_domain_model_client"
+,"uid","pid","name","identifier","secret","grant_type","redirect_uri","is_confidential","skip_consent"
+,1,4,"Test1","fc17757d-aa0c-481d-96d7-c2504ce7199a","$argon2i$v=19$m=65536,t=16,p=1$NEtuaGV3YlRZd3FYUExKOQ$XT54GLVXwSkiA7K/Wxgk7PjwusW7Ggt8vayEQoJfVYs","authorization_code","https://localhost/redirect",1,0
+,2,4,"Test2","fc17757d-aa0c-481d-96d7-c2504ce7199b","$argon2i$v=19$m=65536,t=16,p=1$NEtuaGV3YlRZd3FYUExKOQ$XT54GLVXwSkiA7K/Wxgk7PjwusW7Ggt8vayEQoJfVYs","authorization_code","https://localhost/redirect",1,1
+"fe_groups"
+,"uid","pid","title"
+,1,3,"Test1"
+,2,3,"Test2"
+"fe_users"
+,"uid","pid","username","password","usergroup","name","first_name","middle_name","last_name","address","telephone","fax","email","title","zip","city","country","www","company","image","tstamp"
+,"1","3","user","$argon2i$v=19$m=65536,t=16,p=1$d2sudnlVLnFLR2FiZ1R2bQ$6dzuZ230KJGsWGPLrxQEHIOQQViuh1EZW+rHnL8LtT4","1,2","","Kasper","","Skårhøj","Anywhere Rd. 123","+12 34 567 890","","kasper@typo3.org","Mr.","12345","Nowhereville","Denmark","https://typo3.org","TYPO3 GmbH","",1612466634

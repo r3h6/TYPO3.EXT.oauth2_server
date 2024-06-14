@@ -13,6 +13,7 @@ use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\Domain\Model\Client;
 use R3H6\Oauth2Server\Domain\Model\Scope;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /***
  *
@@ -25,14 +26,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-class ScopeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ScopeRepositoryInterface, LoggerAwareInterface
+/**
+ * @extends Repository<Scope>
+ */
+class ScopeRepository extends Repository implements ScopeRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    public function __construct(
+        protected Configuration $configuration
+    ) {}
 
     public function getScopeEntityByIdentifier($identifier)
     {
@@ -60,10 +63,5 @@ class ScopeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implemen
             });
         }
         return $scopes;
-    }
-
-    public function injectConfiguration(Configuration $configuration): void
-    {
-        $this->configuration = $configuration;
     }
 }

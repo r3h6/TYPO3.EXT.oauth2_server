@@ -8,9 +8,11 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use R3H6\Oauth2Server\Domain\Model\User;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /***
  *
@@ -23,15 +25,18 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
  *
  ***/
 
-class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements UserRepositoryInterface, LoggerAwareInterface
+/**
+ * @extends Repository<User>
+ * @method ?\R3H6\Oauth2Server\Domain\Model\User findOneBy(array $criteria)
+ */
+class UserRepository extends Repository implements UserRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function initializeObject()
+    public function initializeObject(): void
     {
         /** \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
         $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
-
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
     }
@@ -39,7 +44,7 @@ class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implement
     public function getUserEntityByUserCredentials($username, $password, $grantType, ClientEntityInterface $clientEntity)
     {
         $this->logger->debug('Get user', ['username' => $username]);
-        $user = $this->findOneByUsername($username);
+        $user = $this->findOneBy(['username' => $username]);
         if ($user === null) {
             $this->logger->debug('No user found', ['username' => $username]);
             throw new \RuntimeException('Username or password invalid', 1607636289929);

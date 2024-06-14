@@ -23,150 +23,80 @@ class Client extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements C
 {
     use EntityTrait;
 
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name = '';
+    protected string $redirectUri = '';
+    protected bool $isConfidential = false;
+    protected string $grantType = '';
+    protected string $secret = '';
+    protected bool $skipConsent = false;
+    protected string $allowedScopes = '';
 
-    /**
-     * @var string
-     */
-    protected $redirectUri;
-
-    /**
-     * @var bool
-     */
-    protected $isConfidential = false;
-
-    /**
-     * @var string
-     */
-    protected $grantType = '';
-
-    /**
-     * @var string
-     */
-    protected $secret;
-
-    /**
-     * @var bool
-     */
-    protected $skipConsent = false;
-
-    /**
-     * @var string
-     */
-    protected $allowedScopes = '';
-
-    /**
-     * Get the value of grantType
-     *
-     * @return  string
-     */
     public function getGrantType(): ?string
     {
         return $this->grantType;
     }
 
-    /**
-     * Set the value of grantType
-     *
-     * @param  string  $grantType
-     */
     public function setGrantType(string $grantType): void
     {
         $this->grantType = $grantType;
     }
 
-    /**
-     * Get the value of secret
-     *
-     * @return  string|null
-     */
     public function getSecret(): ?string
     {
         return $this->secret;
     }
 
-    /**
-     * Set the value of secret
-     *
-     * @param  string  $secret
-     */
-    public function setSecret(string $secret)
+    public function setSecret(string $secret): void
     {
         $this->secret = $secret;
     }
 
-    /**
-     * Get the value of skipConsent
-     *
-     * @return  bool
-     */
     public function doSkipConsent(): bool
     {
         return $this->skipConsent;
     }
 
-    /**
-     * Set the value of skipConsent
-     *
-     * @param  bool  $skipConsent
-     */
-    public function setSkipConsent(bool $skipConsent)
+    public function setSkipConsent(bool $skipConsent): void
     {
         $this->skipConsent = $skipConsent;
     }
 
-    /**
-     * Get the value of allowedScopes
-     *
-     * @return  string
-     */
-    public function getAllowedScopes()
+    public function getAllowedScopes(): string
     {
         return $this->allowedScopes;
     }
 
-    /**
-     * Set the value of allowedScopes
-     *
-     * @param  string  $allowedScopes
-     */
-    public function setAllowedScopes(string $allowedScopes)
+    public function setAllowedScopes(string $allowedScopes): void
     {
         $this->allowedScopes = $allowedScopes;
     }
 
-    /**
-     * Get the client's name.
-     *
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Returns the registered redirect URI (as a string).
-     *
-     * Alternatively return an indexed array of redirect URIs.
-     *
-     * @return string[]
-     */
-    public function getRedirectUri()
+    public function setName(string $name): void
     {
-        return GeneralUtility::trimExplode('\\n', $this->redirectUri);
+        $this->name = $name;
     }
 
-    /**
-     * Returns true if the client is confidential.
-     *
-     * @return bool
-     */
-    public function isConfidential()
+    public function setRedirectUri(string $redirectUri): void
+    {
+        $this->redirectUri = $redirectUri;
+    }
+
+    public function getRedirectUri(): array
+    {
+        return GeneralUtility::trimExplode("\n", $this->redirectUri);
+    }
+
+    public function setConfidential(bool $isConfidential): void
+    {
+        $this->isConfidential = $isConfidential;
+    }
+
+    public function isConfidential(): bool
     {
         return $this->isConfidential;
     }

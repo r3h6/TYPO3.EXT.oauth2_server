@@ -23,11 +23,17 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 class AuthorizationContext
 {
+    private readonly FrontendUserAuthentication $frontendUser;
+    private readonly Site $site;
+
     public function __construct(
         private readonly ServerRequestInterface $request,
         private readonly AuthorizationRequest $authRequest,
         private readonly Configuration $configuration,
-    ) {}
+    ) {
+        $this->frontendUser = $this->request->getAttribute('frontend.user') ?: throw new \InvalidArgumentException('Frontend user must be authenticated', 1718222682952);
+        $this->site = $this->request->getAttribute('site') ?: throw new \InvalidArgumentException('Site must be set', 1718222689630);
+    }
 
     public function getRequest(): ServerRequestInterface
     {
@@ -46,12 +52,12 @@ class AuthorizationContext
 
     public function getFrontendUser(): FrontendUserAuthentication
     {
-        return $this->request->getAttribute('frontend.user');
+        return $this->frontendUser;
     }
 
     public function getSite(): Site
     {
-        return $this->request->getAttribute('site');
+        return $this->site;
     }
 
     public function isAuthenticated(): bool
@@ -61,6 +67,6 @@ class AuthorizationContext
 
     public function getFrontendUserUid(): ?int
     {
-        return $this->getFrontendUser()->user['uid'] ?? null;
+        return $this->frontendUser->user['uid'] ?? null;
     }
 }

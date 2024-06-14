@@ -1,19 +1,18 @@
 includes:
-    - .Build/vendor/saschaegerer/phpstan-typo3/extension.neon
+	- .Build/vendor/saschaegerer/phpstan-typo3/extension.neon
 
 parameters:
-    parallel:
-        maximumNumberOfProcesses: 5
-    level: 5
-    paths:
-        - Classes/
-    excludePaths:
-        analyse:
-            - Classes/Security/
-    typo3:
-        requestGetAttributeMapping:
-            oauth_scopes: array|null
-            oauth_user_id: int|null
-            oauth_access_token_id: string|null
-            oauth2.route: \Symfony\Component\Routing\Route|null
-            oauth2_constraints: array|string|null
+	level: 8
+	ignoreErrors:
+		- identifier: missingType.iterableValue
+		- '#Cannot call method [a-z]+\(\) on Psr\\Log\\LoggerInterface\|null#'
+	paths:
+		- Classes/
+		- Tests/
+	typo3:
+		requestGetAttributeMapping:
+			oauth_scopes: array|null
+			oauth_user_id: int|null
+			oauth_access_token_id: string|null
+			oauth2.route: \Symfony\Component\Routing\Route|null
+			oauth2_constraints: array|string|null

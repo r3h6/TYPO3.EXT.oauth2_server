@@ -23,8 +23,8 @@
 	"require-dev": {
 		"ergebnis/composer-normalize": "^2.42",
 		"michielroos/typo3scan": "^1.7",
-		"phpmd/phpmd": "^2.15",
-		"phpspec/prophecy": "^1.19",
+		"phpstan/phpstan-phpunit": "^1.4",
+		"phpunit/phpcov": "^9.0",
 		"saschaegerer/phpstan-typo3": "^1.10",
 		"ssch/typo3-rector": "^2.6",
 		"typo3/cms-belog": "^12.4",
@@ -76,10 +76,29 @@
 		"ci:php:lint": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
 		"ci:php:stan": "phpstan --no-progress",
 		"ci:test:unit": "phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit/",
+		"ci:test:functional": "phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml Tests/Functional/",
 		"ci:typo3:scan": "typo3scan scan Classes/ -i strong",
 		"fix:composer:normalize": "@composer normalize --no-check-lock",
 		"fix:php:cs": "php-cs-fixer fix",
-		"fix:rector": "rector process",
-		"test:rector": "rector process --dry-run"
+		"rector:fix": "rector process",
+		"rector:test": "rector process --dry-run",
+		"coverage:create-directories": "mkdir -p .Build/coverage",
+		"ci:coverage:functional": [
+			"@coverage:create-directories",
+			"XDEBUG_MODE=coverage phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml --coverage-filter Classes --coverage-php=.Build/coverage/functional.cov Tests/Functional"
+		],
+		"ci:coverage:merge": [
+			"@coverage:create-directories",
+			"XDEBUG_MODE=coverage phpcov merge --html=.Build/coverage/ .Build/coverage/"
+		],
+		"ci:coverage:unit": [
+			"@coverage:create-directories",
+			"XDEBUG_MODE=coverage phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --coverage-filter Classes --coverage-php=.Build/coverage/unit.cov Tests/Unit"
+		],
+		"ci:coverage": [
+			"@ci:coverage:unit",
+			"@ci:coverage:functional",
+			"@ci:coverage:merge"
+		]
 	}
 }

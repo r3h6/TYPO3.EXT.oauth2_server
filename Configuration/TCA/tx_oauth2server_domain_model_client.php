@@ -10,7 +10,6 @@ return [
         'editlock' => 'editlock',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',
@@ -61,12 +60,6 @@ return [
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
-                ],
             ],
         ],
         'hidden' => [
@@ -77,8 +70,7 @@ return [
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        0 => '',
-                        1 => '',
+                        'label' => '',
                         'invertStateDisplay' => true,
                     ],
                 ],
@@ -88,9 +80,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
+                'type' => 'datetime',
                 'default' => 0,
             ],
             'l10n_mode' => 'exclude',
@@ -100,9 +90,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
+                'type' => 'datetime',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
@@ -134,7 +122,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
         'secret' => [
@@ -161,11 +150,11 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.authorization_code', 'authorization_code'],
-                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.client_credentials', 'client_credentials'],
-                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.implicit', 'implicit'],
-                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.password', 'password'],
-                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.refresh_token', 'refresh_token'],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.authorization_code', 'value' => 'authorization_code'],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.client_credentials', 'value' => 'client_credentials'],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.implicit', 'value' => 'implicit'],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.password', 'value' => 'password'],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.refresh_token', 'value' => 'refresh_token'],
                 ],
             ],
         ],
@@ -202,7 +191,7 @@ return [
                 // 'itemsProcFunc' => \R3H6\Oauth2Server\Hook\AllowedScopesItemsProcFunc::class . '->addItems',
                 'size' => 10,
                 'items' => [
-                    ['LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.allowed_scopes.items.0', '--div--'],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.allowed_scopes.items.0', 'value' => '--div--'],
                 ],
             ],
         ],

@@ -22,15 +22,7 @@ use TYPO3\CMS\Core\Http\Response;
 
 class TokenController
 {
-    /**
-     * @var AuthorizationServer
-     */
-    private $server;
-
-    public function __construct(AuthorizationServer $server)
-    {
-        $this->server = $server;
-    }
+    public function __construct(private AuthorizationServer $server) {}
 
     public function issueAccessToken(ServerRequestInterface $request): ResponseInterface
     {

@@ -18,117 +18,55 @@ namespace R3H6\Oauth2Server\Domain\Model;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * A Frontend User Group
- *
- * @deprecated since v11, will be removed in v12. Do not use or extend this model.
- */
 class FrontendUserGroup extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $title = '';
+    protected string $title = '';
+    protected string $description = '';
+    /** @var ObjectStorage<FrontendUserGroup> */
+    protected ObjectStorage $subgroup;
 
-    /**
-     * @var string
-     */
-    protected $description = '';
-
-    /**
-     * @var ObjectStorage<FrontendUserGroup>
-     */
-    protected $subgroup;
-
-    /**
-     * Constructs a new Frontend User Group
-     *
-     * @param string $title
-     */
-    public function __construct($title = '')
+    public function __construct()
     {
-        $this->setTitle($title);
+        $this->initializeObject();
+    }
+
+    public function initializeObject(): void
+    {
         $this->subgroup = new ObjectStorage();
     }
 
-    /**
-     * Sets the title value
-     *
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * Returns the title value
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Sets the description value
-     *
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * Returns the description value
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
     /**
-     * Sets the subgroups. Keep in mind that the property is called "subgroup"
-     * although it can hold several subgroups.
-     *
-     * @param ObjectStorage<FrontendUserGroup> $subgroup An object storage containing the subgroups to add
+     * @param ObjectStorage<FrontendUserGroup> $subgroup
      */
-    public function setSubgroup(ObjectStorage $subgroup)
+    public function setSubgroup(ObjectStorage $subgroup): void
     {
         $this->subgroup = $subgroup;
     }
 
     /**
-     * Adds a subgroup to the frontend user
-     *
-     * @param FrontendUserGroup $subgroup
+     * @return ObjectStorage<FrontendUserGroup>
      */
-    public function addSubgroup(FrontendUserGroup $subgroup)
-    {
-        $this->subgroup->attach($subgroup);
-    }
-
-    /**
-     * Removes a subgroup from the frontend user group
-     *
-     * @param FrontendUserGroup $subgroup
-     */
-    public function removeSubgroup(FrontendUserGroup $subgroup)
-    {
-        $this->subgroup->detach($subgroup);
-    }
-
-    /**
-     * Returns the subgroups. Keep in mind that the property is called "subgroup"
-     * although it can hold several subgroups.
-     *
-     * @return ObjectStorage<FrontendUserGroup> An object storage containing the subgroups
-     */
-    public function getSubgroup()
+    public function getSubgroup(): ObjectStorage
     {
         return $this->subgroup;
     }

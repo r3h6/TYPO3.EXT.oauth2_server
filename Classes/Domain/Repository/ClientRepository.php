@@ -22,11 +22,15 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
  *
  ***/
 
+/**
+ * @extends \TYPO3\CMS\Extbase\Persistence\Repository<\R3H6\Oauth2Server\Domain\Model\Client>
+ * @method ?\R3H6\Oauth2Server\Domain\Model\Client findOneBy(array $criteria)
+ */
 class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ClientRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function initializeObject()
+    public function initializeObject(): void
     {
         /** \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
         $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
@@ -37,24 +41,24 @@ class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository impleme
     public function getClientEntity($clientIdentifier)
     {
         $this->logger->debug('Get client', ['identifier' => $clientIdentifier]);
-        return $this->findOneByIdentifier($clientIdentifier);
+        return $this->findOneBy(['identifier' => $clientIdentifier]);
     }
 
     public function validateClient($clientIdentifier, $clientSecret, $grantType)
     {
-        $client = $this->findOneByIdentifier($clientIdentifier);
+        $client = $this->findOneBy(['identifier' => $clientIdentifier]);
 
         if ($client === null) {
             $this->logger->debug('No client found', ['identifier' => $clientIdentifier]);
             return false;
         }
-        if (GeneralUtility::inList($client->getGrantType(), $grantType) === false) {
+        if (GeneralUtility::inList((string)$client->getGrantType(), (string)$grantType) === false) {
             $this->logger->debug('Grant type not allowed by client', ['identifier' => $clientIdentifier, 'grantType' => $grantType]);
             return false;
         }
 
         $passwordHashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
         $hashInstance = $passwordHashFactory->getDefaultHashInstance('FE');
-        return $hashInstance->checkPassword($clientSecret, $client->getSecret());
+        return $hashInstance->checkPassword((string)$clientSecret, (string)$client->getSecret());
     }
 }
