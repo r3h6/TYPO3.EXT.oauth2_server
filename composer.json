@@ -61,6 +61,9 @@
 		"vendor-dir": ".Build/vendor"
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-refactor-for-v12-v13": "2.0.x-dev"
+		},
 		"typo3/cms": {
 			"extension-key": "oauth2_server",
 			"web-dir": ".Build/public"

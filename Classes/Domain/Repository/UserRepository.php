@@ -51,7 +51,7 @@ class UserRepository extends Repository implements UserRepositoryInterface, Logg
         }
 
         $passwordHashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-        $hashInstance = $passwordHashFactory->getDefaultHashInstance(TYPO3_MODE);
+        $hashInstance = $passwordHashFactory->getDefaultHashInstance('FE');
         if (!$hashInstance->checkPassword($password, $user->getPassword())) {
             $this->logger->debug('Password check failed', ['username' => $username]);
             throw new \RuntimeException('Username or password invalid', 1607636289929);
