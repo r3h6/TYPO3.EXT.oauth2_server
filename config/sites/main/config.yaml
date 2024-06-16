@@ -15,5 +15,6 @@ oauth2:
   loginPageUid: 1
   consentPageUid: 4
   scopes:
-    - scope1
-    - { identifier: scope2, description: 'Description or LLL path', consent: true }
+    - news
+    - { identifier: read, description: 'Read access', consent: true }
+    - { identifier: write, description: 'Write access', consent: true }

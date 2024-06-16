@@ -14,4 +14,7 @@ routes: {  }
 oauth2:
   enabled: true
   scopes:
-    email: 'E-mail'
+    - news
+    - { identifier: read, description: 'Read access', consent: true }
+    - { identifier: write, description: 'Write access', consent: true }
+

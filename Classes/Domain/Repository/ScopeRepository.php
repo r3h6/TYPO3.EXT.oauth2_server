@@ -7,11 +7,13 @@ namespace R3H6\Oauth2Server\Domain\Repository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\Domain\Model\Client;
 use R3H6\Oauth2Server\Domain\Model\Scope;
+use R3H6\Oauth2Server\Event\FinalizeScopesEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -34,7 +36,8 @@ class ScopeRepository extends Repository implements ScopeRepositoryInterface, Lo
     use LoggerAwareTrait;
 
     public function __construct(
-        protected Configuration $configuration
+        protected readonly Configuration $configuration,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function getScopeEntityByIdentifier($identifier)
@@ -58,10 +61,14 @@ class ScopeRepository extends Repository implements ScopeRepositoryInterface, Lo
     {
         if ($clientEntity instanceof Client) {
             $allowedScopes = GeneralUtility::trimExplode(',', $clientEntity->getAllowedScopes(), true);
-            return array_filter($scopes, function (ScopeEntityInterface $scope) use ($allowedScopes) {
+            $scopes = array_filter($scopes, function (ScopeEntityInterface $scope) use ($allowedScopes) {
                 return empty($allowedScopes) || in_array($scope->getIdentifier(), $allowedScopes);
             });
         }
-        return $scopes;
+
+        $event = new FinalizeScopesEvent($scopes, $grantType, $clientEntity, $userIdentifier, $this->configuration);
+        $this->eventDispatcher->dispatch($event);
+
+        return $event->getScopes();
     }
 }

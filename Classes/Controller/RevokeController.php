@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace R3H6\Oauth2Server\Controller;
 
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /***
  *
@@ -23,13 +24,14 @@ use TYPO3\CMS\Core\Http\Response;
 class RevokeController
 {
     public function __construct(
-        protected AccessTokenRepositoryInterface $accessTokenRepository
+        protected readonly AccessTokenRepositoryInterface $accessTokenRepository,
+        protected readonly ResponseFactoryInterface $responseFactory,
     ) {}
 
     public function revokeAccessToken(ServerRequestInterface $request): ResponseInterface
     {
         $tokenId = (string)$request->getAttribute('oauth_access_token_id');
         $this->accessTokenRepository->revokeAccessToken($tokenId);
-        return (new Response())->withStatus(204);
+        return $this->responseFactory->createResponse()->withStatus(Response::HTTP_NO_CONTENT);
     }
 }
