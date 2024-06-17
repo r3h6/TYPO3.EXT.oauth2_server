@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
+use R3H6\Oauth2Server\RequestAttributes;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -35,7 +36,7 @@ class Dispatcher implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $route = $request->getAttribute('oauth2.route');
+        $route = $request->getAttribute(RequestAttributes::OAUTH2_ROUTE);
         if ($route === null) {
             return $handler->handle($request);
         }
@@ -73,6 +74,12 @@ class Dispatcher implements MiddlewareInterface
         $frontend->user->userGroupList = implode(',', $frontendUserAspect->get('groupIds'));
         $frontend->user->userGroupIds = $frontendUserAspect->get('groupIds');
         $variables['frontend'] = $frontend;
+
+        $oauth = new \stdClass();
+        $oauth->authorized = $request->getAttribute(RequestAttributes::OAUTH_ACCESS_TOKEN_ID) !== null;
+        $oauth->grant = $request->getAttribute(RequestAttributes::OAUTH2_GRANT)?->value;
+        $variables['oauth'] = $oauth;
+
         $variables['request'] = $request;
 
         $language = new ExpressionLanguage();
@@ -85,7 +92,7 @@ class Dispatcher implements MiddlewareInterface
         foreach ($expressions as $expression) {
             $result = $language->evaluate($expression, $variables);
             if ($result === false) {
-                throw OAuthServerException::accessDenied("Constraint failed: $expression");
+                throw OAuthServerException::accessDenied("Evaluation for expression failed: $expression");
             }
         }
     }

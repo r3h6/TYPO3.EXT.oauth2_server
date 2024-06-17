@@ -44,7 +44,11 @@ class AuthCode extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         return $this->expiresAt;
     }
 
-    public function setUser(string|int|null $user): void
+    /**
+     * @param string $user
+     * @phpstan-param string|int|null $user
+     */
+    public function setUser($user): void
     {
         $this->user = (string)$user;
     }

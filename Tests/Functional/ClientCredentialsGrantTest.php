@@ -27,6 +27,6 @@ final class ClientCredentialsGrantTest extends ApplicationTestCase
 
         $context = new InternalRequestContext();
         $response = $this->executeFrontendSubRequest($request, $context);
-        self::assertStringContainsString('access_token', (string)$response->getBody(), 'Response: ' . $response->getBody());
+        self::assertStringContainsString('access_token', (string)$response->getBody());
     }
 }

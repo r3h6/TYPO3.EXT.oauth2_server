@@ -1,12 +1,3 @@
-oauth_token:
-    path: /token
-    controller: R3H6\Oauth2Server\Controller\TokenController::issueAccessToken
-    methods: [POST]
-    schemes: https
-    options:
-      oauth2_constraints: true
-
-
 oauth_authorize:
     path: /authorize
     controller: R3H6\Oauth2Server\Controller\AuthorizationController::startAuthorization
@@ -14,7 +5,6 @@ oauth_authorize:
     schemes: https
     options:
       oauth2_constraints: true
-
 
 oauth_authorize_approve:
     path: /authorize
@@ -24,8 +14,6 @@ oauth_authorize_approve:
     options:
       oauth2_constraints: true
 
-
-
 oauth_authorize_deny:
     path: /authorize
     controller: R3H6\Oauth2Server\Controller\AuthorizationController::denyAuthorization
@@ -34,7 +22,13 @@ oauth_authorize_deny:
     options:
       oauth2_constraints: true
 
-
+oauth_token:
+    path: /token
+    controller: R3H6\Oauth2Server\Controller\TokenController::issueAccessToken
+    methods: [POST]
+    schemes: https
+    options:
+      oauth2_constraints: oauth.grant != 'password' or frontend.user.isLoggedIn
 
 oauth_revoke:
     path: /revoke
@@ -43,15 +37,3 @@ oauth_revoke:
     schemes: https
     options:
       oauth2_constraints: true
-
-oauth_test:
-    path: /test
-    methods: [GET, POST]
-    schemes: https
-    options:
-      oauth2_constraints:
-        # - { condition: 'frontend.user.isLoggedIn == true', message: 'You must be logged in to access this resource.', code: 401 }
-        - 'ip("172.18.*")'
-        - '"foo" in request.getAttribute("oauth_scopes")'
-
-

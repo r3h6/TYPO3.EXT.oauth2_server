@@ -25,6 +25,9 @@ abstract class ApplicationTestCase extends FunctionalTestCase
         'MAIL' => [
             'transport' => NullTransport::class,
         ],
+        'SYS' => [
+            'encryptionKey' => 'e901a86f5faa521ac6c4359c281affac7a3fbdb734b85269262248a14fb349399300a3f1286f5bbd227e10933ea90413',
+        ],
         'LOG' => [
             'R3H6' => [
                 'Oauth2Server' => [

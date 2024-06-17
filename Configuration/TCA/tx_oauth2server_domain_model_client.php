@@ -1,5 +1,7 @@
 <?php
 
+use R3H6\Oauth2Server\Domain\Oauth\GrantTypes;
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client',
@@ -150,11 +152,11 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.authorization_code', 'value' => 'authorization_code'],
-                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.client_credentials', 'value' => 'client_credentials'],
-                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.implicit', 'value' => 'implicit'],
-                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.password', 'value' => 'password'],
-                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.refresh_token', 'value' => 'refresh_token'],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.authorization_code', 'value' => GrantTypes::AUTHORIZATION_CODE->value],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.client_credentials', 'value' => GrantTypes::CLIENT_CREDENTIALS->value],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.implicit', 'value' => GrantTypes::IMPLICIT->value],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.password', 'value' => GrantTypes::PASSWORD->value],
+                    ['label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.grant_type.refresh_token', 'value' => GrantTypes::REFRESH_TOKEN->value],
                 ],
             ],
         ],

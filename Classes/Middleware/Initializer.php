@@ -8,8 +8,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use R3H6\Oauth2Server\Configuration\Configuration;
+use R3H6\Oauth2Server\Domain\Oauth\GrantTypes;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
+use R3H6\Oauth2Server\RequestAttributes;
 use R3H6\Oauth2Server\Routing\RouterFactory;
+use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -59,7 +62,20 @@ class Initializer implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $request = $request->withAttribute('oauth2.route', $route);
+        $request = $request->withAttribute(RequestAttributes::OAUTH2_ROUTE, $route);
+
+        $post = (array)$request->getParsedBody();
+        $grant = GrantTypes::tryFrom($post['grant_type'] ?? '');
+        $request = $request->withAttribute(RequestAttributes::OAUTH2_GRANT, $grant);
+
+        if ($grant === GrantTypes::PASSWORD) {
+            $post['logintype'] = LoginType::LOGIN;
+            $post['user'] = $post['username'] ?? null;
+            $post['pass'] = $post['password'] ?? null;
+            $request = $request->withParsedBody($post);
+            $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] = false;
+        }
 
         if ($request->hasHeader('Authorization')) {
             try {
@@ -76,7 +92,7 @@ class Initializer implements MiddlewareInterface
     {
         $resourceServer = GeneralUtility::makeInstance(ResourceServer::class);
         $request = $resourceServer->validateAuthenticatedRequest($request);
-        $request = $request->withQueryParams(array_merge($request->getQueryParams(), ['logintype' => 'login']));
+        $request = $request->withQueryParams(array_merge($request->getQueryParams(), ['logintype' => LoginType::LOGIN]));
         $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] = false;
 
