@@ -131,17 +131,17 @@ return [
         'secret' => [
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_client.secret',
             'config' => [
-                // 'readOnly' => true,
                 'type' => 'password',
                 'fieldControl' => [
                     'passwordGenerator' => [
                         'renderType' => 'passwordGenerator',
-                        // 'options' => [
-                        //     'title' => 'Create random password',
-                        //     'passwordRules' => [
-                        //         'specialCharacters' => true,
-                        //     ],
-                        // ],
+                        'options' => [
+                            'allowEdit' => false,
+                            'passwordRules' => [
+                                'length' => 40,
+                                'random' => 'hex',
+                            ],
+                        ],
                     ],
                 ],
             ],
