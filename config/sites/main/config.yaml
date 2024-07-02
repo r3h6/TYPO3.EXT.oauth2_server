@@ -12,9 +12,10 @@ languages:
 rootPageId: 1
 routes: {  }
 oauth2:
+  accessTokensExpireIn: 'P10Y'
   loginPageUid: 1
   consentPageUid: 4
   scopes:
-    - news
+    - api
     - { identifier: read, description: 'Read access', consent: true }
     - { identifier: write, description: 'Write access', consent: true }

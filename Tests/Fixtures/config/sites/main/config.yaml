@@ -14,7 +14,9 @@ routes: {  }
 oauth2:
   enabled: true
   scopes:
-    - news
+    - api
     - { identifier: read, description: 'Read access', consent: true }
     - { identifier: write, description: 'Write access', consent: true }
+  resources:
+    - EXT:example_resources/Configuration/Yaml/Routes.yaml
 

@@ -41,7 +41,7 @@ class Dispatcher implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $expressions = (array)($route->getOptions()['oauth2_constraints'] ?? 'null != request.getAttribute("oauth_access_token_id")');
+        $expressions = (array)($route->getOptions()['oauth2_constraints'] ?? 'oauth.authorized');
         try {
             $this->checkConstraints($request, $expressions);
         } catch (\Exception $exception) {
@@ -78,6 +78,7 @@ class Dispatcher implements MiddlewareInterface
         $oauth = new \stdClass();
         $oauth->authorized = $request->getAttribute(RequestAttributes::OAUTH_ACCESS_TOKEN_ID) !== null;
         $oauth->grant = $request->getAttribute(RequestAttributes::OAUTH2_GRANT)?->value;
+        $oauth->scopes = $request->getAttribute(RequestAttributes::OAUTH_SCOPES);
         $variables['oauth'] = $oauth;
 
         $variables['request'] = $request;

@@ -35,8 +35,12 @@ class ResourceRouter extends AbstractRouter
 
         $routes = new RouteCollection();
         foreach ($resources as $resource) {
-            $loader = new YamlFileLoader(new FileLocator($resource));
-            $routes->addCollection($loader->load('routes.yaml'));
+            $pathInfo = pathinfo($resource);
+            if (!isset($pathInfo['dirname'])) {
+                throw new \RuntimeException('Invalid resource path', 1719953871204);
+            }
+            $loader = new YamlFileLoader(new FileLocator($pathInfo['dirname']));
+            $routes->addCollection($loader->load($pathInfo['basename']));
         }
 
         $event = new ModifyResourceServerRoutesEvent($this->configuration, $routes);

@@ -145,7 +145,7 @@ class AuthorizationServerFactory
 
     protected function getImplicitGrant(Configuration $configuration): ImplicitGrant
     {
-        $accessTokenTTL = new \DateInterval('PT1H');
+        $accessTokenTTL = new \DateInterval($configuration->getAccessTokensExpireIn());
         return GeneralUtility::makeInstance(ImplicitGrant::class, $accessTokenTTL);
     }
 

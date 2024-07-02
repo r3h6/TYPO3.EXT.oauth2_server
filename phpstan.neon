@@ -6,6 +6,7 @@ parameters:
 	ignoreErrors:
 		- identifier: missingType.iterableValue
 		- '#Cannot call method [a-z]+\(\) on Psr\\Log\\LoggerInterface\|null#'
+		- '#Variable \$_EXTKEY might not be defined\.#'
 	paths:
 		- Classes/
 		- Tests/

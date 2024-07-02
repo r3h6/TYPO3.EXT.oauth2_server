@@ -7,8 +7,13 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 abstract class ApplicationTestCase extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = [
+        'fluid_styled_content',
+    ];
+
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/oauth2_server',
+        'typo3conf/ext/oauth2_server/Tests/Fixtures/example_resources',
     ];
 
     protected array $pathsToLinkInTestInstance = [
@@ -46,8 +51,15 @@ abstract class ApplicationTestCase extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/base.csv');
         $this->setUpFrontendRootPage(1, [
-            'constants' => ['EXT:oauth2_server/Configuration/TypoScript/constants.typoscript'],
-            'setup' => ['EXT:oauth2_server/Configuration/TypoScript/setup.typoscript'],
+            'constants' => [
+                'EXT:fluid_styled_content/Configuration/TypoScript/constants.typoscript',
+                'EXT:oauth2_server/Configuration/TypoScript/constants.typoscript',
+            ],
+            'setup' => [
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript',
+                'EXT:oauth2_server/Configuration/TypoScript/setup.typoscript',
+                'EXT:example_resources/Configuration/TypoScript/setup.typoscript',
+            ],
         ]);
     }
 }
