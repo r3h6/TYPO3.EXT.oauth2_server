@@ -46,7 +46,8 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"R3H6\\Oauth2Server\\Tests\\": "Tests"
+			"R3H6\\Oauth2Server\\Tests\\": "Tests",
+			"R3H6\\ExampleResources\\": "Tests/Fixtures/example_resources/Classes"
 		}
 	},
 	"config": {
