@@ -52,7 +52,7 @@ class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository impleme
             $this->logger->debug('No client found', ['identifier' => $clientIdentifier]);
             return false;
         }
-        if (GeneralUtility::inList((string)$client->getGrantType(), (string)$grantType) === false) {
+        if ($grantType !== null && GeneralUtility::inList((string)$client->getGrantType(), (string)$grantType) === false) {
             $this->logger->debug('Grant type not allowed by client', ['identifier' => $clientIdentifier, 'grantType' => $grantType]);
             return false;
         }

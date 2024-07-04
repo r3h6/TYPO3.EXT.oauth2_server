@@ -31,7 +31,7 @@ final class RequestEvent implements LoggerAwareInterface
 
     public function __invoke(OAuth2RequestEvent $event): void
     {
-        $this->logger->debug('Forward event', ['name' => $event->getName()]);
+        $this->logger->debug('Forward event', ['eventName' => $event->getName(), 'eventClass' => get_class($event)]);
         $this->eventDispatcher->dispatch($event);
     }
 }

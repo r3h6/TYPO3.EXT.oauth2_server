@@ -11,6 +11,7 @@ use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\Domain\Oauth\GrantTypes;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\RequestAttributes;
+use R3H6\Oauth2Server\Routing\AuthorizationRouter;
 use R3H6\Oauth2Server\Routing\RouterFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -73,6 +74,10 @@ class Initializer implements MiddlewareInterface
             $post['pass'] = $post['password'] ?? null;
             $request = $request->withParsedBody($post);
             $this->updateGlobalConfiguration();
+        }
+
+        if ($router instanceof AuthorizationRouter) {
+            return $handler->handle($request);
         }
 
         if ($request->hasHeader('Authorization')) {
