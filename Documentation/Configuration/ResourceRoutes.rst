@@ -35,7 +35,7 @@ For every route you can configure some access restrictions by defining the optio
 
          -  :variable:      oauth.authorized
             :type:          boolean
-            :description:   True if authorization header was set and the token is valid
+            :description:   True if authorization header was set and the bearer token is valid
 
          -  :variable:      oauth.grant
             :type:          string
