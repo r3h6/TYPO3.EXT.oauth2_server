@@ -11,6 +11,7 @@ use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\Http\RequestAttribute;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***
@@ -33,7 +34,11 @@ class Oauth2Configuration implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $siteConfiguration = $request->getAttribute('site')->getConfiguration()['oauth2'] ?? false;
+        $site = $request->getAttribute('site');
+        if (!$site instanceof Site) {
+            return $handler->handle($request);
+        }
+        $siteConfiguration = $site->getConfiguration()['oauth2'] ?? false;
         if ($siteConfiguration === false || !($siteConfiguration['enabled'] ?? true)) {
             return $handler->handle($request);
         }
