@@ -19,17 +19,17 @@ case $SUITE in
         exit 0;
     ;;
     composer)
-        docker-compose run composer $ARGS
+        docker compose run composer $ARGS
     ;;
     unit)
         ARGS=${ARGS:-Tests/Unit/}
-        docker-compose run unit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml $ARGS
+        docker compose run unit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml $ARGS
     ;;
     functional)
         rm -rf .Build/public/typo3temp/var/tests/
         ARGS=${ARGS:-Tests/Functional/}
         ARGS="-c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml $ARGS"
-        docker-compose run functional $ARGS
+        docker compose run functional $ARGS
     ;;
     *)
     echo "Invalid argument '$SUITE'"
@@ -38,5 +38,5 @@ case $SUITE in
 esac
 
 SUITE_EXIT_CODE=$?
-docker-compose down --remove-orphans
+docker compose down --remove-orphans
 exit $SUITE_EXIT_CODE

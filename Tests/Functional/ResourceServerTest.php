@@ -9,6 +9,7 @@ final class ResourceServerTest extends ApplicationTestCase
 {
     /**
      * @test
+     * @group extbase
      */
     public function returnErrorResponseForNonAuthorizedRequest(): void
     {
@@ -23,6 +24,7 @@ final class ResourceServerTest extends ApplicationTestCase
 
     /**
      * @test
+     * @group extbase
      */
     public function returnSuccessResponseForAuthorizedRequest(): void
     {
@@ -39,6 +41,7 @@ final class ResourceServerTest extends ApplicationTestCase
 
     /**
      * @test
+     * @group simple
      */
     public function returnErrorResponseIfRequiredScopeIsMissing(): void
     {
@@ -55,6 +58,7 @@ final class ResourceServerTest extends ApplicationTestCase
 
     /**
      * @test
+     * @group simple
      */
     public function returnSuccessResponseForValidScope(): void
     {

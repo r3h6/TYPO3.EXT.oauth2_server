@@ -63,8 +63,6 @@ OAuth2 server for TYPO3 based on `PHP League's OAuth2 Server<https://oauth2.thep
 
         Overview of changes in new versions.
 
-----
-
 ..  toctree::
     :maxdepth: 2
     :titlesonly:

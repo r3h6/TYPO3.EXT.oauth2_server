@@ -14,5 +14,6 @@ Features
 - Grant types can be limited to clients
 - Can be used to protect API's from other extensions [1]_
 - Provides a plugin for asking the users consent
+- Frontend user login service for requests with a valid bearer token
 
 ..  [1] Only if the API is executed after the OAuth2 server middlewares.
