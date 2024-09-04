@@ -4,6 +4,7 @@ oauth_authorize:
     methods: [GET]
     schemes: https
     options:
+      oauth2_validateAuthenticatedRequest: false
       oauth2_constraints: true
 
 oauth_authorize_approve:
@@ -12,6 +13,7 @@ oauth_authorize_approve:
     methods: [POST]
     schemes: https
     options:
+      oauth2_validateAuthenticatedRequest: false
       oauth2_constraints: true
 
 oauth_authorize_deny:
@@ -20,6 +22,7 @@ oauth_authorize_deny:
     methods: [DELETE]
     schemes: https
     options:
+      oauth2_validateAuthenticatedRequest: false
       oauth2_constraints: true
 
 oauth_token:
@@ -28,6 +31,7 @@ oauth_token:
     methods: [POST]
     schemes: https
     options:
+      oauth2_validateAuthenticatedRequest: false
       oauth2_constraints: oauth.grant != 'password' or frontend.user.isLoggedIn
 
 oauth_revoke:
@@ -36,4 +40,5 @@ oauth_revoke:
     methods: [POST]
     schemes: https
     options:
+      oauth2_validateAuthenticatedRequest: false
       oauth2_constraints: true

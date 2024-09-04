@@ -116,4 +116,9 @@ class Configuration implements \ArrayAccess, SingletonInterface
     {
         ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $overrideConfiguration, true, false, false);
     }
+
+    public function toArray(): array
+    {
+        return $this->configuration;
+    }
 }

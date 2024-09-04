@@ -7,6 +7,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\RequestAttributes;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
@@ -26,9 +28,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-class Dispatcher implements MiddlewareInterface
+class Dispatcher implements MiddlewareInterface, LoggerAwareInterface
 {
     use ExceptionHandlingTrait;
+    use LoggerAwareTrait;
 
     public function __construct(
         private readonly DispatcherInterface $dispatcher,
@@ -41,6 +44,8 @@ class Dispatcher implements MiddlewareInterface
             return $handler->handle($request);
         }
 
+        $this->logger->debug('Dispatching oauth2 server');
+
         $expressions = (array)($route->getOptions()['oauth2_constraints'] ?? 'oauth.authorized');
         try {
             $this->checkConstraints($request, $expressions);
@@ -50,6 +55,7 @@ class Dispatcher implements MiddlewareInterface
 
         $controller = $route->getDefaults()['_controller'] ?? null;
         if ($controller === null) {
+            $this->logger->error('No controller found in route');
             return $handler->handle($request);
         }
 

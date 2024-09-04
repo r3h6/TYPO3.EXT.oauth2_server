@@ -15,7 +15,10 @@ ARGS="${@:2}"
 case $SUITE in
     clean)
         rm -rf $ROOT_DIR/.Build
-        rm $ROOT_DIR/composer.lock
+        rm -rf $ROOT_DIR/Documentation-GENERATED-temp
+        rm -rf $ROOT_DIR/var
+        rm -f $ROOT_DIR/.php-cs-fixer.cache
+        rm -f $ROOT_DIR/composer.lock
         exit 0;
     ;;
     composer)

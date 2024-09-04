@@ -7,11 +7,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\Domain\Oauth\GrantTypes;
 use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\RequestAttributes;
-use R3H6\Oauth2Server\Routing\AuthorizationRouter;
 use R3H6\Oauth2Server\Routing\RouterFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -29,9 +30,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-class Initializer implements MiddlewareInterface
+class Initializer implements MiddlewareInterface, LoggerAwareInterface
 {
     use ExceptionHandlingTrait;
+    use LoggerAwareTrait;
 
     public function __construct(
         private readonly RouterFactory $routerFactory,
@@ -47,6 +49,8 @@ class Initializer implements MiddlewareInterface
             return $handler->handle($request);
         }
 
+        $this->logger->debug('Initializing oauth2 server');
+
         $typoscript = GeneralUtility::makeInstance(FrontendTypoScript::class, new RootNode(), [], [], []);
         $typoscript->setSetupArray([]);
         $request = $request->withAttribute('frontend.typoscript', $typoscript);
@@ -54,6 +58,8 @@ class Initializer implements MiddlewareInterface
 
         $this->configuration->merge($this->extensionConfiguration->get('oauth2_server'));
         $this->configuration->merge($siteConfiguration);
+
+        $this->logger->debug('Configure oauth2 server', $this->configuration->toArray());
 
         $router = $this->routerFactory->fromRequest($request);
         $route = $router->match($request);
@@ -64,11 +70,31 @@ class Initializer implements MiddlewareInterface
 
         $request = $request->withAttribute(RequestAttributes::OAUTH2_ROUTE, $route);
 
+        $validateAuthenticatedRequest = $route->getOptions()['oauth2_validateAuthenticatedRequest'] ?? true;
+        if ($validateAuthenticatedRequest === false) {
+            $request = $this->processAuthorizationRequest($request);
+            return $handler->handle($request);
+        }
+
+        try {
+            $request = $this->processResourceRequest($request);
+        } catch (\Exception $exception) {
+            return $this->handleException($exception);
+        }
+
+        return $handler->handle($request);
+    }
+
+    private function processAuthorizationRequest(ServerRequestInterface $request): ServerRequestInterface
+    {
+        $this->logger->debug('Process authorization request');
+
         $post = (array)$request->getParsedBody();
         $grant = GrantTypes::tryFrom($post['grant_type'] ?? '');
         $request = $request->withAttribute(RequestAttributes::OAUTH2_GRANT, $grant);
 
         if ($grant === GrantTypes::PASSWORD) {
+            $this->logger->debug('Enhance request with required login parameters');
             $post['logintype'] = 'login';
             $post['user'] = $post['username'] ?? null;
             $post['pass'] = $post['password'] ?? null;
@@ -76,25 +102,15 @@ class Initializer implements MiddlewareInterface
             $this->updateGlobalConfiguration();
         }
 
-        if ($router instanceof AuthorizationRouter) {
-            return $handler->handle($request);
-        }
-
-        if ($request->hasHeader('Authorization')) {
-            try {
-                $request = $this->handleAuthorization($request);
-            } catch (\Exception $exception) {
-                return $this->handleException($exception);
-            }
-        }
-
-        return $handler->handle($request);
+        return $request;
     }
 
-    private function handleAuthorization(ServerRequestInterface $request): ServerRequestInterface
+    private function processResourceRequest(ServerRequestInterface $request): ServerRequestInterface
     {
+        $this->logger->debug('Process resource request');
         $resourceServer = GeneralUtility::makeInstance(ResourceServer::class);
         $request = $resourceServer->validateAuthenticatedRequest($request);
+        $this->logger->debug('Enhance request with required login parameters');
         $request = $request->withQueryParams(array_merge($request->getQueryParams(), ['logintype' => 'login']));
         $this->updateGlobalConfiguration();
 
@@ -103,6 +119,7 @@ class Initializer implements MiddlewareInterface
 
     private function updateGlobalConfiguration(): void
     {
+        $this->logger->debug('Update global configuration to enforce login');
         $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] = false;
         $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'logintype';
