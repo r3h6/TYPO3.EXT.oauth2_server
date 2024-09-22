@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Session;
 
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Routing;
 
 use Psr\EventDispatcher\EventDispatcherInterface;

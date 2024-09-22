@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Middleware;
 
 use League\OAuth2\Server\ResourceServer;
@@ -49,13 +51,6 @@ class Initializer implements MiddlewareInterface, LoggerAwareInterface
             return $handler->handle($request);
         }
 
-        $this->logger->debug('Initializing oauth2 server');
-
-        $typoscript = GeneralUtility::makeInstance(FrontendTypoScript::class, new RootNode(), [], [], []);
-        $typoscript->setSetupArray([]);
-        $request = $request->withAttribute('frontend.typoscript', $typoscript);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-
         $this->configuration->merge($this->extensionConfiguration->get('oauth2_server'));
         $this->configuration->merge($siteConfiguration);
 
@@ -68,6 +63,7 @@ class Initializer implements MiddlewareInterface, LoggerAwareInterface
             return $handler->handle($request);
         }
 
+        $request = $this->prepareExtbase($request);
         $request = $request->withAttribute(RequestAttributes::OAUTH2_ROUTE, $route);
 
         $validateAuthenticatedRequest = $route->getOptions()['oauth2_validateAuthenticatedRequest'] ?? true;
@@ -83,6 +79,15 @@ class Initializer implements MiddlewareInterface, LoggerAwareInterface
         }
 
         return $handler->handle($request);
+    }
+
+    private function prepareExtbase(ServerRequestInterface $request): ServerRequestInterface
+    {
+        $typoscript = GeneralUtility::makeInstance(FrontendTypoScript::class, new RootNode(), [], [], []);
+        $typoscript->setSetupArray([]);
+        $request = $request->withAttribute('frontend.typoscript', $typoscript);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        return $request;
     }
 
     private function processAuthorizationRequest(ServerRequestInterface $request): ServerRequestInterface
