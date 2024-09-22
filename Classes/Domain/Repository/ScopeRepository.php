@@ -37,8 +37,10 @@ class ScopeRepository extends Repository implements ScopeRepositoryInterface, Lo
 
     public function __construct(
         protected readonly Configuration $configuration,
-        protected readonly EventDispatcherInterface $eventDispatcher,
-    ) {}
+        EventDispatcherInterface $eventDispatcher,
+    ) {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     public function getScopeEntityByIdentifier($identifier)
     {
