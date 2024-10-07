@@ -72,6 +72,7 @@ class AuthorizationController
         $this->eventDispatcher->dispatch($modifyAuthenticationRedirectEvent);
 
         if ($modifyAuthenticationRedirectEvent->getRequiresAuthentication()) {
+            $this->logger->debug('Requires authentication');
             return $modifyAuthenticationRedirectEvent->getResponse();
         }
 
@@ -85,6 +86,7 @@ class AuthorizationController
         $this->eventDispatcher->dispatch($modifyConsentRedirectEvent);
 
         if ($modifyConsentRedirectEvent->getRequiresConsent()) {
+            $this->logger->debug('Requires consent');
             return $modifyConsentRedirectEvent->getResponse();
         }
 

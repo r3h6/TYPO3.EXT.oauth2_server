@@ -37,7 +37,7 @@ abstract class AbstractRouter implements RouterInterface, LoggerAwareInterface
     {
         $routes = $this->getRoutes();
         if (count($routes) === 0) {
-            $this->logger->debug('No routes configured');
+            $this->logger->debug('No routes configured for url {request}', ['request' => $request->getUri()]);
             return null;
         }
 
@@ -51,7 +51,7 @@ abstract class AbstractRouter implements RouterInterface, LoggerAwareInterface
         try {
             $parameters = $matcher->matchRequest($symfonyRequest);
         } catch (ResourceNotFoundException | MethodNotAllowedException | NoConfigurationException $e) {
-            $this->logger->debug('No route found', ['exception' => $e]);
+            $this->logger->debug('No route found due to ' . $e->getMessage());
             return null;
         }
 

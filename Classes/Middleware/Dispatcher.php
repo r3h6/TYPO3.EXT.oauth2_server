@@ -101,6 +101,7 @@ class Dispatcher implements MiddlewareInterface, LoggerAwareInterface
         foreach ($expressions as $expression) {
             $result = $language->evaluate((string)$expression, $variables);
             if ($result === false) {
+                $this->logger->debug('Evaluation for expression failed: ' . $expression, $variables);
                 throw OAuthServerException::accessDenied("Evaluation for expression failed: $expression");
             }
         }
