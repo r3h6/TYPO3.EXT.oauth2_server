@@ -13,8 +13,8 @@ jobs:
           - { PHP: '8.1', TYPO3_VERSION: ^12.4 }
           - { PHP: '8.2', TYPO3_VERSION: ^12.4 }
           - { PHP: '8.3', TYPO3_VERSION: ^12.4 }
-          - { PHP: '8.2', TYPO3_VERSION: ~13.1.0 }
-          - { PHP: '8.3', TYPO3_VERSION: ~13.1.0 }
+          - { PHP: '8.2', TYPO3_VERSION: ^13.1 }
+          - { PHP: '8.3', TYPO3_VERSION: ^13.1 }
 
     env: ${{ matrix.env }}
 
@@ -25,17 +25,8 @@ jobs:
       - name: Install
         run: ./Build/Scripts/runTests.sh composer require typo3/cms-core="${TYPO3_VERSION}" --no-suggest
 
-      - name: Lint PHP
-        run: ./Build/Scripts/runTests.sh composer ci:php:lint
-
-      - name: PHP Coding Standards Fixer
-        run: ./Build/Scripts/runTests.sh composer ci:php:cs
-
-      - name: PHPStan
-        run: ./Build/Scripts/runTests.sh composer ci:php:stan
-
-      # - name: PHP Mess Detector
-      #   run: ./Build/Scripts/runTests.sh composer ci:php:md
+      - name: Lint
+        run: ./Build/Scripts/runTests.sh composer ci:static
 
       - name: Unit tests
         run: ./Build/Scripts/runTests.sh unit
