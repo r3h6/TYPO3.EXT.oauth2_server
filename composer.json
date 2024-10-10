@@ -24,6 +24,8 @@
 		"phpstan/phpstan-phpunit": "^1.4",
 		"phpunit/phpcov": "^9.0",
 		"saschaegerer/phpstan-typo3": "^1.10",
+		"symfony/translation": "^6.4 || ^7.1",
+		"symfony/yaml": "^6.4 || ^7.1",
 		"typo3/cms-belog": "^12.4 || ^13.1",
 		"typo3/cms-extensionmanager": "^12.4 || ^13.1",
 		"typo3/cms-felogin": "^12.4 || ^13.1",
@@ -92,6 +94,14 @@
 			"@coverage:create-directories",
 			"XDEBUG_MODE=coverage phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --coverage-filter Classes --coverage-php=.Build/coverage/unit.cov Tests/Unit"
 		],
+		"ci:static": [
+			"@ci:php:lint",
+			"@ci:php:cs",
+			"@ci:php:stan",
+			"@ci:yaml:lint",
+			"@ci:xliff:lint",
+			"@ci:typo3:scan"
+		],
 		"ci:libs:pack": "phar-composer build softcreatr/jsonpath Resources/Private/Php/jsonpath.phar",
 		"ci:php:cs": "php-cs-fixer fix -v --dry-run --using-cache no --diff",
 		"ci:php:lint": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
@@ -99,6 +109,8 @@
 		"ci:test:functional": "phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml Tests/Functional/",
 		"ci:test:unit": "phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit/",
 		"ci:typo3:scan": "typo3scan scan Classes/ -i strong",
+		"ci:xliff:lint": "php Build/Scripts/xliff-lint lint:xliff Resources/Private/Language",
+		"ci:yaml:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' \\( -name '*.yaml' -o -name '*.yml' \\) | xargs -r php .Build/bin/yaml-lint",
 		"coverage:create-directories": "mkdir -p .Build/coverage",
 		"fix:composer:normalize": "@composer normalize --no-check-lock",
 		"fix:php:cs": "php-cs-fixer fix",
