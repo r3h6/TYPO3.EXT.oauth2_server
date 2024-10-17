@@ -19,8 +19,11 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
 
 class User extends FrontendUser implements UserEntityInterface
 {
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
-        return $this->uid;
+        if ($this->uid === null) {
+            throw new \RuntimeException('User has no uid', 1729194265611);
+        }
+        return (string)$this->uid;
     }
 }

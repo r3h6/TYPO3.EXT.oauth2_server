@@ -29,7 +29,7 @@ class AuthCodeRepository implements SingletonInterface, AuthCodeRepositoryInterf
 
     public function __construct(private \R3H6\Oauth2Server\Domain\Repository\AuthCodeRepository $repository) {}
 
-    public function getNewAuthCode()
+    public function getNewAuthCode(): AuthCodeEntityInterface
     {
         $this->logger->debug('Get new auth code');
 
@@ -48,7 +48,7 @@ class AuthCodeRepository implements SingletonInterface, AuthCodeRepositoryInterf
         $this->repository->persist();
     }
 
-    public function revokeAuthCode($codeId): void
+    public function revokeAuthCode(string $codeId): void
     {
         $this->logger->debug('Revoke auth code', ['identifier' => $codeId]);
         $token = $this->repository->findOneBy(['identifier' => $codeId]);
@@ -61,7 +61,7 @@ class AuthCodeRepository implements SingletonInterface, AuthCodeRepositoryInterf
         $this->repository->persist();
     }
 
-    public function isAuthCodeRevoked($codeId)
+    public function isAuthCodeRevoked(string $codeId): bool
     {
         $token = $this->repository->findOneBy(['identifier' => $codeId]);
         if ($token) {

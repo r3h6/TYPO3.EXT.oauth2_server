@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace R3H6\Oauth2Server\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -22,9 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 
 final class RevokeTokenTest extends ApplicationTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function revokeAccessToken(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/accessToken.csv');
@@ -42,16 +41,14 @@ final class RevokeTokenTest extends ApplicationTestCase
         $this->assertCSVDataSet(__DIR__ . '/Assertions/revokedAccessToken.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function revokeRefreshToken(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/refreshToken.csv');
         $request = (new InternalRequest('https://localhost/oauth2/revoke'))
             ->withMethod('POST')
             ->withHeader('Content-Type', 'application/x-www-form-urlencoded')
-            ->withHeader('Authorization', 'Basic ' . base64_encode('fc17757d-aa0c-481d-96d7-c2504ce7199f:Password1!'))
+            ->withHeader('Authorization', 'Basic ' . base64_encode('a491f467-deaa-4bd1-b095-43811001f2b4:Password1!'))
             ->withBody((new StreamFactory())->createStream(http_build_query([
                 'token' => self::REFRESH_TOKEN,
             ])));

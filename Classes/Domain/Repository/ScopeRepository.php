@@ -40,7 +40,10 @@ class ScopeRepository extends Repository implements ScopeRepositoryInterface, Lo
         protected EventDispatcherInterface $eventDispatcher,
     ) {}
 
-    public function getScopeEntityByIdentifier($identifier)
+    /**
+     * @param non-empty-string $identifier
+     */
+    public function getScopeEntityByIdentifier(string $identifier): ScopeEntityInterface
     {
         $this->logger->debug('Get scope', ['identifier' => $identifier]);
         $scope = new Scope($identifier);
@@ -57,7 +60,7 @@ class ScopeRepository extends Repository implements ScopeRepositoryInterface, Lo
         return $scope;
     }
 
-    public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null)
+    public function finalizeScopes(array $scopes, string $grantType, ClientEntityInterface $clientEntity, ?string $userIdentifier = null, ?string $authCodeId = null): array
     {
         if ($clientEntity instanceof Client) {
             $allowedScopes = GeneralUtility::trimExplode(',', $clientEntity->getAllowedScopes(), true);

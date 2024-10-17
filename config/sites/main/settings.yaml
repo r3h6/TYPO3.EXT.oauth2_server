@@ -1,0 +1,5 @@
+oauth2_server:
+  consentPageUid: 2
+  loginPageUid: 1
+  accessTokensExpireIn: P10Y
+  refreshTokensExpireIn: P10Y

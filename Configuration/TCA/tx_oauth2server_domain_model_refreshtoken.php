@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_refreshtoken',

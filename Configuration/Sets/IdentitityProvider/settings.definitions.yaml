@@ -1,0 +1,32 @@
+categories:
+  OAuth2Server:
+    label: 'OAuth2 Server'
+  OAuth2Server.templates:
+    label: 'Templates'
+    parent: OAuth2Server
+
+settings:
+  plugin.tx_oauth2server.headerLogo:
+    label: 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.header_logo'
+    category: OAuth2Server.templates
+    description: ''
+    type: string
+    default: 'EXT:oauth2_server/Resources/Public/Icons/typo3_orange.svg'
+  plugin.tx_oauth2server.primaryColor:
+    label: 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.primary_color'
+    category: OAuth2Server.templates
+    description: ''
+    type: color
+    default: ''
+  plugin.tx_oauth2server.backgroundColor:
+    label: 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.background_color'
+    category: OAuth2Server.templates
+    description: ''
+    type: color
+    default: ''
+  plugin.tx_oauth2server.footerText:
+    label: 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.primary_color'
+    category: OAuth2Server.templates
+    description: ''
+    type: string
+    default: 'TYPO3 - Inspire people to share'

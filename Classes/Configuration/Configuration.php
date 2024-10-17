@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 class Configuration implements \ArrayAccess, SingletonInterface
 {
     private array $configuration = [
+        'enabled' => true,
         'privateKey' => 'EXT:oauth2_server/Resources/Private/Keys/private.key',
         'publicKey' => 'EXT:oauth2_server/Resources/Private/Keys/public.key',
         'routePrefix' => 'oauth2',
@@ -35,6 +36,11 @@ class Configuration implements \ArrayAccess, SingletonInterface
         'scopes' => [],
         'resources' => [],
     ];
+
+    public function isEnabled(): bool
+    {
+        return (bool)$this->configuration['enabled'];
+    }
 
     public function offsetExists(mixed $offset): bool
     {

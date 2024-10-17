@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace R3H6\Oauth2Server\Domain\Repository;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -41,7 +42,7 @@ class UserRepository extends Repository implements UserRepositoryInterface, Logg
         $this->setDefaultQuerySettings($querySettings);
     }
 
-    public function getUserEntityByUserCredentials($username, $password, $grantType, ClientEntityInterface $clientEntity)
+    public function getUserEntityByUserCredentials(string $username, string $password, string $grantType, ClientEntityInterface $clientEntity): UserEntityInterface
     {
         $this->logger->debug('Get user', ['username' => $username]);
         $user = $this->findOneBy(['username' => $username]);

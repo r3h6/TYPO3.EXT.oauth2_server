@@ -25,6 +25,9 @@ class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implemen
     protected string $description = '';
     protected bool $consent = true;
 
+    /**
+     * @param non-empty-string $name
+     */
     public function __construct(string $name)
     {
         $this->setIdentifier($name);

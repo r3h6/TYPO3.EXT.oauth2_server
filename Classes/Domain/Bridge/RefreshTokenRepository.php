@@ -28,7 +28,7 @@ class RefreshTokenRepository implements SingletonInterface, RefreshTokenReposito
 
     public function __construct(private \R3H6\Oauth2Server\Domain\Repository\RefreshTokenRepository $repository) {}
 
-    public function getNewRefreshToken()
+    public function getNewRefreshToken(): RefreshTokenEntityInterface
     {
         $this->logger->debug('Get new refresh token');
 
@@ -45,7 +45,7 @@ class RefreshTokenRepository implements SingletonInterface, RefreshTokenReposito
         $this->repository->persist();
     }
 
-    public function revokeRefreshToken($tokenId): void
+    public function revokeRefreshToken(string $tokenId): void
     {
         $this->logger->debug('Revoke refresh token', ['identifier' => $tokenId]);
         $token = $this->repository->findOneBy(['identifier' => $tokenId]);
@@ -58,7 +58,7 @@ class RefreshTokenRepository implements SingletonInterface, RefreshTokenReposito
         $this->repository->persist();
     }
 
-    public function isRefreshTokenRevoked($tokenId)
+    public function isRefreshTokenRevoked(string $tokenId): bool
     {
         $token = $this->repository->findOneBy(['identifier' => $tokenId]);
         if ($token) {
