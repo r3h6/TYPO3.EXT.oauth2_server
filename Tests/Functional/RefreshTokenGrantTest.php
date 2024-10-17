@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace R3H6\Oauth2Server\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -21,9 +22,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 
 final class RefreshTokenGrantTest extends ApplicationTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function refreshTokenGrant(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/refreshToken.csv');
@@ -33,9 +32,9 @@ final class RefreshTokenGrantTest extends ApplicationTestCase
             ->withBody((new StreamFactory())->createStream(http_build_query([
                 'grant_type' => 'refresh_token',
                 'refresh_token' => self::REFRESH_TOKEN,
-                'client_id' => 'fc17757d-aa0c-481d-96d7-c2504ce7199f',
+                'client_id' => 'a491f467-deaa-4bd1-b095-43811001f2b4',
                 'client_secret' => 'Password1!',
-                'scope' => 'news read write',
+                'scope' => 'api read',
             ])));
 
         $context = new InternalRequestContext();

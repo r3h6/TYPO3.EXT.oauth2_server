@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace R3H6\Oauth2Server\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
@@ -20,10 +21,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 
 final class ResourceServerTest extends ApplicationTestCase
 {
-    /**
-     * @test
-     * @group extbase
-     */
+    #[Test]
     public function returnErrorResponseForNonAuthorizedRequest(): void
     {
         $request = (new InternalRequest('https://localhost/api'))
@@ -35,10 +33,7 @@ final class ResourceServerTest extends ApplicationTestCase
         self::assertStringContainsString('access_denied', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     * @group extbase
-     */
+    #[Test]
     public function returnSuccessResponseForAuthorizedRequest(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/accessToken.csv');

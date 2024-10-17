@@ -52,6 +52,7 @@ class Dispatcher implements MiddlewareInterface, LoggerAwareInterface
         try {
             $this->checkConstraints($request, $expressions);
         } catch (\Exception $exception) {
+            $this->logger->debug('Constraint check failed', ['exception' => $exception]);
             return $this->handleException($exception);
         }
 
@@ -65,6 +66,7 @@ class Dispatcher implements MiddlewareInterface, LoggerAwareInterface
         try {
             return $this->dispatcher->dispatch($request);
         } catch (\Exception $exception) {
+            $this->logger->debug('Dispatching failed', ['exception' => $exception]);
             return $this->handleException($exception);
         }
     }

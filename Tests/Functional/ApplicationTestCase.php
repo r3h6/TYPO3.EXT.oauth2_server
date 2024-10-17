@@ -36,10 +36,14 @@ abstract class ApplicationTestCase extends FunctionalTestCase
      */
     protected const ACCESS_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJmYzE3NzU3ZC1hYTBjLTQ4MWQtOTZkNy1jMjUwNGNlNzE5OWYiLCJqdGkiOiI3MzJmNzAwMjA3ZDE5ODNhY2RjMTg2OGVmZWUyYzUxZmFmZTMyYzM0OWNlMzkyMDkyZjQ4YThkZTczNTU5MjAwZDUxOTQxZTY1MzEwYTRhYiIsImlhdCI6MTcxOTk0NzQ5NS41MjE3MTksIm5iZiI6MTcxOTk0NzQ5NS41MjE3MjEsImV4cCI6MjAzNTQ4MDI5NS41MTgzNDYsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpIiwicmVhZCJdfQ.AfYG4QVYI5m1rgO_-IiWeYAO8TFAavidzbzUmXDYCdiYV3B1voBP7CkKk61PBLON6ASyuQljm8ZUfciSi8NN1IEY-izP7a28b-CliB-vhgaArdS2vDnGLNbD7X6O7Di-oBxI34tvc92Wij4ShT-ZRCeVuS3gKrqXyInJuo4om_pghglS6vcSvvf5KJzmEzbnn4up16ntqkfjBQKMfQexQDkZJDEDS82dWNze3rEUDbIC4U-82VPTxVHZj3q5k-L4ydgXgkrLtl-cg67Od8J9h_bwIf3REc-tEsULvL1-VYiuFnq0tTpiThdLyVNbZHROM-z83dR4yP-TZvB_lFMJ9Q';
 
-    /** Expires 17-6-2034 */
-    protected const REFRESH_TOKEN = 'def50200afddde02c4a694a92991e1b87267c88c6a8f97c6eadf6b61e5553434b87c95833c5b5d4d34e4857221f1214ea847473049c7e40026cb4a42d8138a643e61bd2778abb3300bf721b464a68e4e94da59a2595b0a07684927798940d5061e16c68600893aeea62797fbbe67ca46f876353ae7911496c7eb271c48752ab86360346bccaea4a84529776a7e1f8e0fa7b2d2c0ba733f17cbdb8de43362f7dbabab6c68db7fbaf39ae28b7eed32e5436878682ba25d7592379cb99c64d78b2a63bf033f060dcce9d70213514c23f8d032a9a02111045ae3450a2d8250582149de889cae2bdbb7d1339aae20aba9c6e2290b25095e8a7e337b31952fda93f9120f9db4904a180fc796f364784ada430bfe6aa4d6cff8cafb45fb8edcaf378175739917622847084bb84c6f1c8bf11c7b8c0dfc434b700567acb0a3d44bda9039c22ed0f2893c42dc81c959c21a1e00d5cc7b8d07f4748924b10cb440a2fa804ded1b8d4198dcff78868a46317c9e6d0228203d761db6e55a11e8d663082142e76a35a91a8f7bb982c4d89d09e4ce4e2bdbb749fb4775c7b75d';
+    /**
+     * Expires: 2034
+     * Scopes: api, read
+     */
+    protected const REFRESH_TOKEN = 'def50200fb242851e8053651b6dc2f9a13972fb0c5634ed0bec15e4775ae60dd18ec693bc72f2b4e22ec6097e2c85bf291b59d7fae3fc4c7519b0de2382c8c0d7bb85504635cb234d65a0391626d859beec6ae5e311a5352ca143b4a39e6f653945f4cceb1f213b68b9eba194acc85382a27b63e90aa31662c63bf3419b3c16695f11aaccb7e8541fb8c75887eba4786f33361b258f56695524ccba99b008706e294de153cc14a1b6b70fc01ae41f6a49be7b399a8c5a7ffdef5ff7e2b0a13ad2c883731dd6806bcecf3614d2d4cec19d884f05e2cd3caa568e908c2c8a61dec4228d2bc76ba2c498f2bd8ec6d6710a6298def72867ecf3aeed5dbb48c6bee1ed2c2a25389fc9e1920fec73d58f6d7f8d686ee143bec8327462784b49c08bb9abe52a1a46a4dc06f11a5d9d9b995db72ce7127376c569732c548380244872387773531d78ca890285085bd580e8ce6e5c572b978b06471d0ce90222f9bfdbd09b64b3fea1eee7c9fc618cf68486e6681ee700d25690346975f75536c116f1e4b2acf420f869ddcd1562fb1e38cc7a3ddb318';
 
     protected array $coreExtensionsToLoad = [
+        'felogin',
         'fluid_styled_content',
     ];
 
@@ -84,10 +88,12 @@ abstract class ApplicationTestCase extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/base.csv');
         $this->setUpFrontendRootPage(1, [
             'constants' => [
+                'EXT:felogin/Configuration/TypoScript/constants.typoscript',
                 'EXT:fluid_styled_content/Configuration/TypoScript/constants.typoscript',
                 'EXT:oauth2_server/Configuration/TypoScript/constants.typoscript',
             ],
             'setup' => [
+                'EXT:felogin/Configuration/TypoScript/setup.typoscript',
                 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript',
                 'EXT:oauth2_server/Configuration/TypoScript/setup.typoscript',
                 'EXT:example_resources/Configuration/TypoScript/setup.typoscript',

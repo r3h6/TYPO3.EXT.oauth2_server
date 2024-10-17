@@ -12,7 +12,6 @@ languages:
 rootPageId: 1
 routes: {  }
 oauth2:
-  enabled: true
   scopes:
     - api
     - { identifier: read, description: 'Read access', consent: true }

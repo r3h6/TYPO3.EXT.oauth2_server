@@ -48,7 +48,12 @@ class AuthorizationServerFactory
             $this->getClientRepository($configuration),
             $this->getAccessTokenRepository($configuration),
             $this->getScopeRepository($configuration),
-            $this->getResponseType($configuration)
+            $this->getResponseType($configuration),
+            $this->getClientCredentialsGrant($configuration),
+            $this->getPasswordGrant($configuration),
+            $this->getAuthCodeGrant($configuration),
+            $this->getRefreshTokenGrant($configuration),
+            $this->getImplicitGrant($configuration),
         );
 
         $this->eventDispatcher->dispatch($event);
@@ -63,11 +68,21 @@ class AuthorizationServerFactory
             $event->getResponseType()
         );
 
-        $server->enableGrantType($this->getClientCredentialsGrant($configuration), $accessTokenTTL);
-        $server->enableGrantType($this->getPasswordGrant($configuration), $accessTokenTTL);
-        $server->enableGrantType($this->getAuthCodeGrant($configuration), $accessTokenTTL);
-        $server->enableGrantType($this->getRefreshTokenGrant($configuration), $accessTokenTTL);
-        $server->enableGrantType($this->getImplicitGrant($configuration), $accessTokenTTL);
+        if ($event->getClientCredentialsGrant() !== null) {
+            $server->enableGrantType($event->getClientCredentialsGrant(), $accessTokenTTL);
+        }
+        if ($event->getPasswordGrant() !== null) {
+            $server->enableGrantType($event->getPasswordGrant(), $accessTokenTTL);
+        }
+        if ($event->getAuthCodeGrant() !== null) {
+            $server->enableGrantType($event->getAuthCodeGrant(), $accessTokenTTL);
+        }
+        if ($event->getRefreshTokenGrant() !== null) {
+            $server->enableGrantType($event->getRefreshTokenGrant(), $accessTokenTTL);
+        }
+        if ($event->getImplicitGrant() !== null) {
+            $server->enableGrantType($event->getImplicitGrant(), $accessTokenTTL);
+        }
 
         $listener = GeneralUtility::makeInstance(RequestEvent::class);
         $events = [

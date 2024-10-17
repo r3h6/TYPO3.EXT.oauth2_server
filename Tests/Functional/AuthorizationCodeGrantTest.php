@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace R3H6\Oauth2Server\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
@@ -20,9 +21,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 
 final class AuthorizationCodeGrantTest extends ApplicationTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function authorizationEndpointRedirectsToLoginPage(): void
     {
         $request = new InternalRequest('https://localhost/oauth2/authorize?' . http_build_query([
@@ -36,9 +35,7 @@ final class AuthorizationCodeGrantTest extends ApplicationTestCase
         self::assertStringContainsString('https://localhost/?redirect_url=', $response->getHeaderLine('Location'), 'Response: ' . $response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authorizationEndpointRedirectsToConsentPage(): void
     {
         $request = new InternalRequest('https://localhost/oauth2/authorize?' . http_build_query([
@@ -53,9 +50,7 @@ final class AuthorizationCodeGrantTest extends ApplicationTestCase
         self::assertStringContainsString('https://localhost/consent', $response->getHeaderLine('Location'), 'Response: ' . $response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authorizationEndpointReturnsAuthCode(): void
     {
         $request = new InternalRequest('https://localhost/oauth2/authorize?' . http_build_query([

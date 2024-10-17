@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace R3H6\Oauth2Server\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -21,9 +22,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 
 final class ResourceOwnerPasswordCredentialsGrantTest extends ApplicationTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resourceOwnerPasswordCredentialsGrant(): void
     {
         $request = (new InternalRequest('https://localhost/oauth2/token'))
@@ -43,9 +42,7 @@ final class ResourceOwnerPasswordCredentialsGrantTest extends ApplicationTestCas
         self::assertStringContainsString('access_token', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resourceOwnerPasswordCredentialsGrantWithInvalidCredentials(): void
     {
         $request = (new InternalRequest('https://localhost/oauth2/token'))

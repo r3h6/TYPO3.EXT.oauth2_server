@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace R3H6\ExampleResources\Controller;
 
 use Psr\Http\Message\ResponseFactoryInterface;

@@ -30,13 +30,15 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
 
     public function __construct(private \R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository $repository) {}
 
-    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
+    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, ?string $userIdentifier = null): AccessTokenEntityInterface
     {
         $this->logger->debug('Get new token', ['client' => $clientEntity->getIdentifier(), 'scopes' => $scopes, 'userIdentifier' => $userIdentifier]);
 
         $accessToken = new AccessToken();
         $accessToken->setClient($clientEntity);
-        $accessToken->setUserIdentifier($userIdentifier);
+        if ($userIdentifier !== null && $userIdentifier !== '') {
+            $accessToken->setUserIdentifier($userIdentifier);
+        }
         $accessToken->setExpiryDateTime(\DateTimeImmutable::createFromMutable((new \DateTime())->add(new \DateInterval('PT6H'))));
 
         foreach ($scopes as $scope) {
@@ -59,7 +61,7 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
         $this->repository->persist();
     }
 
-    public function revokeAccessToken($tokenId): void
+    public function revokeAccessToken(string $tokenId): void
     {
         $this->logger->debug('Revoke access token', ['identifier' => $tokenId]);
         $token = $this->repository->findOneBy(['identifier' => $tokenId]);
@@ -72,7 +74,7 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
         $this->repository->persist();
     }
 
-    public function isAccessTokenRevoked($tokenId)
+    public function isAccessTokenRevoked(string $tokenId): bool
     {
         $token = $this->repository->findOneBy(['identifier' => $tokenId]);
         if ($token) {

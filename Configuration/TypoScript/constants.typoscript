@@ -1,5 +1,5 @@
-plugin.tx_oauth2server_consent {
-  #cat=basic/file/a; type=color; label=LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.header_logo
+plugin.tx_oauth2server {
+  #cat=basic/file/a; type=string; label=LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.header_logo
   headerLogo = EXT:oauth2_server/Resources/Public/Icons/typo3_orange.svg
   #cat=basic/color/a; type=color; label=LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.primary_color
   primaryColor =

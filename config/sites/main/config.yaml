@@ -1,5 +1,6 @@
 base: 'https://typo3-oauth2-server.ddev.site/'
-errorHandling: {  }
+dependencies:
+  - oauth2-server/identity-provider
 languages:
   -
     title: English
@@ -10,12 +11,4 @@ languages:
     navigationTitle: English
     flag: us
 rootPageId: 1
-routes: {  }
-oauth2:
-  accessTokensExpireIn: 'P10Y'
-  loginPageUid: 1
-  consentPageUid: 4
-  scopes:
-    - api
-    - { identifier: read, description: 'Read access', consent: true }
-    - { identifier: write, description: 'Write access', consent: true }
+websiteTitle: ''

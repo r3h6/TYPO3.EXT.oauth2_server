@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace R3H6\Oauth2Server\Domain\Repository;
 
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -38,14 +39,19 @@ class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository impleme
         $this->setDefaultQuerySettings($querySettings);
     }
 
-    public function getClientEntity($clientIdentifier)
+    public function getClientEntity(string $clientIdentifier): ClientEntityInterface
     {
         $this->logger->debug('Get client', ['identifier' => $clientIdentifier]);
-        return $this->findOneBy(['identifier' => $clientIdentifier]);
+        $client = $this->findOneBy(['identifier' => $clientIdentifier]);
+        if ($client === null) {
+            throw new \RuntimeException('Client not found', 1729193167384);
+        }
+        return $client;
     }
 
-    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool
     {
+        $this->logger->debug('Validate client', ['identifier' => $clientIdentifier, 'grantType' => $grantType]);
         $client = $this->findOneBy(['identifier' => $clientIdentifier]);
 
         if ($client === null) {
@@ -59,6 +65,8 @@ class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository impleme
 
         $passwordHashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
         $hashInstance = $passwordHashFactory->getDefaultHashInstance('FE');
-        return $hashInstance->checkPassword((string)$clientSecret, (string)$client->getSecret());
+        $isValid = $hashInstance->checkPassword((string)$clientSecret, (string)$client->getSecret());
+        $this->logger->debug('Client validation', ['identifier' => $clientIdentifier, 'isValid' => $isValid]);
+        return $isValid;
     }
 }

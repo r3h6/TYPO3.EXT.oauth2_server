@@ -1,0 +1,7 @@
+name: oauth2-server/identity-provider
+label: OAuth2 Server Identity Provider
+
+dependencies:
+  - typo3/fluid-styled-content
+  - typo3/felogin
+  - oauth2-server/configuration

@@ -17,6 +17,7 @@ use R3H6\Oauth2Server\ExceptionHandlingTrait;
 use R3H6\Oauth2Server\RequestAttributes;
 use R3H6\Oauth2Server\Routing\RouterFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -45,16 +46,24 @@ class Initializer implements MiddlewareInterface, LoggerAwareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $siteConfiguration = $request->getAttribute('site')?->getConfiguration()['oauth2'] ?? false;
-
-        if ($siteConfiguration === false || !($siteConfiguration['enabled'] ?? true)) {
+        $site = $request->getAttribute('site');
+        if (!$site instanceof Site) {
             return $handler->handle($request);
         }
+
+        $siteConfiguration = $site->getConfiguration()['oauth2'] ?? $site->getSettings()->get('oauth2_server') ?? false;
+        if ($siteConfiguration === false) {
+            return $handler->handle($request);
+        }
+
+        $this->logger->debug('Configure oauth2 server', $this->configuration->toArray());
 
         $this->configuration->merge($this->extensionConfiguration->get('oauth2_server'));
         $this->configuration->merge($siteConfiguration);
 
-        $this->logger->debug('Configure oauth2 server', $this->configuration->toArray());
+        if ($this->configuration->isEnabled() === false) {
+            return $handler->handle($request);
+        }
 
         $router = $this->routerFactory->fromRequest($request);
         $route = $router->match($request);
@@ -75,6 +84,7 @@ class Initializer implements MiddlewareInterface, LoggerAwareInterface
         try {
             $request = $this->processResourceRequest($request);
         } catch (\Exception $exception) {
+            $this->logger->debug('Resource request failed', ['exception' => $exception]);
             return $this->handleException($exception);
         }
 

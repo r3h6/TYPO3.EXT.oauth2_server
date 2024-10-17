@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace R3H6\Oauth2Server\Mvc\Controller;
 
-use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use R3H6\Oauth2Server\Configuration\Configuration;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -28,7 +28,7 @@ class AuthorizationContext
 
     public function __construct(
         private readonly ServerRequestInterface $request,
-        private readonly AuthorizationRequest $authRequest,
+        private readonly AuthorizationRequestInterface $authRequest,
         private readonly Configuration $configuration,
     ) {
         $this->frontendUser = $this->request->getAttribute('frontend.user') ?: throw new \InvalidArgumentException('Frontend user must be authenticated', 1718222682952);
@@ -40,7 +40,7 @@ class AuthorizationContext
         return $this->request;
     }
 
-    public function getAuthRequest(): AuthorizationRequest
+    public function getAuthRequest(): AuthorizationRequestInterface
     {
         return $this->authRequest;
     }

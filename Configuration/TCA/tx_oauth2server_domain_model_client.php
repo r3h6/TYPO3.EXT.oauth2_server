@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use R3H6\Oauth2Server\Domain\Oauth\GrantTypes;
 
 return [
