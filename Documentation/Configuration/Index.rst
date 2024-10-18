@@ -15,7 +15,7 @@ Configuration
     :type: string
     :required: true
     :default: EXT:oauth2_server/Resources/Private/Keys/private.key
-    :Path: Site configuration :yaml:`oauth2.privateKey` or extension configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2_server']['privateKey']`
+    :Path: Site settings :yaml:`oauth2_server.privateKey` or extension configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2_server']['privateKey']`
 
     Path to the private key file.
 
@@ -24,7 +24,7 @@ Configuration
     :type: string
     :required: true
     :default: EXT:oauth2_server/Resources/Private/Keys/public.key
-    :Path: Site configuration :yaml:`oauth2.publicKey` or extension configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2_server']['publicKey']`
+    :Path: Site settings :yaml:`oauth2_server.publicKey` or extension configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2_server']['publicKey']`
 
     Path to the public key file.
 
@@ -33,7 +33,7 @@ Configuration
     :type: string
     :required: false
     :default: oauth2
-    :Path: Site configuration :yaml:`oauth2.routePrefix`
+    :Path: Site settings :yaml:`oauth2_server.routePrefix`
 
     Prefix for the OAuth2 server routes.
 
@@ -42,7 +42,7 @@ Configuration
     :type: string
     :required: false
     :default: PT1H
-    :Path: Site configuration :yaml:`oauth2.accessTokensExpireIn`
+    :Path: Site settings :yaml:`oauth2_server.accessTokensExpireIn`
 
     Access token lifetime, default is 1 hour.
 
@@ -51,7 +51,7 @@ Configuration
     :type: string
     :required: false
     :default: P1M
-    :Path: Site configuration :yaml:`oauth2.refreshTokensExpireIn`
+    :Path: Site settings :yaml:`oauth2_server.refreshTokensExpireIn`
 
     Refresh token lifetime, default is 1 month.
 
@@ -60,7 +60,7 @@ Configuration
     :type: string
     :required: false
     :default: true
-    :Path: Site configuration :yaml:`oauth2.requireCodeChallengeForPublicClients`
+    :Path: Site settings :yaml:`oauth2_server.requireCodeChallengeForPublicClients`
 
     Requires code challenge for public clients by default.
 
@@ -69,7 +69,7 @@ Configuration
     :type: string
     :required: true
     :default: null
-    :Path: Site configuration :yaml:`oauth2.consentPageUid` or extension configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2_server']['consentPageUid']`
+    :Path: Site settings :yaml:`oauth2_server.consentPageUid` or extension configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2_server']['consentPageUid']`
 
     Page UID of the consent page.
 
@@ -78,25 +78,31 @@ Configuration
     :type: string
     :required: true
     :default: null
-    :Path: Site configuration :yaml:`oauth2.loginPageUid` or extension configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2_server']['loginPageUid']`
+    :Path: Site settings :yaml:`oauth2_server.loginPageUid` or extension configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2_server']['loginPageUid']`
 
     Page UID of the login page.
 
 ..  confval:: scopes
     :name: oauth2-scopes
-    :type: string
+    :type: array
     :required: false
     :default: []
-    :Path: Site configuration :yaml:`oauth2.scopes`
+    :Path: Site settings :yaml:`oauth2_server.scopes`
 
     List of scopes.
 
+    .. code-block:: yaml
+
+        oauth2_server:
+          scopes:
+            - { identifier: 'read', consent: true, description: 'Read access' }
+
 ..  confval:: resources
     :name: oauth2-resources
-    :type: string
+    :type: array
     :required: false
     :default: []
-    :Path: Site configuration :yaml:`oauth2.resources`
+    :Path: Site settings :yaml:`oauth2_server.resources`
 
     List of yaml configuration files with :ref:`resource routes <resourceRoutes>`.
 
