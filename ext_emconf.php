@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 $EM_CONF[$_EXTKEY] = [
     'title' => 'OAuth2 Server',
     'description' => 'OAuth2 server for TYPO3 based on PHP League\'s OAuth2 Server.',
