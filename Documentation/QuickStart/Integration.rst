@@ -46,4 +46,4 @@ Create this page as "Folder" and add your client records.
 Setup template
 ==============
 
-Include the TypoScript template provided by this extension or use the site set in TYPO3 v13.
+Include the TypoScript template provided by this extension or use the site sets in TYPO3 v13.

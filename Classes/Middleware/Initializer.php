@@ -51,17 +51,23 @@ class Initializer implements MiddlewareInterface, LoggerAwareInterface
             return $handler->handle($request);
         }
 
-        $siteConfiguration = $site->getConfiguration()['oauth2'] ?? [];
-        $siteSettings = $site->getSettings()->get('oauth2_server') ?? [];
-        if ($siteConfiguration === [] && $siteSettings === []) {
+        $siteConfiguration = $site->getConfiguration()['oauth2'] ?? false;
+        $siteSettings = $site->getSettings()->get('oauth2_server') ?? false;
+        if ($siteConfiguration === false && $siteSettings === false) {
             return $handler->handle($request);
         }
 
         $this->logger->debug('Configure oauth2 server', $this->configuration->toArray());
 
         $this->configuration->merge($this->extensionConfiguration->get('oauth2_server'));
-        $this->configuration->merge($siteConfiguration);
-        $this->configuration->merge($siteSettings);
+
+        if ($siteConfiguration !== false) {
+            $this->configuration->merge($siteConfiguration);
+        }
+
+        if ($siteSettings !== false) {
+            $this->configuration->merge($siteSettings);
+        }
 
         if ($this->configuration->isEnabled() === false) {
             return $handler->handle($request);

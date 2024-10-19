@@ -27,19 +27,19 @@ settings:
   oauth2_server.routePrefix:
     label: 'Authorization server route prefix'
     category: OAuth2Server.configuration
-    description: ''
+    description: 'Defaults to "oauth2"'
     type: string
     default: ''
   oauth2_server.accessTokensExpireIn:
     label: 'Access token TTL'
     category: OAuth2Server.configuration
-    description: ''
+    description: 'Defaults to "PT1H" (1 hour)'
     type: string
     default: ''
   oauth2_server.refreshTokensExpireIn:
     label: 'Refresh token TTL'
     category: OAuth2Server.configuration
-    description: ''
+    description: 'Defaults to "P1M" (1 month)'
     type: string
     default: ''
   oauth2_server.requireCodeChallengeForPublicClients:
@@ -60,17 +60,17 @@ settings:
     description: ''
     type: int
     default: ''
-  oauth2_server.scopes:
-    label: 'Scopes'
-    category: OAuth2Server.configuration
-    description: ''
-    type: stringlist
-    default: ''
-    readonly: true
-  oauth2_server.resources:
-    label: 'Resources'
-    category: OAuth2Server.configuration
-    description: ''
-    type: stringlist
-    default: ''
-    readonly: true
+  # oauth2_server.scopes:
+  #   label: 'Scopes'
+  #   category: OAuth2Server.configuration
+  #   description: 'Configurable only directly in the yaml file'
+  #   type: stringlist
+  #   default: ''
+  #   readonly: true
+  # oauth2_server.resources:
+  #   label: 'Resources'
+  #   category: OAuth2Server.configuration
+  #   description: 'Configurable only directly in the yaml file'
+  #   type: stringlist
+  #   default: ''
+  #   readonly: true
