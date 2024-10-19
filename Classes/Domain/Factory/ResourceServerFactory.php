@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Factory;
 
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
@@ -19,10 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-/**
- * ResourceServerFactory
- */
-class ResourceServerFactory implements ResourceServerFactoryInterface
+class ResourceServerFactory
 {
     public function __invoke(Configuration $configuration): ResourceServer
     {

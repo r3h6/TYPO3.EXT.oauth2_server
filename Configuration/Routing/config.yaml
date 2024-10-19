@@ -1,0 +1,44 @@
+oauth_authorize:
+    path: /authorize
+    controller: R3H6\Oauth2Server\Controller\AuthorizationController::startAuthorization
+    methods: [GET]
+    schemes: https
+    options:
+      oauth2_validateAuthenticatedRequest: false
+      oauth2_constraints: true
+
+oauth_authorize_approve:
+    path: /authorize
+    controller: R3H6\Oauth2Server\Controller\AuthorizationController::approveAuthorization
+    methods: [POST]
+    schemes: https
+    options:
+      oauth2_validateAuthenticatedRequest: false
+      oauth2_constraints: true
+
+oauth_authorize_deny:
+    path: /authorize
+    controller: R3H6\Oauth2Server\Controller\AuthorizationController::denyAuthorization
+    methods: [DELETE]
+    schemes: https
+    options:
+      oauth2_validateAuthenticatedRequest: false
+      oauth2_constraints: true
+
+oauth_token:
+    path: /token
+    controller: R3H6\Oauth2Server\Controller\TokenController::issueAccessToken
+    methods: [POST]
+    schemes: https
+    options:
+      oauth2_validateAuthenticatedRequest: false
+      oauth2_constraints: oauth.grant != 'password' or frontend.user.isLoggedIn
+
+oauth_revoke:
+    path: /revoke
+    controller: R3H6\Oauth2Server\Controller\RevokeController::revokeAccessToken
+    methods: [POST]
+    schemes: https
+    options:
+      oauth2_validateAuthenticatedRequest: false
+      oauth2_constraints: true

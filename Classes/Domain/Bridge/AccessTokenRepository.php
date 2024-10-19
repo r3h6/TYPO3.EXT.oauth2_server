@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Bridge;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
@@ -23,30 +24,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-/**
- * Implementation of PHP League's access token repository
- */
 class AccessTokenRepository implements SingletonInterface, AccessTokenRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var \R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository
-     */
-    private $repository;
+    public function __construct(private \R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository $repository) {}
 
-    public function __construct(\R3H6\Oauth2Server\Domain\Repository\AccessTokenRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
-    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
+    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, ?string $userIdentifier = null): AccessTokenEntityInterface
     {
         $this->logger->debug('Get new token', ['client' => $clientEntity->getIdentifier(), 'scopes' => $scopes, 'userIdentifier' => $userIdentifier]);
 
         $accessToken = new AccessToken();
         $accessToken->setClient($clientEntity);
-        $accessToken->setUserIdentifier($userIdentifier);
+        if ($userIdentifier !== null && $userIdentifier !== '') {
+            $accessToken->setUserIdentifier($userIdentifier);
+        }
         $accessToken->setExpiryDateTime(\DateTimeImmutable::createFromMutable((new \DateTime())->add(new \DateInterval('PT6H'))));
 
         foreach ($scopes as $scope) {
@@ -56,7 +48,7 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
         return $accessToken;
     }
 
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
+    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
     {
         $newToken = GeneralUtility::makeInstance(\R3H6\Oauth2Server\Domain\Model\AccessToken::class);
         $newToken->setPid(0);
@@ -69,21 +61,26 @@ class AccessTokenRepository implements SingletonInterface, AccessTokenRepository
         $this->repository->persist();
     }
 
-    public function revokeAccessToken($tokenId)
+    public function revokeAccessToken(string $tokenId): void
     {
         $this->logger->debug('Revoke access token', ['identifier' => $tokenId]);
-        $token = $this->repository->findOneByIdentifier($tokenId);
+        $token = $this->repository->findOneBy(['identifier' => $tokenId]);
+        if (!$token) {
+            $this->logger->warning('Access token not found', ['identifier' => $tokenId]);
+            return;
+        }
         $token->setRevoked(true);
         $this->repository->update($token);
         $this->repository->persist();
     }
 
-    public function isAccessTokenRevoked($tokenId)
+    public function isAccessTokenRevoked(string $tokenId): bool
     {
-        $token = $this->repository->findOneByIdentifier($tokenId);
+        $token = $this->repository->findOneBy(['identifier' => $tokenId]);
         if ($token) {
             return $token->getRevoked();
         }
+        $this->logger->warning('Access token not found', ['identifier' => $tokenId]);
         return true;
     }
 }

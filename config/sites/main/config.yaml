@@ -1,0 +1,17 @@
+base: 'https://typo3-oauth2-server.ddev.site/'
+dependencies:
+  - oauth2-server/template
+  - oauth2-server/configuration
+  - typo3/felogin
+  - typo3/fluid-styled-content
+languages:
+  -
+    title: English
+    enabled: true
+    languageId: 0
+    base: /
+    locale: en_US.UTF-8
+    navigationTitle: English
+    flag: us
+rootPageId: 1
+websiteTitle: ''

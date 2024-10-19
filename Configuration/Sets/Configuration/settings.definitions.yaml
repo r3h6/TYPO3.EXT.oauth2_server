@@ -1,0 +1,76 @@
+categories:
+  OAuth2Server:
+    label: 'OAuth2 Server'
+  OAuth2Server.configuration:
+    label: 'Configuration'
+    parent: OAuth2Server
+
+settings:
+  oauth2_server.enabled:
+    label: 'Enabled'
+    category: OAuth2Server.configuration
+    description: ''
+    type: bool
+    default: true
+  oauth2_server.privateKey:
+    label: 'Private Key'
+    category: OAuth2Server.configuration
+    description: ''
+    type: string
+    default: ''
+  oauth2_server.publicKey:
+    label: 'Public Key'
+    category: OAuth2Server.configuration
+    description: ''
+    type: string
+    default: ''
+  oauth2_server.routePrefix:
+    label: 'Authorization server route prefix'
+    category: OAuth2Server.configuration
+    description: 'Defaults to "oauth2"'
+    type: string
+    default: ''
+  oauth2_server.accessTokensExpireIn:
+    label: 'Access token TTL'
+    category: OAuth2Server.configuration
+    description: 'Defaults to "PT1H" (1 hour)'
+    type: string
+    default: ''
+  oauth2_server.refreshTokensExpireIn:
+    label: 'Refresh token TTL'
+    category: OAuth2Server.configuration
+    description: 'Defaults to "P1M" (1 month)'
+    type: string
+    default: ''
+  oauth2_server.requireCodeChallengeForPublicClients:
+    label: 'Require code challenge for public clients'
+    category: OAuth2Server.configuration
+    description: ''
+    type: bool
+    default: false
+  oauth2_server.loginPageUid:
+    label: 'Login page UID'
+    category: OAuth2Server.configuration
+    description: ''
+    type: int
+    default: ''
+  oauth2_server.consentPageUid:
+    label: 'Consent page UID'
+    category: OAuth2Server.configuration
+    description: ''
+    type: int
+    default: ''
+  # oauth2_server.scopes:
+  #   label: 'Scopes'
+  #   category: OAuth2Server.configuration
+  #   description: 'Configurable only directly in the yaml file'
+  #   type: stringlist
+  #   default: ''
+  #   readonly: true
+  # oauth2_server.resources:
+  #   label: 'Resources'
+  #   category: OAuth2Server.configuration
+  #   description: 'Configurable only directly in the yaml file'
+  #   type: stringlist
+  #   default: ''
+  #   readonly: true

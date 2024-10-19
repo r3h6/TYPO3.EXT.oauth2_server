@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  R3H6\ExampleResources\:
+    resource: '../Classes/*'
+
+  R3H6\ExampleResources\Controller\SimpleController:
+    public: true

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Bridge;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
@@ -19,9 +20,6 @@ use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
  *
  ***/
 
-/**
- * Implementation of PHP League's access token entity
- */
 final class AccessToken implements AccessTokenEntityInterface
 {
     use AccessTokenTrait;

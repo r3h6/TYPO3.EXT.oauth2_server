@@ -1,9 +1,11 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
 
 /***
@@ -17,28 +19,15 @@ use TYPO3\CMS\Core\Http\Response;
  *
  ***/
 
-/**
- * ExceptionHandlingTrait
- */
 trait ExceptionHandlingTrait
 {
-    /**
-     * Perform the given callback with exception handling.
-     *
-     * @param  \Closure  $callback
-     * @return mixed
-     */
-    protected function withErrorHandling($callback)
+    protected function handleException(\Exception $exception): ResponseInterface
     {
-        try {
-            return $callback();
-        } catch (OAuthServerException $exception) {
+        // @codeCoverageIgnoreStart
+        if ($exception instanceof OAuthServerException) {
             return $exception->generateHttpResponse(new Response());
-            // @codeCoverageIgnoreStart
-        } catch (\Exception $exception) {
-            return (new OAuthServerException($exception->getMessage(), $exception->getCode(), 'unknown_error', 500))
-                ->generateHttpResponse(new Response());
-            // @codeCoverageIgnoreEnd
         }
+        return (new OAuthServerException($exception->getMessage(), $exception->getCode(), 'unknown_error', 500))->generateHttpResponse(new Response());
+        // @codeCoverageIgnoreEnd
     }
 }

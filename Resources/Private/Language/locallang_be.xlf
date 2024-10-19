@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<xliff version="1.0">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
 	<file source-language="en" datatype="plaintext" original="messages" date="2021-02-27T10:47:59Z">
-		<header>
-			<generator>LFEditor</generator>
-		</header>
+		<header />
 		<body>
 			<trans-unit id="constant.footer_text">
 				<source><![CDATA[Footnote: Static text in footer.]]></source>
@@ -13,6 +11,9 @@
 			</trans-unit>
 			<trans-unit id="constant.primary_color">
 				<source><![CDATA[Key color: Theme color for buttons and links.]]></source>
+			</trans-unit>
+			<trans-unit id="constant.background_color">
+				<source><![CDATA[Background color: Theme color for background.]]></source>
 			</trans-unit>
 			<trans-unit id="ext_conf_template.privateKey">
 				<source><![CDATA[Private key: Path to crt file (make sure the file is not public accessible)]]></source>
@@ -28,6 +29,12 @@
 			</trans-unit>
 			<trans-unit id="flash_message.client_secret">
 				<source><![CDATA[Make sure to copy your client secret now. You won’t be able to see it again: %s]]></source>
+			</trans-unit>
+			<trans-unit id="plugin.oauth2server_consent.title">
+				<source><![CDATA[OAuth2: Consent]]></source>
+			</trans-unit>
+			<trans-unit id="plugin.oauth2server_consent.description">
+				<source><![CDATA[Displays a form to inform the user and request permission for an application to access their private data.]]></source>
 			</trans-unit>
 		</body>
 	</file>

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Hook;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -18,10 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-/**
- * AllowedScopesItemsProcFunc
- */
-class AllowedScopesItemsProcFunc
+final class AllowedScopesItemsProcFunc
 {
     public function addItems(array &$configuration): void
     {

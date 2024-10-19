@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Model;
 
 /***
@@ -14,59 +15,52 @@ namespace R3H6\Oauth2Server\Domain\Model;
  *
  ***/
 
-/**
- * RefreshToken
- */
 class RefreshToken extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-    /** @var string */
-    protected $identifier;
+    protected string $identifier = '';
 
-    /** @var \DateTime */
-    protected $expiresAt;
+    protected ?\DateTimeImmutable $expiresAt = null;
 
-    /** @var bool */
-    protected $revoked;
+    protected bool $revoked = false;
 
-    /** @var string */
-    protected $accessToken;
+    protected string $accessToken = '';
 
-    public function setIdentifier($identifier)
+    public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    public function setExpiresAt($expiresAt)
+    public function setExpiresAt(\DateTimeImmutable $expiresAt): void
     {
         $this->expiresAt = $expiresAt;
     }
 
-    public function getExpiresAt()
+    public function getExpiresAt(): ?\DateTimeImmutable
     {
         return $this->expiresAt;
     }
 
-    public function setRevoked($revoked)
+    public function setRevoked(bool $revoked): void
     {
         $this->revoked = $revoked;
     }
 
-    public function getRevoked()
+    public function getRevoked(): bool
     {
         return $this->revoked;
     }
 
-    public function setAccessToken($accessToken)
+    public function setAccessToken(string $accessToken): void
     {
         $this->accessToken = $accessToken;
     }
 
-    public function getAccessToken()
+    public function getAccessToken(): string
     {
         return $this->accessToken;
     }

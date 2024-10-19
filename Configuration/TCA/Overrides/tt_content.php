@@ -1,10 +1,13 @@
 <?php
 
-defined('TYPO3_MODE') || die('Access denied.');
+defined('TYPO3') || die('Access denied.');
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'Oauth2server',
-    'Consent',
-    'Oauth2: Consent',
-    'EXT:oauth2_server/Resources/Public/Icons/Extension.svg'
-);
+(static function () {
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+        'Oauth2Server',
+        'Consent',
+        'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:plugin.oauth2server_consent.title',
+        'mimetypes-x-content-consent',
+        'forms'
+    );
+})();

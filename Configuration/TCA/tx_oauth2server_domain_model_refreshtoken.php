@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_refreshtoken',
@@ -11,7 +12,7 @@ return [
         'rootLevel' => 1,
         'hideTable' => true,
         'searchFields' => 'identifier',
-        'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_refreshtoken.gif'
+        'iconfile' => 'EXT:oauth2_server/Resources/Public/Icons/tx_oauth2server_domain_model_refreshtoken.gif',
     ],
     'types' => [
         '1' => ['showitem' => 'identifier, expires_at, access_token, revoked'],
@@ -24,18 +25,16 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'expires_at' => [
             'exclude' => false,
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_db.xlf:tx_oauth2server_domain_model_refreshtoken.expires_at',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 10,
-                'eval' => 'datetime',
-                'default' => time()
+                'default' => time(),
             ],
         ],
         'access_token' => [
@@ -44,7 +43,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'revoked' => [
@@ -54,7 +53,7 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 0,
-            ]
+            ],
         ],
 
     ],

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Bridge;
 
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
@@ -19,9 +20,6 @@ use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
  *
  ***/
 
-/**
- * Implementation of PHP League's auth code entity
- */
 final class AuthCode implements AuthCodeEntityInterface
 {
     use EntityTrait;

@@ -1,23 +1,21 @@
 input[type="text"],
 input[type="password"] {
+    @include focus;
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid $gray;
+    border: 1px solid $darkgray;
     margin-bottom: 1rem;
     border-radius: 2px;
-
-    &:focus {
-        border-color: $darkgray;
-    }
 }
 
 button,
 input[type="submit"],
 input[type="reset"] {
+    @include focus;
     width: 100%;
     color: $white;
-    border: 1px solid $primary;
-    background-color: $primary;
+    border: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
     padding: 0.5rem 1rem;
     border-radius: 2px;
 

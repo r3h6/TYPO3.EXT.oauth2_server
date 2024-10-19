@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Model;
 
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -17,20 +18,17 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
  *
  ***/
 
-/**
- * Scope
- */
 class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implements ScopeEntityInterface
 {
     use EntityTrait;
 
-    /** @var string */
-    protected $description = '';
+    protected string $description = '';
+    protected bool $consent = true;
 
-    /** @var bool */
-    protected $consent = true;
-
-    public function __construct($name)
+    /**
+     * @param non-empty-string $name
+     */
+    public function __construct(string $name)
     {
         $this->setIdentifier($name);
     }
@@ -46,17 +44,17 @@ class Scope extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject implemen
         return $this->description;
     }
 
-    public function setDescription(string $description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    public function getConsent()
+    public function getConsent(): bool
     {
         return $this->consent;
     }
 
-    public function setConsent(bool $consent)
+    public function setConsent(bool $consent): void
     {
         $this->consent = $consent;
     }

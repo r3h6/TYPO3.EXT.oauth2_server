@@ -1,0 +1,9 @@
+#!/bin/bash
+
+## Description: Build frontend resources
+## Usage: frontend
+## Example: "ddev frontend"
+
+cd Build/
+npm install
+npm run build

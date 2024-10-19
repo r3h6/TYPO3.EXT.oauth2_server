@@ -1,0 +1,21 @@
+base: 'https://localhost/'
+errorHandling: {  }
+languages:
+  -
+    title: English
+    enabled: true
+    languageId: 0
+    base: /
+    locale: en_US.UTF-8
+    navigationTitle: English
+    flag: us
+rootPageId: 1
+routes: {  }
+oauth2:
+  scopes:
+    - api
+    - { identifier: read, description: 'Read access', consent: true }
+    - { identifier: write, description: 'Write access', consent: true }
+  resources:
+    - EXT:example_resources/Configuration/Yaml/Routes.yaml
+

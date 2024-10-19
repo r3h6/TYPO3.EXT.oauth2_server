@@ -1,17 +1,21 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\Domain\Model\Client;
 use R3H6\Oauth2Server\Domain\Model\Scope;
+use R3H6\Oauth2Server\Event\FinalizeScopesEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /***
  *
@@ -25,18 +29,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  ***/
 
 /**
- * The repository for Scopes
+ * @extends Repository<Scope>
  */
-class ScopeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ScopeRepositoryInterface, LoggerAwareInterface
+class ScopeRepository extends Repository implements ScopeRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    public function __construct(
+        protected readonly Configuration $configuration,
+        protected EventDispatcherInterface $eventDispatcher,
+    ) {}
 
-    public function getScopeEntityByIdentifier($identifier)
+    /**
+     * @param non-empty-string $identifier
+     */
+    public function getScopeEntityByIdentifier(string $identifier): ScopeEntityInterface
     {
         $this->logger->debug('Get scope', ['identifier' => $identifier]);
         $scope = new Scope($identifier);
@@ -53,19 +60,18 @@ class ScopeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implemen
         return $scope;
     }
 
-    public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null)
+    public function finalizeScopes(array $scopes, string $grantType, ClientEntityInterface $clientEntity, ?string $userIdentifier = null, ?string $authCodeId = null): array
     {
         if ($clientEntity instanceof Client) {
             $allowedScopes = GeneralUtility::trimExplode(',', $clientEntity->getAllowedScopes(), true);
-            return array_filter($scopes, function (ScopeEntityInterface $scope) use ($allowedScopes) {
+            $scopes = array_filter($scopes, function (ScopeEntityInterface $scope) use ($allowedScopes) {
                 return empty($allowedScopes) || in_array($scope->getIdentifier(), $allowedScopes);
             });
         }
-        return $scopes;
-    }
 
-    public function injectConfiguration(Configuration $configuration): void
-    {
-        $this->configuration = $configuration;
+        $event = new FinalizeScopesEvent($scopes, $grantType, $clientEntity, $userIdentifier, $this->configuration);
+        $this->eventDispatcher->dispatch($event);
+
+        return $event->getScopes();
     }
 }

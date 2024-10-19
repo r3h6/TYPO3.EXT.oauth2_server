@@ -1,10 +1,10 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Model;
 
 use League\OAuth2\Server\Entities\UserEntityInterface;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 
 /***
  *
@@ -17,13 +17,13 @@ use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
  *
  ***/
 
-/**
- * User
- */
 class User extends FrontendUser implements UserEntityInterface
 {
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
-        return $this->uid;
+        if ($this->uid === null) {
+            throw new \RuntimeException('User has no uid', 1729194265611);
+        }
+        return (string)$this->uid;
     }
 }
