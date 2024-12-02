@@ -1,8 +1,10 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Repository;
 
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -22,43 +24,49 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
  ***/
 
 /**
- * The repository for Clients
+ * @extends \TYPO3\CMS\Extbase\Persistence\Repository<\R3H6\Oauth2Server\Domain\Model\Client>
+ * @method ?\R3H6\Oauth2Server\Domain\Model\Client findOneBy(array $criteria)
  */
 class ClientRepository extends \TYPO3\CMS\Extbase\Persistence\Repository implements ClientRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function initializeObject()
+    public function initializeObject(): void
     {
         /** \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
-        $querySettings = version_compare(TYPO3_version, '11.5', '>=') ?
-            GeneralUtility::makeInstance(Typo3QuerySettings::class):
-            $this->objectManager->get(Typo3QuerySettings::class);
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
     }
 
-    public function getClientEntity($clientIdentifier)
+    public function getClientEntity(string $clientIdentifier): ClientEntityInterface
     {
         $this->logger->debug('Get client', ['identifier' => $clientIdentifier]);
-        return $this->findOneByIdentifier($clientIdentifier);
+        $client = $this->findOneBy(['identifier' => $clientIdentifier]);
+        if ($client === null) {
+            throw new \RuntimeException('Client not found', 1729193167384);
+        }
+        return $client;
     }
 
-    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool
     {
-        $client = $this->findOneByIdentifier($clientIdentifier);
+        $this->logger->debug('Validate client', ['identifier' => $clientIdentifier, 'grantType' => $grantType]);
+        $client = $this->findOneBy(['identifier' => $clientIdentifier]);
 
         if ($client === null) {
             $this->logger->debug('No client found', ['identifier' => $clientIdentifier]);
             return false;
         }
-        if (GeneralUtility::inList($client->getGrantType(), $grantType) === false) {
+        if ($grantType !== null && GeneralUtility::inList((string)$client->getGrantType(), (string)$grantType) === false) {
             $this->logger->debug('Grant type not allowed by client', ['identifier' => $clientIdentifier, 'grantType' => $grantType]);
             return false;
         }
 
         $passwordHashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-        $hashInstance = $passwordHashFactory->getDefaultHashInstance(TYPO3_MODE);
-        return $hashInstance->checkPassword($clientSecret, $client->getSecret());
+        $hashInstance = $passwordHashFactory->getDefaultHashInstance('FE');
+        $isValid = $hashInstance->checkPassword((string)$clientSecret, (string)$client->getSecret());
+        $this->logger->debug('Client validation', ['identifier' => $clientIdentifier, 'isValid' => $isValid]);
+        return $isValid;
     }
 }

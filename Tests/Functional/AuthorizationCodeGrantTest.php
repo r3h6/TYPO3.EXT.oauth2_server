@@ -1,7 +1,12 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Tests\Functional;
+
+use PHPUnit\Framework\Attributes\Test;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
 /***
  *
@@ -14,70 +19,49 @@ namespace R3H6\Oauth2Server\Tests\Functional;
  *
  ***/
 
-/**
- * AuthorizationCodeGrantTest
- */
-class AuthorizationCodeGrantTest extends FunctionalTestCase
+final class AuthorizationCodeGrantTest extends ApplicationTestCase
 {
-    use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
-
-    /**
-     * @test
-     */
-    public function accessTokenIsIssued()
+    #[Test]
+    public function authorizationEndpointRedirectsToLoginPage(): void
     {
-        self::markTestSkipped('Needs to be reworked');
+        $request = new InternalRequest('https://localhost/oauth2/authorize?' . http_build_query([
+            'response_type' => 'code',
+            'client_id' => 'test0000-0000-0000-0000-000000000001',
+            'redirect_uri' => 'https://localhost/redirect',
+            'state' => 'bwqjmz2j2gs',
+        ]));
+        $context = new InternalRequestContext();
+        $response = $this->executeFrontendSubRequest($request, $context);
+        self::assertStringContainsString('https://localhost/?redirect_url=', $response->getHeaderLine('Location'), 'Response: ' . $response->getBody());
+    }
 
-        $response = $this->doFrontendRequest(
-            'GET',
-            '/oauth2/authorize',
-            [
-                'response_type' => 'code',
-                'client_id' => '660e56d72c12f9a1e2ec',
-                'redirect_uri' => 'http://localhost/',
-            ]
-        );
+    #[Test]
+    public function authorizationEndpointRedirectsToConsentPage(): void
+    {
+        $request = new InternalRequest('https://localhost/oauth2/authorize?' . http_build_query([
+            'response_type' => 'code',
+            'client_id' => 'test0000-0000-0000-0000-000000000001',
+            'redirect_uri' => 'https://localhost/redirect',
+            'state' => 'bwqjmz2j2gs',
+            'scope' => 'email',
+        ]));
+        $context = (new InternalRequestContext())->withFrontendUserId(1);
+        $response = $this->executeFrontendSubRequest($request, $context);
+        self::assertStringContainsString('https://localhost/consent', $response->getHeaderLine('Location'), 'Response: ' . $response->getBody());
+    }
 
-        $response = $this->doFrontendRequest(
-            'POST',
-            '/?logintype=login',
-            ['user' => 'user', 'pass' => 'password'],
-            $this->getLastCookie()
-        );
-
-        $response = $this->doFrontendRequest(
-            'GET',
-            '/oauth2/authorize',
-            [
-                'response_type' => 'code',
-                'client_id' => '660e56d72c12f9a1e2ec',
-                'redirect_uri' => 'http://localhost/',
-            ],
-            $this->getLastCookie()
-        );
-
-        $response = $this->doFrontendRequest(
-            'POST',
-            '/oauth2/authorize',
-            [],
-            $this->getLastCookie()
-        );
-
-        $response = $this->doFrontendRequest(
-            'POST',
-            '/oauth2/token',
-            [
-                'grant_type' => 'authorization_code',
-                'client_id' => '660e56d72c12f9a1e2ec',
-                'client_secret' => 'CCJL1/s3TQLMHj9le2bBUlD7tmkPZKlOTZGgBQRb3BE=',
-                'redirect_uri' => 'http://localhost/',
-                'code' => $this->getCodeFromResponse($response),
-            ]
-        );
-
-        $token = json_decode((string)$response->getBody(), true);
-        self::assertSame('Bearer', $token['token_type']);
-        self::assertArrayHasKey('expires_in', $token);
-        self::assertArrayHasKey('access_token', $token);
+    #[Test]
+    public function authorizationEndpointReturnsAuthCode(): void
+    {
+        $request = new InternalRequest('https://localhost/oauth2/authorize?' . http_build_query([
+            'response_type' => 'code',
+            'client_id' => 'test0000-0000-0000-0000-000000000002',
+            'redirect_uri' => 'https://localhost/redirect',
+            'state' => 'bwqjmz2j2gs',
+            'scope' => 'email',
+        ]));
+        $context = (new InternalRequestContext())->withFrontendUserId(1);
+        $response = $this->executeFrontendSubRequest($request, $context);
+        self::assertStringContainsString('https://localhost/redirect?code=', $response->getHeaderLine('Location'), 'Response: ' . $response->getBody());
     }
 }

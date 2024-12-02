@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Bridge;
 
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
@@ -21,31 +22,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-/**
- * Implementation of PHP League's refresh token repository
- */
 class RefreshTokenRepository implements SingletonInterface, RefreshTokenRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var \R3H6\Oauth2Server\Domain\Repository\RefreshTokenRepository
-     */
-    private $repository;
+    public function __construct(private \R3H6\Oauth2Server\Domain\Repository\RefreshTokenRepository $repository) {}
 
-    public function __construct(\R3H6\Oauth2Server\Domain\Repository\RefreshTokenRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
-    public function getNewRefreshToken()
+    public function getNewRefreshToken(): RefreshTokenEntityInterface
     {
         $this->logger->debug('Get new refresh token');
 
         return new RefreshToken();
     }
 
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
         $newToken = GeneralUtility::makeInstance(\R3H6\Oauth2Server\Domain\Model\RefreshToken::class);
         $newToken->setIdentifier($refreshTokenEntity->getIdentifier());
@@ -55,21 +45,26 @@ class RefreshTokenRepository implements SingletonInterface, RefreshTokenReposito
         $this->repository->persist();
     }
 
-    public function revokeRefreshToken($tokenId)
+    public function revokeRefreshToken(string $tokenId): void
     {
         $this->logger->debug('Revoke refresh token', ['identifier' => $tokenId]);
-        $token = $this->repository->findOneByIdentifier($tokenId);
+        $token = $this->repository->findOneBy(['identifier' => $tokenId]);
+        if (!$token) {
+            $this->logger->warning('Refresh token not found', ['identifier' => $tokenId]);
+            return;
+        }
         $token->setRevoked(true);
         $this->repository->update($token);
         $this->repository->persist();
     }
 
-    public function isRefreshTokenRevoked($tokenId)
+    public function isRefreshTokenRevoked(string $tokenId): bool
     {
-        $token = $this->repository->findOneByIdentifier($tokenId);
+        $token = $this->repository->findOneBy(['identifier' => $tokenId]);
         if ($token) {
             return $token->getRevoked();
         }
+        $this->logger->warning('Refresh token not found', ['identifier' => $tokenId]);
         return true;
     }
 }

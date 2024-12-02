@@ -5,3 +5,7 @@
 .env
 node_modules
 *.cache
+/var
+.ddev/*adminer*
+.ddev/addon-metadata
+/Documentation-GENERATED-temp

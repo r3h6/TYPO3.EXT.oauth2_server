@@ -1,7 +1,13 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Tests\Functional;
+
+use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Http\StreamFactory;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
 /***
  *
@@ -14,34 +20,45 @@ namespace R3H6\Oauth2Server\Tests\Functional;
  *
  ***/
 
-/**
- * ResourceOwnerPasswordCredentialsGrantTest
- */
-class ResourceOwnerPasswordCredentialsGrantTest extends FunctionalTestCase
+final class ResourceOwnerPasswordCredentialsGrantTest extends ApplicationTestCase
 {
-    use \R3H6\Oauth2Server\Tests\Functional\FunctionalTestHelper;
-
-    /**
-     * @test
-     */
-    public function accessTokenIsIssued()
+    #[Test]
+    public function resourceOwnerPasswordCredentialsGrant(): void
     {
-        self::markTestSkipped('Needs to be reworked');
-        $response = $this->doFrontendRequest(
-            'POST',
-            '/oauth2/token',
-            [
+        $request = (new InternalRequest('https://localhost/oauth2/token'))
+            ->withMethod('POST')
+            ->withHeader('Content-Type', 'application/x-www-form-urlencoded')
+            ->withBody((new StreamFactory())->createStream(http_build_query([
                 'grant_type' => 'password',
-                'client_id' => '660e56d72c12f9a1e2ec',
-                'client_secret' => 'CCJL1/s3TQLMHj9le2bBUlD7tmkPZKlOTZGgBQRb3BE=',
-                'username' => 'user',
-                'password' => 'password',
-            ]
-        );
+                'client_id' => 'test0000-0000-0000-0000-000000000004',
+                'client_secret' => 'Password1!',
+                'username' => 'kasper',
+                'password' => 'Password1!',
+                'scope' => 'email',
+            ])));
 
-        $token = json_decode((string)$response->getBody(), true);
-        self::assertSame('Bearer', $token['token_type']);
-        self::assertArrayHasKey('expires_in', $token);
-        self::assertArrayHasKey('access_token', $token);
+        $context = new InternalRequestContext();
+        $response = $this->executeFrontendSubRequest($request, $context);
+        self::assertStringContainsString('access_token', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function resourceOwnerPasswordCredentialsGrantWithInvalidCredentials(): void
+    {
+        $request = (new InternalRequest('https://localhost/oauth2/token'))
+            ->withMethod('POST')
+            ->withHeader('Content-Type', 'application/x-www-form-urlencoded')
+            ->withBody((new StreamFactory())->createStream(http_build_query([
+                'grant_type' => 'password',
+                'client_id' => 'test0000-0000-0000-0000-000000000004',
+                'client_secret' => 'Password1!',
+                'username' => 'kasper',
+                'password' => 'invalid',
+                'scope' => 'email',
+            ])));
+
+        $context = new InternalRequestContext();
+        $response = $this->executeFrontendSubRequest($request, $context);
+        self::assertStringContainsString('access_denied', (string)$response->getBody());
     }
 }

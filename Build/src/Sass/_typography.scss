@@ -15,7 +15,8 @@ p {
 }
 
 a {
-    color: $primary;
+    @include focus;
+    color: var(--primary-color);
     text-decoration: none;
     &:hover {
         text-decoration: underline;

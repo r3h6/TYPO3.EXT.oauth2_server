@@ -1,0 +1,18 @@
+example_extbase:
+  path: /{slug}
+  requirements:
+    slug: '^api.*'
+
+example_scopes_missing:
+  path: /test/missing-scopes
+  controller: 'R3H6\ExampleResources\Controller\SimpleController::handleRequest'
+  options:
+    oauth2_constraints:
+    - '"non_existent_scope" in oauth.scopes'
+
+example_scopes_valid:
+  path: /test/valid-scopes
+  controller: 'R3H6\ExampleResources\Controller\SimpleController::handleRequest'
+  options:
+    oauth2_constraints:
+    - '"read" in oauth.scopes'

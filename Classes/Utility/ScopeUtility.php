@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Utility;
 
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -16,9 +17,6 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
  *
  ***/
 
-/**
- * ScopeUtility
- */
 final class ScopeUtility
 {
     public static function toString(ScopeEntityInterface ...$scopes): string
@@ -26,6 +24,9 @@ final class ScopeUtility
         return implode(', ', static::toStrings(...$scopes));
     }
 
+    /**
+     * @return string[]
+     */
     public static function toStrings(ScopeEntityInterface ...$scopes): array
     {
         return array_map(function (ScopeEntityInterface $scope) {

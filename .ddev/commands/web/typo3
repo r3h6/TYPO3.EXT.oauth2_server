@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: TYPO3 console
+## Usage: typo3
+## Example: "ddev typo3"
+
+.Build/bin/typo3 $@

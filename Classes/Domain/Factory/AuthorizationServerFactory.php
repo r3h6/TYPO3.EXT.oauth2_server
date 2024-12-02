@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Factory;
 
 use League\OAuth2\Server\AuthorizationServer;
@@ -17,8 +18,10 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use League\OAuth2\Server\RequestEvent as OAuth2RequestEvent;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use R3H6\Oauth2Server\Configuration\Configuration;
 use R3H6\Oauth2Server\Domain\Bridge\RequestEvent;
+use R3H6\Oauth2Server\Event\BeforeAssembleAuthorizationServerEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***
@@ -32,29 +35,54 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  ***/
 
-/**
- * AuthorizationServerFactory
- */
-class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
+class AuthorizationServerFactory
 {
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher) {}
+
     public function __invoke(Configuration $configuration): AuthorizationServer
     {
         $accessTokenTTL = new \DateInterval($configuration->getAccessTokensExpireIn());
-        $server = GeneralUtility::makeInstance(
-            AuthorizationServer::class,
+
+        $event = new BeforeAssembleAuthorizationServerEvent(
+            $configuration,
             $this->getClientRepository($configuration),
             $this->getAccessTokenRepository($configuration),
             $this->getScopeRepository($configuration),
-            GeneralUtility::getFileAbsFileName($configuration->getPrivateKey()) ?: $configuration->getPrivateKey(),
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'],
-            $this->getResponseType($configuration)
+            $this->getResponseType($configuration),
+            $this->getClientCredentialsGrant($configuration),
+            $this->getPasswordGrant($configuration),
+            $this->getAuthCodeGrant($configuration),
+            $this->getRefreshTokenGrant($configuration),
+            $this->getImplicitGrant($configuration),
         );
 
-        $server->enableGrantType($this->getClientCredentialsGrant($configuration), $accessTokenTTL);
-        $server->enableGrantType($this->getPasswordGrant($configuration), $accessTokenTTL);
-        $server->enableGrantType($this->getAuthCodeGrant($configuration), $accessTokenTTL);
-        $server->enableGrantType($this->getRefreshTokenGrant($configuration), $accessTokenTTL);
-        $server->enableGrantType($this->getImplicitGrant($configuration), $accessTokenTTL);
+        $this->eventDispatcher->dispatch($event);
+
+        $server = GeneralUtility::makeInstance(
+            AuthorizationServer::class,
+            $event->getClientRepository(),
+            $event->getAccessTokenRepository(),
+            $event->getScopeRepository(),
+            GeneralUtility::getFileAbsFileName($configuration->getPrivateKey()) ?: $configuration->getPrivateKey(),
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'],
+            $event->getResponseType()
+        );
+
+        if ($event->getClientCredentialsGrant() !== null) {
+            $server->enableGrantType($event->getClientCredentialsGrant(), $accessTokenTTL);
+        }
+        if ($event->getPasswordGrant() !== null) {
+            $server->enableGrantType($event->getPasswordGrant(), $accessTokenTTL);
+        }
+        if ($event->getAuthCodeGrant() !== null) {
+            $server->enableGrantType($event->getAuthCodeGrant(), $accessTokenTTL);
+        }
+        if ($event->getRefreshTokenGrant() !== null) {
+            $server->enableGrantType($event->getRefreshTokenGrant(), $accessTokenTTL);
+        }
+        if ($event->getImplicitGrant() !== null) {
+            $server->enableGrantType($event->getImplicitGrant(), $accessTokenTTL);
+        }
 
         $listener = GeneralUtility::makeInstance(RequestEvent::class);
         $events = [
@@ -132,7 +160,7 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface
 
     protected function getImplicitGrant(Configuration $configuration): ImplicitGrant
     {
-        $accessTokenTTL = new \DateInterval('PT1H');
+        $accessTokenTTL = new \DateInterval($configuration->getAccessTokensExpireIn());
         return GeneralUtility::makeInstance(ImplicitGrant::class, $accessTokenTTL);
     }
 

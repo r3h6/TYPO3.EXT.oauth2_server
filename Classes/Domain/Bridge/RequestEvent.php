@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Domain\Bridge;
 
 use League\OAuth2\Server\RequestEvent as OAuth2RequestEvent;
@@ -26,19 +27,11 @@ final class RequestEvent implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var EventDispatcher
-     */
-    private $eventDispatcher;
+    public function __construct(private EventDispatcher $eventDispatcher) {}
 
-    public function __construct(EventDispatcher $eventDispatcher)
+    public function __invoke(OAuth2RequestEvent $event): void
     {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    public function __invoke(OAuth2RequestEvent $event)
-    {
-        $this->logger->debug('Forward event', ['name' => $event->getName()]);
+        $this->logger->debug('Forward event', ['eventName' => $event->getName(), 'eventClass' => get_class($event)]);
         $this->eventDispatcher->dispatch($event);
     }
 }

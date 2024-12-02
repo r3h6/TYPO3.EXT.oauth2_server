@@ -1,11 +1,9 @@
 <?php
 
 declare(strict_types=1);
+
 namespace R3H6\Oauth2Server\Configuration;
 
-use R3H6\Oauth2Server\Controller\AuthorizationController;
-use R3H6\Oauth2Server\Controller\RevokeController;
-use R3H6\Oauth2Server\Controller\TokenController;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
@@ -21,141 +19,112 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  ***/
 
 /**
- * Configuration
+ * @implements \ArrayAccess<string, mixed>
  */
 class Configuration implements \ArrayAccess, SingletonInterface
 {
-    /**
-     * @var array
-     */
-    private static $configuration = [
+    private array $configuration = [
+        'enabled' => true,
         'privateKey' => 'EXT:oauth2_server/Resources/Private/Keys/private.key',
         'publicKey' => 'EXT:oauth2_server/Resources/Private/Keys/public.key',
         'routePrefix' => 'oauth2',
-        'accessTokensExpireIn' => 'P1M',
+        'accessTokensExpireIn' => 'PT1H',
         'refreshTokensExpireIn' => 'P1M',
         'requireCodeChallengeForPublicClients' => true,
-        'consentPageUid' => 0,
-        'loginPageUid' => 0,
+        'consentPageUid' => null,
+        'loginPageUid' => null,
         'scopes' => [],
         'resources' => [],
-        'endpoints' => [
-            'oauth2_authorize' => [
-                'path' => '/authorize',
-                'target' => AuthorizationController::class . '::startAuthorization',
-                'authorization' => false,
-                'methods' => ['GET'],
-            ],
-            'oauth2_authorize_approve' => [
-                'path' => '/authorize',
-                'target' => AuthorizationController::class . '::approveAuthorization',
-                'authorization' => false,
-                'methods' => ['POST'],
-            ],
-            'oauth2_authorize_deny' => [
-                'path' => '/authorize',
-                'target' => AuthorizationController::class . '::denyAuthorization',
-                'authorization' => false,
-                'methods' => ['DELETE'],
-            ],
-            'oauth2_token' => [
-                'path' => '/token',
-                'target' => TokenController::class . '::issueAccessToken',
-                'authorization' => false,
-                'methods' => ['POST'],
-            ],
-            'oauth2_revoke' => [
-                'path' => '/revoke',
-                'target' => RevokeController::class . '::revokeAccessToken',
-            ],
-        ],
     ];
+
+    public function isEnabled(): bool
+    {
+        return (bool)$this->configuration['enabled'];
+    }
+
+    public function offsetExists(mixed $offset): bool
+    {
+        return isset($this->configuration[$offset]);
+    }
+
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->configuration[$offset] ?? null;
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        throw new \RuntimeException('Configuration is read-only', 1717703562513);
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        throw new \RuntimeException('Configuration is read-only', 1717703572984);
+    }
 
     public function getRoutePrefix(): string
     {
-        return self::$configuration['routePrefix'];
-    }
-
-    public function getServerClass(): string
-    {
-        return self::$configuration['server'];
+        return $this->configuration['routePrefix'];
     }
 
     public function getResources(): array
     {
-        return self::$configuration['resources'];
+        return $this->configuration['resources'];
     }
 
     public function getPrivateKey(): string
     {
-        return self::$configuration['privateKey'];
+        return $this->configuration['privateKey'];
     }
 
     public function getPublicKey(): string
     {
-        return self::$configuration['publicKey'];
+        return $this->configuration['publicKey'];
     }
 
     public function getAccessTokensExpireIn(): string
     {
-        return self::$configuration['accessTokensExpireIn'];
+        return $this->configuration['accessTokensExpireIn'];
     }
 
     public function getRefreshTokensExpireIn(): string
     {
-        return self::$configuration['refreshTokensExpireIn'];
+        return $this->configuration['refreshTokensExpireIn'];
     }
 
     public function getRequireCodeChallengeForPublicClients(): bool
     {
-        return (bool)self::$configuration['requireCodeChallengeForPublicClients'];
+        return (bool)$this->configuration['requireCodeChallengeForPublicClients'];
     }
 
     public function getConsentPageUid(): int
     {
-        return (int)self::$configuration['consentPageUid'];
+        if ($this->configuration['consentPageUid'] === null) {
+            throw new \RuntimeException('consentPageUid is not configured', 1717097624785);
+        }
+        return (int)$this->configuration['consentPageUid'];
     }
 
     public function getLoginPageUid(): int
     {
-        return (int)self::$configuration['loginPageUid'];
+        if ($this->configuration['loginPageUid'] === null) {
+            throw new \RuntimeException('loginPageUid is not configured', 1717097631265);
+        }
+        return (int)$this->configuration['loginPageUid'];
     }
 
-    public function getEndpoints(): array
-    {
-        return self::$configuration['endpoints'];
-    }
     public function getScopes(): array
     {
-        return self::$configuration['scopes'];
+        return $this->configuration['scopes'];
     }
 
     public function merge(array $overrideConfiguration): void
     {
-        ArrayUtility::mergeRecursiveWithOverrule(self::$configuration, $overrideConfiguration, true, true, false);
+        ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $overrideConfiguration, true, false, false);
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function toArray(): array
     {
-        throw new \RuntimeException('Array access to configuration is read only', 1613841524309);
-    }
-
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
-    {
-        return isset(self::$configuration[$offset]);
-    }
-
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
-    {
-        throw new \RuntimeException('Array access to configuration is read only', 1613841557884);
-    }
-
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
-    {
-        return isset(self::$configuration[$offset]) ? self::$configuration[$offset] : null;
+        return $this->configuration;
     }
 }

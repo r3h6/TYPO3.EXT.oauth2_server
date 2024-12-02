@@ -1,0 +1,3 @@
+"tx_oauth2server_domain_model_accesstoken"
+,"uid","expires_at","revoked","identifier","client","user","scopes"
+,1,"2035480295",0,"732f700207d1983acdc1868efee2c51fafe32c349ce392092f48a8de73559200d51941e65310a4ab","fc17757d-aa0c-481d-96d7-c2504ce7199f",1,"api, read"
