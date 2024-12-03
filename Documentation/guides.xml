@@ -5,32 +5,18 @@
         links-are-relative="true"
 >
   <extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
-             project-home="&lt;project-home&gt;"
-             project-contact="&lt;project-contact&gt;"
-             project-repository="&lt;project-repository&gt;"
-             project-issues="&lt;project-issues&gt;"
-             project-discussions="&lt;project-discussions&gt;"
-             use-opensearch="&lt;use-opensearch&gt;"
-             edit-on-github-branch="main"
-             edit-on-github="TYPO3-Documentation/TYPO3CMS-Example-ExtensionManual"
+             project-home="https://github.com/r3h6/TYPO3.EXT.oauth2_server"
+             project-contact="mailto:r3h6@outlook.com"
+             project-repository="https://github.com/r3h6/TYPO3.EXT.oauth2_server"
+             project-issues="https://github.com/r3h6/TYPO3.EXT.oauth2_server/issues"
+             edit-on-github-branch="master"
+             edit-on-github="r3h6/oauth2-server"
              typo3-core-preferred="stable"
-             interlink-shortcode="typo3/guide-example-extension-manual"
+             interlink-shortcode="r3h6/oauth2-server"
   />
-  <project title="&lt;project&gt;"
-           release="&lt;release&gt;"
-           version="&lt;version&gt;"
-           copyright="&lt;copyright&gt;"
-  />
-  <inventory id="t3coreapi"
-             url="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/"
-  />
-  <inventory id="t3sitepackage"
-             url="https://docs.typo3.org/m/typo3/tutorial-sitepackage/main/en-us/"
-  />
-  <inventory id="t3viewhelper"
-             url="https://docs.typo3.org/other/typo3/view-helper-reference/main/en-us/"
-  />
-  <inventory id="t3upgrade"
-             url="https://docs.typo3.org/m/typo3/guide-installation/main/en-us/"
+  <project title="TYPO3 OAuth2 Server"
+           release="2.0"
+           version="2.0.1"
+           copyright="since 2020 by R3H6 and contributors"
   />
 </guides>
