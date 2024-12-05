@@ -3,6 +3,7 @@
 OAuth2 server for TYPO3 based on [PHP League's OAuth2 Server](https://oauth2.thephpleague.com/).
 
 - [TER (https://extensions.typo3.org/extension/oauth2_server)](https://extensions.typo3.org/extension/oauth2_server)
+- [Documentation](https://docs.typo3.org/p/r3h6/oauth2-server/main/en-us/)
 
 | Version | TYPO3 CMS | league/oauth2-server |
 | --- | --- | --- |
