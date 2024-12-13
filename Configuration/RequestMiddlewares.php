@@ -20,7 +20,7 @@ return [
                 'typo3/cms-frontend/authentication',
             ],
             'before' => [
-                'typo3/cms-frontend/page-resolver',
+                'typo3/cms-frontend/base-redirect-resolver',
             ],
         ],
     ],
