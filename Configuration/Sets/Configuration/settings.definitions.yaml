@@ -53,13 +53,13 @@ settings:
     category: OAuth2Server.configuration
     description: ''
     type: int
-    default: ''
+    default: 0
   oauth2_server.consentPageUid:
     label: 'Consent page UID'
     category: OAuth2Server.configuration
     description: ''
     type: int
-    default: ''
+    default: 0
   # oauth2_server.scopes:
   #   label: 'Scopes'
   #   category: OAuth2Server.configuration

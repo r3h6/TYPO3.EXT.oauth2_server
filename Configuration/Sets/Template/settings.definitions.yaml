@@ -17,13 +17,13 @@ settings:
     category: OAuth2Server.templates
     description: ''
     type: color
-    default: ''
+    default: '#ff8800'
   plugin.tx_oauth2server.backgroundColor:
     label: 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.background_color'
     category: OAuth2Server.templates
     description: ''
     type: color
-    default: ''
+    default: '#e0e0e0'
   plugin.tx_oauth2server.footerText:
     label: 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_be.xlf:constant.primary_color'
     category: OAuth2Server.templates
