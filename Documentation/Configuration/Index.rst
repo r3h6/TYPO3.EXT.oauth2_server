@@ -10,6 +10,15 @@ Configuration
     **Use the provided key pair only for development and testing purposes!**
     Check the :ref:`quick start section <quickConfiguration>` for information on how to create your own key pair.
 
+..  confval:: enabled
+    :name: oauth2-enabled
+    :type: bool
+    :required: false
+    :default: true
+    :Path: Site settings :yaml:`oauth2_server.enabled`
+
+    Enable oauth2 server.
+
 ..  confval:: privateKey
     :name: oauth2-privateKey
     :type: string
