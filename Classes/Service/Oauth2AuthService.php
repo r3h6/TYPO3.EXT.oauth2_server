@@ -21,6 +21,9 @@ use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
  *
  ***/
 
+/**
+ * @phpstan-method void writelog(int $type, int $action, int $error, int $code, string $details, array $data = [], string $tablename = '', int $recuid = '')
+ */
 class Oauth2AuthService extends AbstractAuthenticationService
 {
     private const AUTH_FAILED = 0;
