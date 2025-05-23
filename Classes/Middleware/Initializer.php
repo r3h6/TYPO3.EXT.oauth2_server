@@ -93,7 +93,6 @@ class Initializer implements MiddlewareInterface, LoggerAwareInterface
             $request = $this->processResourceRequest($request);
         } catch (\Exception $exception) {
             $this->logger->debug('Resource request failed', ['exception' => $exception]);
-            return $this->handleException($exception);
         }
 
         return $handler->handle($request);
