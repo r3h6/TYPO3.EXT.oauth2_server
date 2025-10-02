@@ -112,7 +112,7 @@ class RevokeController implements LoggerAwareInterface
         $params = (array)$request->getParsedBody();
         $clientid = $params['client_id'] ?? null;
         $clientSecret = $params['client_secret'] ?? null;
-        if ($this->clientRepository->validateClient($clientid, $clientSecret, null)) {
+        if ($clientid && $clientSecret && $this->clientRepository->validateClient($clientid, $clientSecret, null)) {
             return $this->clientRepository->getClientEntity($clientid);
         }
 
