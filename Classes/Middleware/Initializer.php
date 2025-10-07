@@ -145,6 +145,5 @@ class Initializer implements MiddlewareInterface, LoggerAwareInterface
         $this->logger->debug('Update global configuration to enforce login');
         $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] = false;
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'logintype';
     }
 }
