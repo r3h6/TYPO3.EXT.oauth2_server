@@ -59,7 +59,7 @@ class RevokeController implements LoggerAwareInterface
             $refreshToken = $this->tokenService->decodeRefreshToken($params['token']);
             $tokenId = $this->validateRefreshToken($refreshToken, $client);
             $this->refreshTokenRepository->revokeRefreshToken($tokenId);
-            $this->accessTokenRepository->revokeAccessToken($refreshToken?->access_token_id);
+            $this->accessTokenRepository->revokeAccessToken((string)$refreshToken?->access_token_id);
         }
 
         if ($tokenType === TokenTypes::ACCESS_TOKEN) {
