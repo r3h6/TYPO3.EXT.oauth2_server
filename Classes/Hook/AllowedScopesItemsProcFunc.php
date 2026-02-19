@@ -31,7 +31,7 @@ final class AllowedScopesItemsProcFunc
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $site = $siteFinder->getSiteByPageId($pid);
 
-        $scopes = $site->getConfiguration()['oauth2']['scopes'] ?? [];
+        $scopes = $site->getSettings()->get('oauth2_server')['scopes'] ?? [];
         $items = [];
         foreach ($scopes as $scope) {
             $label = $identifier = $scope['identifier'] ?? $scope;
