@@ -38,8 +38,8 @@ return RectorConfig::configure()
         ConvertImplicitVariablesToExplicitGlobalsRector::class,
     ])
     ->withConfiguredRule(ExtEmConfRector::class, [
-        ExtEmConfRector::PHP_VERSION_CONSTRAINT => '8.1.0-8.3.99',
-        ExtEmConfRector::TYPO3_VERSION_CONSTRAINT => '12.4.0-13.1.99',
+        ExtEmConfRector::PHP_VERSION_CONSTRAINT => '8.1.0-8.5.99',
+        ExtEmConfRector::TYPO3_VERSION_CONSTRAINT => '12.4.0-13.4.99',
         ExtEmConfRector::ADDITIONAL_VALUES_TO_BE_REMOVED => [],
     ])
     // If you use withImportNames(), you should consider excluding some TYPO3 files.
